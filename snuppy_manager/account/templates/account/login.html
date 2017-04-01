@@ -7,7 +7,7 @@
     <p>Пожалуйста, введите логин и пароль</p>
     <form action="." method="post">
         {{ form.as_p }}
-        {% crsf_token %}
+        {% csrf_token %}
         <p><input type="submit" value="Log-in"></p>
     </form>
 {% endblock %}
