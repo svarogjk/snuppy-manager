@@ -8,8 +8,12 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from .forms import LoginForm
+from django.views.decorators.csrf import csrf_protect
 
+
+@csrf_protect
 def user_login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
