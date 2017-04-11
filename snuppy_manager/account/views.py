@@ -6,6 +6,8 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login
 from .forms import LoginForm
 
+from .models import User, Version, Application
+
 def user_login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -24,4 +26,9 @@ def user_login(request):
     else:
         form = LoginForm()
     return render(request, 'account/login.html', {'form': form})
+
+def show_all_app(request, user_id):
+    _user = User.objects.get(pk=user_id)
+    _app = Application.objects.filter(user=_user)
+    return render(request, 'account/all_app.html', {'user': _user, 'applications':_app})
 
