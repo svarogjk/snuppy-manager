@@ -1,0 +1,27 @@
+<!--
+<h3>{{ post.title }}</h3>
+<p> {{post.text}}</p>
+<p>sadsad</p>
+<img src="/blog/media/{{post.image}}" alf="{{post.title}}" />
+{% for comment in post.comment_set.all%}
+<li>{{ comment }}</li>
+{% endfor%} -->
+<!--#############
+{% for post in posts %}
+    <!--posts Обязательно должен совпадать с ключом в словаре-->
+ <!--   <li><a href="{% url 'blog:post' post.id %}" >{{post}} </a> </li>
+    
+<!--blog - наше приложение, post это имя из url + перебираем словарь-->
+<!--{% endfor %}
+##############################
+<!--для переменной (а не для функции) используются две круглые скобки и без процентов-->
+<!--и круглые скобки это джиджа какая то-->
+<h3>Application for {{ user.name }} :</h3>
+{% for app in applications %}
+------------------------------------- <br>
+<br> <b> Application name </b>: {{app.name}}
+<br> <b> Description: </b> {{app.description }}
+<br> <b> Created_at: </b> {{app.created_at }}
+<br> <b> Updated_at: </b> {{app.updated_at }} 
+<br>
+{% endfor %}
