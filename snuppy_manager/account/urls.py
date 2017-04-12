@@ -6,6 +6,8 @@ from . import views
 from django.contrib.auth.views import login
 from django.contrib.auth.views import logout
 from django.contrib.auth.views import logout_then_login
+from django.contrib.auth.views import password_change_done
+from django.contrib.auth.views import password_change
 
 urlpatterns = [
 
@@ -16,6 +18,12 @@ urlpatterns = [
 
     url(r'^$', views.dashboard, name='dashboard'),
     url(r'^(?P<user_id>[0-9]+)/$', views.show_all_app, name='show_all_app'),
+    url(r'^password-change/$',
+        password_change,
+        name='password_change'),
+    url(r'^password-change/done/$',
+        password_change_done,
+        name='password_change_done'),
 ]
 
 if settings.DEBUG:
