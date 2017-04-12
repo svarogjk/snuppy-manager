@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^logout-then-login/$', logout_then_login, name='logout_then_login'),
 
     url(r'^$', views.dashboard, name='dashboard'),
+    url(r'^(?P<user_id>[0-9]+)/$', views.show_all_app, name='show_all_app'),
 ]
 
 if settings.DEBUG:

@@ -13,6 +13,9 @@ from .forms import LoginForm
 from django.views.decorators.csrf import csrf_protect
 
 
+from .models import User, Version, Application
+
+
 @csrf_protect
 def user_login(request):
     if request.method == 'POST':
@@ -39,3 +42,9 @@ def dashboard(request):
                   'account/dashboard.html',
                   {'section': 'dashboard'})
 
+
+@login_required
+def show_all_app(request, user_id):
+    _user = User.objects.get(pk=user_id)
+    _app = Application.objects.filter(user=_user)
+    return render(request, 'account/all_app.html', {'user': _user, 'applications':_app})
