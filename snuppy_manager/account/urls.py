@@ -24,6 +24,9 @@ urlpatterns = [
     url(r'^password-change/done/$',
         password_change_done,
         name='password_change_done'),
+
+    #restore password urls
+    url(r'^password-reset/$',)
 ]
 
 if settings.DEBUG:
