@@ -1,3 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
 <!--
 <h3>{{ post.title }}</h3>
 <p> {{post.text}}</p>
@@ -16,6 +19,8 @@
 ##############################
 <!--для переменной (а не для функции) используются две круглые скобки и без процентов-->
 <!--и круглые скобки это джиджа какая то-->
+
+
 <h3>Application for {{ user.name }} :</h3>
 {% for app in applications %}
 ------------------------------------- <br>
@@ -25,3 +30,5 @@
 <br> <b> Updated_at: </b> {{app.updated_at }} 
 <br>
 {% endfor %}
+
+{% endblock %}

@@ -11,6 +11,9 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from .forms import LoginForm
 from django.views.decorators.csrf import csrf_protect
+from .core.create_uid import create_uid
+
+import pickle
 
 
 from .models import User, Version, Application
