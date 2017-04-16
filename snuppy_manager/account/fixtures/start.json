@@ -1,0 +1,96 @@
+[
+{"model": "auth.user", "pk": 1, "fields": {"password": "pbkdf2_sha256$30000$ZHvrDcIpPy2X$ca41+f7WNiY3+D4uD1JjUQOyHBO2LpFnMxA6I8/Jlcs=", "last_login": null, "is_superuser": true, "username": "admin", "first_name": "", "last_name": "", "email": "admin@admin.ru", "is_staff": true, "is_active": true, "date_joined": "2017-04-16T12:31:22.538Z", "groups": [], "user_permissions": []}},
+    {
+        "pk": 1,
+        "model": "account.user", 
+        "fields": {
+                    "name": "User1"
+                    }
+    }, 
+    {
+        "pk": 2, 
+        "model": "account.user", 
+        "fields": {
+                    "name": "User2"
+                    }
+    },
+    {
+        "pk": 1, 
+        "model": "account.version", 
+        "fields": {
+                    "name": "1_1",
+                    "path": "upload/ver1_user1_app1",
+                    "created_at": "2017-04-11 21:08:26.956695",
+                    "updated_at": "2017-04-11 21:08:26.956695",
+                    "application_id": "1"
+                    }
+    },
+    {
+        "pk": 2, 
+        "model": "account.version", 
+        "fields": {
+                    "name": "1_2",
+                    "path": "upload/ver2_user1_app1",
+                    "created_at": "2017-04-11 21:08:46.121899",
+                    "updated_at": "2017-04-11 21:08:46.121899",
+                    "application_id": "1"
+                    }
+    },
+    {
+        "pk": 3, 
+        "model": "account.version", 
+        "fields": {
+                    "name": "1_1",
+                    "path": "upload/ver1_user2_app1.txt",
+                    "created_at": "2017-04-11 21:09:06.002756",
+                    "updated_at": "2017-04-11 21:09:06.002756",
+                    "application_id": "3"
+                    }
+    },
+    {
+        "pk": 4, 
+        "model": "account.version", 
+        "fields": {
+                    "name": "1_1",
+                    "path": "upload/ver1_user1_app2",
+                    "created_at": "2017-04-11 21:09:32.162648",
+                    "updated_at": "2017-04-11 21:09:32.162648",
+                    "application_id": "2"
+                    }
+    },
+    {
+        "pk": 1, 
+        "model": "account.application", 
+        "fields": {
+                    "name": "application1_user1",
+                    "description": "description for application1_user1",
+                    "created_at": "2017-04-11 21:04:19.694407",
+                    "updated_at": "2017-04-11 21:04:19.694407",
+                    "user_id": "1"
+                    }
+    },
+    {
+        "pk": 2, 
+        "model": "account.application", 
+        "fields": {
+                    "name": "application2_user1",
+                    "description": "description for application2_user1",
+                    "created_at": "2017-04-11 21:04:35.169967",
+                    "updated_at": "2017-04-11 21:04:35.169967",
+                    "user_id": "1"
+                    }
+    },
+    {
+        "pk": 3, 
+        "model": "account.application", 
+        "fields": {
+                    "name": "application1_user2",
+                    "description": "description for application1_user2",
+                    "created_at": "2017-04-11 21:04:50.017780",
+                    "updated_at": "2017-04-11 21:04:50.017780",
+                    "user_id": "2"
+                    }
+    }
+    
+    
+]
