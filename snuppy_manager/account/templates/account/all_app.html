@@ -1,34 +1,29 @@
 {% extends "base.html" %}
 {% block title %}Dashboard{% endblock %}
 {% block content %}
-<!--
-<h3>{{ post.title }}</h3>
-<p> {{post.text}}</p>
-<p>sadsad</p>
-<img src="/blog/media/{{post.image}}" alf="{{post.title}}" />
-{% for comment in post.comment_set.all%}
-<li>{{ comment }}</li>
-{% endfor%} -->
-<!--#############
-{% for post in posts %}
-    <!--posts Обязательно должен совпадать с ключом в словаре-->
- <!--   <li><a href="{% url 'blog:post' post.id %}" >{{post}} </a> </li>
-    
-<!--blog - наше приложение, post это имя из url + перебираем словарь-->
-<!--{% endfor %}
-##############################
-<!--для переменной (а не для функции) используются две круглые скобки и без процентов-->
-<!--и круглые скобки это джиджа какая то-->
 
+<h3>Ваши приложения :</h3>
 
-<h3>Application for {{ user.name }} :</h3>
-{% for app in applications %}
-------------------------------------- <br>
-<br> <b> Application name </b>: {{app.name}}
-<br> <b> Description: </b> {{app.description }}
-<br> <b> Created_at: </b> {{app.created_at }}
-<br> <b> Updated_at: </b> {{app.updated_at }} 
-<br>
-{% endfor %}
+<table border="1", cellpadding="5">
+    <tr>
+        <th>Название</th>
+        <th>Описание</th>
+        <th>Дата создания</th>
+        <th>Платформы</th>
+   </tr>
 
+    {% for app in applications %}
+        <tr>
+            <td>{{app.name}} </td>
+            <td>{{app.description}} </td>
+            <td>{{app.created_at}} </td>
+            <td>
+                <img src="/account/media/android-logo.png", alt="Android">
+                <img src="/account/media/ios-logo.png", alt="IOS">
+                <img src="/account/media/win-logo.png", alt="Win Mobile">
+            </td>
+        </tr>
+    {% endfor %}
+
+</table>
 {% endblock %}

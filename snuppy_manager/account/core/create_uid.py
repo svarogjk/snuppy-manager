@@ -3,6 +3,7 @@ from datetime import datetime
 
 
 def create_uid(id:int, name:str, created_date:datetime) -> str:
+
     try:
         date = str(created_date)
         id_str = str(id)

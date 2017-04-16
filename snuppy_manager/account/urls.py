@@ -2,6 +2,7 @@ from django.conf.urls import url
 from django.conf import settings
 from django.conf.urls import include, url
 from . import views
+from django.conf.urls.static import static
 
 from django.contrib.auth.views import (login, logout,
                                        logout_then_login, password_change,
@@ -42,7 +43,7 @@ urlpatterns = [
     url(r'^password-reset/complete/$',
         password_reset_complete,
         name='password_reset_complete'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
     import debug_toolbar
