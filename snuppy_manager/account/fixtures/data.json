@@ -1,9 +1,0 @@
-[
-  {
-    "model": "account.user",
-    "pk": 1,
-    "fields": {
-      "name": "John",
-    }
-  },
-]
