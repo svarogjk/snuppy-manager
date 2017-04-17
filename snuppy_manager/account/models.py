@@ -1,12 +1,14 @@
 # Create your models here.
 from django.db.models import CharField, DateTimeField, TextField, \
-    ForeignKey, Model, CASCADE, FileField
+    ForeignKey, Model, CASCADE, FileField, OneToOneField
+from django.conf import settings
 
 class User(Model):
-    name = CharField(max_length=100)
+    user = OneToOneField(settings.AUTH_USER_MODEL, max_length=140, default='DEFAULT VALUE')
+    # name = CharField(max_length=100)
 
     def __str__(self):
-        return self.name
+        return f'Профиль пользователя {self.user.username}'
 
 class Application(Model):
     name = CharField(max_length=100)
