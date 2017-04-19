@@ -72,8 +72,7 @@ def register(request):
             profile.unique_id = create_uid(profile.id, profile.user.username, _date_joined)
 
             # Save the User object
-            new_user.save()
-
+            profile.save()
 
             return render(request,
                           'registration/register_done.html',

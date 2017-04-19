@@ -14,5 +14,5 @@ def create_uid(id:int, name:str, created_date:str) -> str:
 
 if __name__ == '__main__':
     date = datetime.now()
-    uid = create_uid(123, 'Sasha', date)
+    uid = create_uid(123, 'Sasha', '1989-10-20')
     print(uid)
