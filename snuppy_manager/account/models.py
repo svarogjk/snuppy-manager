@@ -1,14 +1,20 @@
 # Create your models here.
 from django.db.models import CharField, DateTimeField, TextField, \
-    ForeignKey, Model, CASCADE, FileField, OneToOneField
+    ForeignKey, Model, CASCADE, FileField, OneToOneField, AutoField, \
+    DateField
 from django.conf import settings
 from django.contrib.auth.models import User
 
 
 
 class Profile(Model):
+
     user = OneToOneField(settings.AUTH_USER_MODEL, max_length=140, default='DEFAULT VALUE')
+    id = AutoField(primary_key=True)
+    date_joined = DateTimeField(auto_now_add=True)
     unique_id = CharField(max_length=20)
+
+
     def __str__(self):
         return f'Профиль пользователя {self.user.username}'
 

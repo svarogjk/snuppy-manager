@@ -14,6 +14,8 @@ from django.contrib.auth.models import User
 
 from .models import Profile, Version, Application
 
+from .core.create_uid import create_uid
+
 
 
 @csrf_protect
@@ -62,10 +64,16 @@ def register(request):
             )
 
             #Create the user profile
+
+            new_user.save()
+
             profile = Profile.objects.create(user=new_user)
+            _date_joined = str(profile.date_joined)
+            profile.unique_id = create_uid(profile.id, profile.user.username, _date_joined)
 
             # Save the User object
             new_user.save()
+
 
             return render(request,
                           'registration/register_done.html',
