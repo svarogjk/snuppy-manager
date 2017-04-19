@@ -11,7 +11,7 @@ class Profile(Model):
 
     user = OneToOneField(settings.AUTH_USER_MODEL, max_length=140, default='DEFAULT VALUE')
     id = AutoField(primary_key=True)
-    date_joined = DateTimeField(auto_now_add=True)
+    date_joined = DateField(auto_now_add=True)
     unique_id = CharField(max_length=20)
 
 

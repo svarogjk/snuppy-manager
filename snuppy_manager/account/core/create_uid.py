@@ -2,7 +2,7 @@ from hashlib import md5
 from datetime import datetime
 
 
-def create_uid(id:int, name:str, created_date:datetime) -> str:
+def create_uid(id:int, name:str, created_date:str) -> str:
 
     try:
         date = str(created_date)
