@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from django.contrib.auth.decorators import login_required
-
 
 # Create your views here.
 
@@ -11,10 +9,11 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from .forms import LoginForm, UserRegistrationForm
 from django.views.decorators.csrf import csrf_protect
-from .core.create_uid import create_uid
 
+from django.contrib.auth.models import User
 
-from .models import User, Version, Application
+from .models import Profile, Version, Application
+
 
 
 @csrf_protect
@@ -37,11 +36,12 @@ def user_login(request):
         form = LoginForm()
     return render(request, 'account/login.html', {'form': form})
 
+
 @login_required
 def dashboard(request):
     return render(request,
                   'account/dashboard.html',
-                  {'section': 'dashboard'})
+                  {'section': 'dashboard'},)
 
 
 @login_required
@@ -60,8 +60,13 @@ def register(request):
             new_user.set_password(
                 user_form.cleaned_data['password']
             )
+
+            #Create the user profile
+            profile = Profile.objects.create(user=new_user)
+
             # Save the User object
             new_user.save()
+
             return render(request,
                           'registration/register_done.html',
                           {'new_user': new_user})
