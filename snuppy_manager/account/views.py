@@ -41,16 +41,13 @@ def user_login(request):
 
 @login_required
 def dashboard(request):
+    print(request.user.id)
+    user_id = request.user.id
+    profile_id = Profile.objects.get(user=user_id)
+    _app = Application.objects.filter(user=profile_id)
     return render(request,
-                  'account/dashboard.html',
-                  {'section': 'dashboard'},)
-
-
-@login_required
-def show_all_app(request, user_id):
-    _user = User.objects.get(pk=user_id)
-    _app = Application.objects.filter(user=_user)
-    return render(request, 'account/all_app.html', {'applications':_app})
+                  'account/all_app.html',
+                  {'applications':_app},)
 
 def register(request):
     if request.method == 'POST':

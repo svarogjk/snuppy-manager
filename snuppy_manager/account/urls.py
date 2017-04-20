@@ -31,9 +31,7 @@ urlpatterns = [
         password_change_done,
         name='password_change_done'),
 
-    #show all apps
-    url(r'^(?P<user_id>[0-9]+)/$', views.show_all_app, name='show_all_app'),
-
+    #show versions for selected app
     url(r'version/$', views.show_version, name='show_version'),
 
 
