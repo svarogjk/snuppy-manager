@@ -41,7 +41,6 @@ def user_login(request):
 
 @login_required
 def dashboard(request):
-    print(request.user.id)
     user_id = request.user.id
     profile_id = Profile.objects.get(user=user_id)
     _app = Application.objects.filter(user=profile_id)
@@ -85,7 +84,7 @@ def show_version(request):
         # например
         # account/version/?app_id=1&ver_type=W
         _app_id = request.GET.get('app_id')
-        _app = Application.objects.get(user=_app_id)
+        _app = Application.objects.get(id=_app_id)
 
         _ver_small = request.GET.get('ver_type')
         _ver_type = Version.LOOKUP_CHOISE[_ver_small] # получаем полное имя ОС
