@@ -3,8 +3,6 @@ from django.db.models import CharField, DateTimeField, TextField, \
     ForeignKey, Model, CASCADE, FileField, OneToOneField, AutoField, \
     DateField
 from django.conf import settings
-from django.contrib.auth.models import User
-
 
 
 class Profile(Model):
@@ -16,7 +14,8 @@ class Profile(Model):
 
 
     def __str__(self):
-        return f'Профиль пользователя {self.user.username}'
+        return self.user.username
+
 
 class Application(Model):
     name = CharField(max_length=100)
@@ -28,6 +27,7 @@ class Application(Model):
     def __str__(self):
         return self.name
 
+
 class Version(Model):
     name = CharField(max_length=20)
     application = ForeignKey(Application, on_delete=CASCADE)
@@ -37,3 +37,5 @@ class Version(Model):
 
     def __str__(self):
         return self.name
+
+

@@ -5,7 +5,13 @@ from .models import Profile, Application, Version
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ['user', 'id', 'date_joined', 'unique_id']
 
+class ApplicationAdmin(admin.ModelAdmin):
+    list_display = ['name', 'user', 'description', 'created_at', 'updated_at']
+
+class VersionAdmin(admin.ModelAdmin):
+    list_display = ['name', 'application', 'path', 'created_at', 'updated_at']
+
 
 admin.site.register(Profile, ProfileAdmin)
-admin.site.register(Application)
-admin.site.register(Version)
+admin.site.register(Application, ApplicationAdmin)
+admin.site.register(Version, VersionAdmin)
