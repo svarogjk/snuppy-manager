@@ -18,9 +18,9 @@
             <td>{{app.description}} </td>
             <td>{{app.created_at}} </td>
             <td>
-                <img src="/account/media/android-logo.png", alt="Android">
-                <img src="/account/media/ios-logo.png", alt="IOS">
-                <img src="/account/media/win-logo.png", alt="Win Mobile">
+                <a href="/account/version/?app_id={{ app.id }}&ver_type=A"> <img src="/account/media/android-logo.png", alt="Android"> </a>
+                <a href="/account/version/?app_id={{ app.id }}&ver_type=I"> <img src="/account/media/ios-logo.png", alt="IOS"> </a>
+                <a href="/account/version/?app_id={{ app.id }}&ver_type=W"><img src="/account/media/win-logo.png", alt="Win Mobile"> </a>
             </td>
         </tr>
     {% endfor %}
