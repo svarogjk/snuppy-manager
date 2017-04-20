@@ -34,6 +34,8 @@ urlpatterns = [
     #show all apps
     url(r'^(?P<user_id>[0-9]+)/$', views.show_all_app, name='show_all_app'),
 
+    url(r'version/$', views.show_version, name='show_version'),
+
 
     #restore password urls
     url(r'^password-reset/$',

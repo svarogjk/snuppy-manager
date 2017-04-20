@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+
+<h3> Версии приложения "{{app_name}}" под {{os_type}}:</h3>
+
+<table border="1", cellpadding="5">
+    <tr>
+        <th>Номер</th>
+        <th>Лог изменений</th>
+        <th>Дата создания</th>
+        <th>Ссылка на код</th>
+   </tr>
+
+<br>
+{% for ver in versions %}
+        <tr>
+            <td>{{ver.name}} </td>
+            <td> blablabla</td>
+            <td><a href="/account/media/{{ver.ver_log}}">Скачать </a> </td>
+            <td> <a href="/account/media/{{ver.path}}">Скачать</a> </td>
+        </tr>
+</table>
+{% endfor %}
+
+{% endblock %}
+

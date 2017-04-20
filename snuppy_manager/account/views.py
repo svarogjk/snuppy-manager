@@ -82,3 +82,23 @@ def register(request):
     return render(request,
                   'registration/register.html',
                   {'user_form': user_form})
+
+def show_version(request):
+    if request.method == 'GET':
+        # например
+        # account/version/?app_id=1&ver_type=W
+        _app_id = request.GET.get('app_id')
+        _app = Application.objects.get(user=_app_id)
+
+        _ver_small = request.GET.get('ver_type')
+        _ver_type = Version.LOOKUP_CHOISE[_ver_small] # получаем полное имя ОС
+
+
+        _versions = Version.objects.filter(application=_app, ver_type=_ver_small)
+        return render(request, 'account/versions.html', {
+                                                        'versions': _versions,
+                                                        'app_name': _app.name,
+                                                        'os_type': _ver_type,
+                                                        })
+    else:
+        dashboard(request) # если не get, отправляем в личный кабинет

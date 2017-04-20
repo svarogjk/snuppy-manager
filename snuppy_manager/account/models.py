@@ -29,9 +29,23 @@ class Application(Model):
 
 
 class Version(Model):
+    LOOKUP_CHOISE = {
+        'W' : 'Windows',
+        'A' : 'Android',
+        'I' : 'IOS'
+    }
+    # LOOKUP_CHOISE используется в views для получения полного имени
+    VER_CHOICES = (
+        ('W', 'Windows'),
+        ('A', 'Android'),
+        ('I', 'IOS'),
+    )
+
     name = CharField(max_length=20)
     application = ForeignKey(Application, on_delete=CASCADE)
     path = FileField(upload_to='upload')
+    ver_log = FileField(upload_to='logs')
+    ver_type = CharField(max_length=1, choices=VER_CHOICES)
     created_at = DateTimeField(auto_now_add=True)
     updated_at = DateTimeField(auto_now=True)
 
