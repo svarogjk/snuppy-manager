@@ -15,7 +15,8 @@
 <br>
 {% for ver in versions %}
         <tr>
-            <td>{{ver.name}} </td>
+
+            <td><a href="version/modify/?id={{ver.id}}"> {{ver.name}} </a> </td>
             <td> <a href="/account/media/{{ver.ver_log}}"> Скачать </a> </td>
             <td> {{ ver.created_at }} </td>
             <td> <a href="/account/media/{{ver.path}}">Скачать</a> </td>

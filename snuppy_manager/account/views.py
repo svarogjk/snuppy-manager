@@ -92,7 +92,6 @@ def show_version(request):
         _ver_small = request.GET.get('ver_type')
         _ver_type = Version.LOOKUP_CHOISE[_ver_small] # получаем полное имя ОС
 
-
         _versions = Version.objects.filter(application=_app, ver_type=_ver_small)
         return render(request, 'account/versions.html', {
                                                         'versions': _versions,
@@ -134,5 +133,36 @@ def compile_ver(request):
         compile_f.remove_file()
 
         return render(request, 'account/add_version_success.html')
+
+
+@login_required
+def modify_ver(request):
+    _ver_id = request.GET.get('id')
+    print(_ver_id)
+    ver = Version.objects.get(id=_ver_id)
+    return render(request, 'account/version_modify.html', {'ver':ver})
+
+
+def change_ver(request):
+    _ver_id = request.POST.get('ver_id')
+    _ver_name = request.POST.get('ver_name')
+    _log_file = request.FILES.get('log')
+
+    ver = Version.objects.get(id=_ver_id)
+
+    if _log_file:
+        ver.ver_log = _log_file
+    if ver.name != _ver_name:
+        ver.name = _ver_name
+    ver.save()
+
+    return render(request, 'account/version_modify_success.html')
+
+
+def delete_ver(request):
+    _ver_id = request.GET.get('ver_id')
+    ver = Version.objects.get(id=_ver_id)
+    ver.delete()
+    return render(request, 'account/version_delete_success.html')
 
 
