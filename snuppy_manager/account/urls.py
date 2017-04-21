@@ -34,6 +34,12 @@ urlpatterns = [
     #show versions for selected app
     url(r'version/$', views.show_version, name='show_version'),
 
+    #add version
+    url(r'version/add_new$', views.add_version, name='add_version'),
+
+    #send data for compile new version
+    url(r'version/compile_ver', views.compile_ver, name='compile_ver'),
+
 
     #restore password urls
     url(r'^password-reset/$',
