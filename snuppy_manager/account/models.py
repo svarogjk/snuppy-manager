@@ -1,7 +1,7 @@
 # Create your models here.
 from django.db.models import CharField, DateTimeField, TextField, \
     ForeignKey, Model, CASCADE, FileField, OneToOneField, AutoField, \
-    DateField
+    DateField, URLField
 from django.conf import settings
 
 
@@ -21,6 +21,7 @@ class Application(Model):
     name = CharField(max_length=100)
     user = ForeignKey(Profile, on_delete=CASCADE)
     description = TextField()
+    source_code = URLField()
     created_at = DateTimeField(auto_now_add=True)
     updated_at = DateTimeField(auto_now=True)
 
