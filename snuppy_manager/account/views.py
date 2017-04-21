@@ -133,6 +133,6 @@ def compile_ver(request):
         v.save()
         compile_f.remove_file()
 
-        return dashboard(request)
+        return render(request, 'account/add_version_success.html')
 
 
