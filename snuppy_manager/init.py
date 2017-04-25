@@ -22,12 +22,6 @@ def check_migrations_files():
     return problems_files
 
 
-def check_password(pw):
-    if len(pw) < 8:
-        return False
-    return True
-
-
 def create_superuser():
     username = input('Enter username for superuser:\n')
     password = input('Enter password for superuser:\n')

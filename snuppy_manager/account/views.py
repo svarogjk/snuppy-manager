@@ -15,7 +15,7 @@ from django.contrib.auth.models import User
 from .models import Profile, Version, Application
 
 from .core.create_uid import create_uid
-
+from .core.CompileFile import CompileFile
 
 
 @csrf_protect
@@ -48,6 +48,7 @@ def dashboard(request):
                   'account/all_app.html',
                   {'applications':_app},)
 
+
 def register(request):
     if request.method == 'POST':
         user_form = UserRegistrationForm(request.POST)
@@ -79,6 +80,8 @@ def register(request):
                   'registration/register.html',
                   {'user_form': user_form})
 
+
+@login_required
 def show_version(request):
     if request.method == 'GET':
         # например
@@ -89,12 +92,77 @@ def show_version(request):
         _ver_small = request.GET.get('ver_type')
         _ver_type = Version.LOOKUP_CHOISE[_ver_small] # получаем полное имя ОС
 
-
         _versions = Version.objects.filter(application=_app, ver_type=_ver_small)
         return render(request, 'account/versions.html', {
                                                         'versions': _versions,
-                                                        'app_name': _app.name,
+                                                        'app': _app,
                                                         'os_type': _ver_type,
                                                         })
     else:
         dashboard(request) # если не get, отправляем в личный кабинет
+
+@login_required
+def add_version(request):
+    if request.method == 'GET':
+        _app_id = request.GET.get('app_id')
+        _app = Application.objects.get(id=_app_id)
+        _os_type = request.GET.get('os_type')
+        return render(request, 'account/add_version.html', {'app': _app, 'os_type':_os_type})
+
+
+@login_required
+def compile_ver(request):
+    if request.method == 'POST':
+        _app_id = request.POST.get('app_id')
+        _os_type = request.POST.get('os_type')[0] # Берем первую букву, она равна сокращениям
+        _ver_name = request.POST.get('ver_name')
+        _log_file = request.FILES.get('log')
+
+        app = Application.objects.get(id=_app_id)
+
+        compile_f = CompileFile(app.source_code)
+
+        v = Version(
+            name=_ver_name,
+            application=app,
+            path=compile_f.file,
+            ver_log=_log_file,
+            ver_type=_os_type,
+        )
+        v.save()
+        compile_f.remove_file()
+
+        return render(request, 'account/add_version_success.html')
+
+
+@login_required
+def modify_ver(request):
+    _ver_id = request.GET.get('id')
+    print(_ver_id)
+    ver = Version.objects.get(id=_ver_id)
+    return render(request, 'account/version_modify.html', {'ver':ver})
+
+
+def change_ver(request):
+    _ver_id = request.POST.get('ver_id')
+    _ver_name = request.POST.get('ver_name')
+    _log_file = request.FILES.get('log')
+
+    ver = Version.objects.get(id=_ver_id)
+
+    if _log_file:
+        ver.ver_log = _log_file
+    if ver.name != _ver_name:
+        ver.name = _ver_name
+    ver.save()
+
+    return render(request, 'account/version_modify_success.html')
+
+
+def delete_ver(request):
+    _ver_id = request.GET.get('ver_id')
+    ver = Version.objects.get(id=_ver_id)
+    ver.delete()
+    return render(request, 'account/version_delete_success.html')
+
+
