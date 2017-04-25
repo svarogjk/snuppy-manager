@@ -2,6 +2,7 @@ from subprocess import call
 from pathlib import Path
 import os, django, sys
 
+
 def check_db_files():
     path = Path()
     for fl in path.iterdir():
@@ -44,16 +45,18 @@ def create_superuser():
     print('superuser create succefully')
 
 def call_shell():
-    call('python manage.py makemigrations', shell=True)
-    call('python manage.py migrate', shell=True)
+    _py_call('manage.py makemigrations')
+    _py_call('manage.py migrate')
 
     abs_path = Path().absolute()
     auth_path = abs_path / 'account' / 'fixtures' / 'auth_data.json'
     data_path = abs_path / 'account' / 'fixtures' / 'initial_data.json'
 
-    call('python manage.py loaddata {}'.format(auth_path), shell=True)
-    call('python manage.py loaddata {}'.format(data_path), shell=True)
+    _py_call('manage.py loaddata {}'.format(auth_path))
+    _py_call('manage.py loaddata {}'.format(data_path))
 
+def _py_call(com):
+    call(sys.executable + ' ' + com, shell=True)
 
 if __name__ == '__main__':
 
