@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Редактирование приложения{% endblock %}
+{% block content %}
+
+<H3>Редактирование приложения "{{app.name}}" </H3>
+
+<form action="application/change" method="post">
+    {% csrf_token %}
+    <!--csrf_token должен быть в любой POST форме-->
+    <br>
+    <p>Имя приложения</p> <input type="text" name="app_name" value="{{app.name}}">
+    <p> Описание приложения</p> <input type="text" name="app_description" value="{{app.description}}">
+    <p> Исходный код </p> <input type="text" name="app_source" value="{{app.source_code}}">
+
+    <input type="hidden" name="app_id" value="{{ app.id }}">
+
+    <input type="submit" value="Изменить" name="name" class="btn btn-success" />
+
+</form>
+
+<form action="application/delete">
+    <input type="hidden" name="app_id" value="{{ app.id }}">
+    <input type="submit" value="Удалить" name="name" class="btn btn-success" />
+</form>
+
+{% endblock %}

@@ -42,11 +42,11 @@ def user_login(request):
 @login_required
 def dashboard(request):
     user_id = request.user.id
-    profile_id = Profile.objects.get(user=user_id)
-    _app = Application.objects.filter(user=profile_id)
+    profile = Profile.objects.get(user=user_id)
+    _app = Application.objects.filter(user=profile)
     return render(request,
                   'account/all_app.html',
-                  {'applications':_app},)
+                  {'applications':_app})
 
 
 def register(request):
@@ -138,11 +138,11 @@ def compile_ver(request):
 @login_required
 def modify_ver(request):
     _ver_id = request.GET.get('id')
-    print(_ver_id)
     ver = Version.objects.get(id=_ver_id)
     return render(request, 'account/version_modify.html', {'ver':ver})
 
 
+@login_required
 def change_ver(request):
     _ver_id = request.POST.get('ver_id')
     _ver_name = request.POST.get('ver_name')
@@ -159,6 +159,7 @@ def change_ver(request):
     return render(request, 'account/version_modify_success.html')
 
 
+@login_required
 def delete_ver(request):
     _ver_id = request.GET.get('ver_id')
     ver = Version.objects.get(id=_ver_id)
@@ -166,3 +167,59 @@ def delete_ver(request):
     return render(request, 'account/version_delete_success.html')
 
 
+@login_required
+def add_app(request):
+    return render(request, 'account/app_add.html')
+
+
+@login_required
+def add_app_check(request):
+    _app_name = request.POST.get('app_name')
+    _app_description = request.POST.get('app_description')
+    _app_source = request.POST.get('app_source')
+
+    user_id = request.user.id
+    profile = Profile.objects.get(user=user_id)
+
+    app = Application(
+        name = _app_name,
+        description = _app_description,
+        source_code = _app_source,
+        user = profile
+    )
+    app.save()
+
+    return render(request, 'account/app_add_success.html')
+
+
+@login_required
+def delete_app(request):
+    _app_id = request.GET.get('app_id')
+    app = Application.objects.get(id=_app_id)
+    app.delete()
+
+    return render(request, 'account/app_delete_success.html')
+
+
+@login_required
+def change_app(request):
+    _app_id = request.GET.get('app_id')
+    _app = Application.objects.get(id=_app_id)
+    return render(request, 'account/app_change.html', {'app':_app})
+
+
+@login_required
+def change_app_check(request):
+    _app_id = request.POST.get('app_id')
+    _app_name = request.POST.get('app_name')
+    _app_descr = request.POST.get('app_description')
+    _app_source = request.POST.get('app_source')
+
+    app = Application.objects.get(id=_app_id)
+    app.name = _app_name
+    app.description = _app_descr
+    app.source_code = _app_source
+
+    app.save()
+
+    return render(request, 'account/app_change_success.html')
