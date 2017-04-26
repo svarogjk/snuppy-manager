@@ -1,13 +1,84 @@
 {% extends "base.html" %}
 
-{% block title %}Create an account{% endblock %}
+{% block title %}Регистрация{% endblock %}
 
 {% block content %}
-    <h1>Создайте аккаунт</h1>
-    <p>Пожалуйста, зарегистрируйтесь, используя следующую форму:</p>
-    <form action="." method="post">
-        {{ user_form.as_p }}
-        {% csrf_token %}
-        <p><input type="submit" value="Create my account"></p>
-    </form>
+    <div class="container">
+    <div class="row main">
+        <div class="panel-heading">
+            <div class="panel-title text-center">
+                <h1 class="title">SNUPPY TRANSLATER</h1>
+                <hr />
+            </div>
+        </div>
+        <div class="main-login main-center">
+            <p class="text-center">Для регистрации необходимо заполнить форму:</p>
+            <form class="form-horizontal" method="post" action=".">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="name" class="cols-sm-2 control-label">Ваше имя</label>
+                    <div class="cols-sm-10 off">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                            <input type="text" class="form-control" name="name" id="name"  placeholder="Введите Ваше имя" required/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="cols-sm-2 control-label">Ваш Email</label>
+                    <div class="cols-sm-10 off">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                            <input type="email" class="form-control" name="email" id="email"  placeholder="Введите Ваш Email" required/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="username" class="cols-sm-2 control-label">Имя пользователя</label>
+                    <div class="cols-sm-10 off">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                            <input type="text" class="form-control" name="username" id="username"  placeholder="Введите имя пользователя" required/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="cols-sm-2 control-label">Пароль</label>
+                    <div class="cols-sm-10 off">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                            <input type="password" class="form-control" name="password" id="password"  placeholder="Введите пароль" required/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm" class="cols-sm-2 control-label">Подтвердите пароль</label>
+                    <div class="cols-sm-10 off">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                            <input type="password" class="form-control" name="confirm" id="confirm"  placeholder="Введите пароль еще раз" required/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-group-sm">
+                    <button type="submit" class="btn btn-primary btn-block login-button">Зарегистрироваться</button>
+                </div>
+                <div class="login-register">
+                    <a href="{% url 'login' %}">Войти</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
+
+
+
+

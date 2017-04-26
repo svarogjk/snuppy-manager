@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Добавление приложения{% endblock %}
+{% block content %}
+<!--app and os_type -->
+<H3>Добавление приложения </H3>
+<form action="application/add_app_check" method="post">
+    {% csrf_token %}
+    <!--csrf_token должен быть в любой POST форме-->
+    <br>
+    <p>Имя приложения</p> <input type="text" name="app_name">
+    <p> Описание приложения</p> <input type="text" name="app_description">
+    <p> Исходный код </p> <input type="text" name="app_source">
+
+    <input type="submit" value="Создать" name="name" class="btn btn-success" />
+
+</form>
+
+{% endblock %}
+

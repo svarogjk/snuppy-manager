@@ -15,7 +15,7 @@
 
     {% for app in applications %}
         <tr>
-            <td>{{app.name}} </td>
+            <td> <a href="application/?app_id={{ app.id }}"> {{app.name}} </a>  </td>
             <td>{{app.description}} </td>
             <td>{{app.source_code}} </td>
             <td>{{app.created_at}} </td>
@@ -28,4 +28,10 @@
     {% endfor %}
 
 </table>
+
+<br><br>
+
+<form action="application/add">
+    <input type="submit" value="Добавить версию" name="name" class="btn btn-success" />
+</form>
 {% endblock %}
