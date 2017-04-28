@@ -1,26 +1,75 @@
-{% extends "base.html" %}
+{% extends "account_base.html" %}
 {% block title %}Редактирование приложения{% endblock %}
 {% block content %}
 
+<div class="container add-app-margin">
+            <div class="col-lg-6 col-lg-offset-3">
+                <div class="add-app">
+                    <h3 class="add-app-title">Редактирование приложения "{{app.name}}"</h3>
+
+                    <form role="form" action="application/change" method="post">
+                         {% csrf_token %}
+                        <div class="form-group">
+                            <label for="app_name">Имя приложения</label>
+                            <input required type="text" class="form-control" id="app_name" name="app_name" value="{{app.name}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="app_description">Описание приложения</label>
+                            <textarea rows="5" class="form-control app-descr-area"
+                                      id="app_description"
+                                      name="app_description">{{app.description}}</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="app_source">Имя приложения</label>
+                            <input required type="text" class="form-control" id="app_source" name="app_source" value="{{app.source_code}}">
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" name="app_id" value="{{ app.id }}">
+                        </div>
+                            <div class="add-app-btn-container">
+                                <input type="submit" value="Изменить" name="name" class="btn btn-primary add-app-btn"/>
+                                <a href="#"><input type="button" value="Отмена" name="name" class="btn btn-primary back-btn"/></a>
+                            </div>
+                    </form>
+
+                    <form class="app-del-form" role="form" action="application/delete">
+                         {% csrf_token %}
+                        <div class="form-group">
+                            <input type="hidden" name="app_id" value="{{ app.id }}">
+                        </div>
+                         <div class="form-group">
+                             <input type="submit" value="Удалить приложение" name="name" class="btn btn-md btn-block btn-primary add-app-btn" />
+                         </div>
+                    </form>
+                </div>
+            </div>
+      </div>
+
+
+
+<!--
 <H3>Редактирование приложения "{{app.name}}" </H3>
 
 <form action="application/change" method="post">
     {% csrf_token %}
-    <!--csrf_token должен быть в любой POST форме-->
+    &lt;!&ndash;csrf_token должен быть в любой POST форме&ndash;&gt;
     <br>
     <p>Имя приложения</p> <input type="text" name="app_name" value="{{app.name}}">
     <p> Описание приложения</p> <input type="text" name="app_description" value="{{app.description}}">
     <p> Исходный код </p> <input type="text" name="app_source" value="{{app.source_code}}">
+-->
 
-    <input type="hidden" name="app_id" value="{{ app.id }}">
+    <!--<input type="hidden" name="app_id" value="{{ app.id }}">-->
 
-    <input type="submit" value="Изменить" name="name" class="btn btn-success" />
+    <!--<input type="submit" value="Изменить" name="name" class="btn btn-success" />-->
 
-</form>
+<!--</form>-->
 
-<form action="application/delete">
-    <input type="hidden" name="app_id" value="{{ app.id }}">
-    <input type="submit" value="Удалить" name="name" class="btn btn-success" />
-</form>
-
+<!--<form action="application/delete">-->
+    <!--<input type="hidden" name="app_id" value="{{ app.id }}">-->
+    <!--<input type="submit" value="Удалить" name="name" class="btn btn-success" />-->
+<!--</form>-->
+<!---->
 {% endblock %}

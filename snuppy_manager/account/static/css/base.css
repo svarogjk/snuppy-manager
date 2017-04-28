@@ -1,4 +1,5 @@
-@import url(http://fonts.googleapis.com/css?family=Muli);
+/*@import url(http://fonts.googleapis.com/css?family=Muli);
+
 
 body {
     margin:0;
@@ -85,6 +86,7 @@ ol {
 }
 
 /* forms */
+/*
 form {
     overflow:auto;
 }
@@ -130,7 +132,11 @@ input[type=submit], a.button {
     float:left;
     font-size:13px;
 }
+
+*/
 /* messages */
+
+/*
 ul.messages {
     margin:10px 100px;
     padding:0;
@@ -171,8 +177,9 @@ ul.messages li a.close {
 .login-form {
     float:left;
 }
-
+*/
 /* social-auth */
+/*
 .social {
     float:right;
 }
@@ -192,7 +199,9 @@ ul.messages li a.close {
 .social li.google { background:#de1710; }
 
 
+*/
 /* images */
+/*
 
 .image-preview, .image-detail {
     max-width:300px;
@@ -236,8 +245,9 @@ a.like, a.follow { float:right; margin-top:-8px; }
     height:120px;
     border-radius:50%;
 }
-
+*/
 /* users */
+/*
 #people-list img {
     width:180px;
     height:180px;
@@ -261,8 +271,9 @@ img.user-detail {
     margin-right:20px;
 }
 .image-container { margin-top:40px; }
-
+*/
 /* actions */
+/*
 .action {
     clear:both;
     overflow:auto;
@@ -275,3 +286,87 @@ img.user-detail {
     font-style:italic;
     color:#ccc;
 }
+
+*/
+
+/* BASE + ACCOUNT  */
+
+body {
+    background: #d3d3d3;
+}
+
+.content-margin {
+    margin-top: 100px;
+}
+
+.table-margin {
+    margin-top: 10px;
+}
+
+.btn-shadow {
+    box-shadow: 0 0 6px black;
+}
+
+.table-background {
+    background: whitesmoke;
+    box-shadow: 0 0 3px #d3d3d3;
+}
+
+.row {
+    margin-right: -5px;
+}
+
+.logout {
+    margin-left: 20px;
+}
+
+/* END OF BASE + ACCOUNT  */
+
+/* ADD APP */
+
+.add-app {
+    background: white;
+    padding: 20px;
+    box-shadow: 0 0 14px black;
+}
+
+.app-descr-area {
+    resize: vertical;
+}
+
+.add-app-btn-container {
+    width: 100%;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.add-app-btn {
+    padding-left: 40px;
+    padding-right: 40px;
+    margin-right: 30px;
+}
+
+.add-app-margin {
+    margin-top: 200px;
+}
+
+.back-btn {
+    margin-left: 30px;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+.add-app-title {
+    margin-bottom: 20px;
+}
+
+.app-del-form {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 75px;
+    padding-right: 75px;
+    border-top: 1px solid #d3d3d3;
+    margin-top: 30px;
+}
+/* END OF ADD APP */
+
