@@ -1,37 +1,60 @@
-{% extends "base.html" %}
+{% extends "account_base.html" %}
 {% block title %}Dashboard{% endblock %}
 {% block content %}
 
-<h3>Ваши приложения :</h3>
+<div class="container">
 
-<table border="1", cellpadding="5">
-    <tr>
-        <th>Название</th>
-        <th>Описание</th>
-        <th>Исходник</th>
-        <th>Дата создания</th>
-        <th>Платформы</th>
-   </tr>
+    <div class="row">
+        <div class="col-lg-5">
+            <!--Фильтр-->
+        </div>
+        <div class="col-lg-2 col-lg-offset-5">
+            <form role="form" action="application/add">
+                <input type="submit" value="Добавить приложение" name="name" class="btn btn-primary btn-shadow"/>
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <table class="table table-margin table-background">
+        <tr>
+            <th class="text-center">Название</th>
+            <th class="text-center">Описание</th>
+            <th class="text-center">Исходник</th>
+            <th class="text-center">Дата создания</th>
+            <th class="text-center">Платформы</th>
+        </tr>
 
     {% for app in applications %}
         <tr>
-            <td> <a href="application/?app_id={{ app.id }}"> {{app.name}} </a>  </td>
-            <td>{{app.description}} </td>
-            <td>{{app.source_code}} </td>
-            <td>{{app.created_at}} </td>
             <td>
-                <a href="/account/version/?app_id={{ app.id }}&ver_type=A"> <img src="/account/media/android-logo.png", alt="Android"> </a>
-                <a href="/account/version/?app_id={{ app.id }}&ver_type=I"> <img src="/account/media/ios-logo.png", alt="IOS"> </a>
-                <a href="/account/version/?app_id={{ app.id }}&ver_type=W"><img src="/account/media/win-logo.png", alt="Win Mobile"> </a>
+                <a href="application/?app_id={{ app.id }}">{{app.name}}</a>
+            </td>
+            <td>{{app.description}}</td>
+            <td>{{app.source_code}}</td>
+            <td>{{app.created_at}}</td>
+            <td>
+                <a href="/account/version/?app_id={{ app.id }}&ver_type=A">
+                    <img src="/account/media/android-logo.png" alt="Android">
+                </a>
+                <a href="/account/version/?app_id={{ app.id }}&ver_type=I">
+                    <img src="/account/media/ios-logo.png" alt="IOS">
+                </a>
+                <a href="/account/version/?app_id={{ app.id }}&ver_type=W">
+                    <img src="/account/media/win-logo.png" alt="Win Mobile">
+                </a>
             </td>
         </tr>
     {% endfor %}
 
-</table>
+    </table>
 
-<br><br>
+<!--<br><br>-->
 
-<form action="application/add">
-    <input type="submit" value="Добавить версию" name="name" class="btn btn-success" />
-</form>
+<!--<form action="application/add">-->
+    <!--<input type="submit" value="Добавить версию" name="name" class="btn btn-success"/>-->
+<!--</form>-->
+</div>
 {% endblock %}

@@ -1,19 +1,36 @@
-{% extends "base.html" %}
+{% extends "account_base.html" %}
 {% block title %}Добавление приложения{% endblock %}
 {% block content %}
-<!--app and os_type -->
-<H3>Добавление приложения </H3>
-<form action="application/add_app_check" method="post">
-    {% csrf_token %}
-    <!--csrf_token должен быть в любой POST форме-->
-    <br>
-    <p>Имя приложения</p> <input type="text" name="app_name">
-    <p> Описание приложения</p> <input type="text" name="app_description">
-    <p> Исходный код </p> <input type="text" name="app_source">
+      <div class="container add-app-margin">
+            <div class="col-lg-6 col-lg-offset-3">
+                <div class="add-app">
+                    <h3 class="add-app-title">Создание нового приложения</h3>
 
-    <input type="submit" value="Создать" name="name" class="btn btn-success" />
+                    <form role="form" action="application/add_app_check" method="post">
+                         {% csrf_token %}
+                        <div class="form-group">
+                            <label for="app_name">Имя приложения</label>
+                            <input required type="text" class="form-control" id="app_name" name="app_name" placeholder="введите имя приложения">
+                        </div>
 
-</form>
+                        <div class="form-group">
+                            <label for="app_description">Описание приложения</label>
+                            <textarea rows="5" class="form-control app-descr-area"
+                                      id="app_description"
+                                      name="app_description" placeholder="описание Вашего приложения"></textarea>
+                        </div>
 
+                        <div class="form-group">
+                            <label for="app_source">Имя приложения</label>
+                            <input required type="text" class="form-control" id="app_source" name="app_source" placeholder="ссылка на приложение">
+                        </div>
+                            <div class="add-app-btn-container">
+                                <input type="submit" value="Создать" name="name" class="btn btn-primary add-app-btn"/>
+                                <a href="#"><input type="button" value="Отмена" name="name" class="btn btn-primary back-btn"/></a>
+                            </div>
+                    </form>
+                </div>
+            </div>
+      </div>
 {% endblock %}
 

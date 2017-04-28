@@ -75,3 +75,28 @@ input::-webkit-input-placeholder {
 .off {
     margin-top: 5px;
 }
+
+
+/* Account */
+.content-margin {
+    margin-top: 100px;
+}
+
+.table-margin {
+    margin-top: 10px;
+}
+
+.btn-shadow {
+    box-shadow: 0 0 6px black;
+}
+
+.table-background {
+    background: whitesmoke;
+    box-shadow: 0 0 3px #d3d3d3;
+}
+
+.row {
+    margin-right: -5px;
+}
+
+/* end of account */
