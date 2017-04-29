@@ -1,4 +1,4 @@
-from subprocess import call
+from subprocess import call, run
 from pathlib import Path
 import os, django, sys
 
@@ -50,7 +50,8 @@ def call_shell():
     _py_call('manage.py loaddata {}'.format(data_path))
 
 def _py_call(com):
-    call(sys.executable + ' ' + com, shell=True)
+    call('"' + sys.executable + '"' + ' ' + com, shell=True)
+    # call(sys.executable + ' ' + com, shell=True) old call
 
 if __name__ == '__main__':
 

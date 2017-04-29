@@ -1,0 +1,4 @@
+# Byte-compiled / optimized / initial
+__pycache__/
+*.py[cod]
+*initial.py
