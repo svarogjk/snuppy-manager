@@ -15,7 +15,8 @@ from django.contrib.auth.models import User
 from .models import Profile, Version, Application
 
 from .core.create_uid import create_uid
-from .core.CompileFile import CompileFile
+from .core.get_changes import get_changes
+from .core.ApiConnect import ApiConnect
 
 
 @csrf_protect
@@ -114,44 +115,56 @@ def add_version(request):
 def compile_ver(request):
     if request.method == 'POST':
         _app_id = request.POST.get('app_id')
-        _os_type = request.POST.get('os_type')[0] # Берем первую букву, она равна сокращениям
-        _ver_name = request.POST.get('ver_name')
-        _log_file = request.FILES.get('log')
+        _os_type_f = request.POST.get('os_type')
+        _os_type_s = _os_type_f[0] # Берем первую букву, она равна сокращениям
+        _ver_number = request.POST.get('ver_number')
 
         app = Application.objects.get(id=_app_id)
 
-        compile_f = CompileFile(app.source_code)
+        _ver_changes = get_changes(app.source_code)
+
+        api_con = ApiConnect()
+        api_con.send_compile_request(
+            'uuid',
+            app.id,
+            _ver_number,
+            app.source_code,
+            _os_type_f,
+        )
 
         v = Version(
-            name=_ver_name,
+            number=_ver_number,
             application=app,
-            path=compile_f.file,
-            ver_log=_log_file,
-            ver_type=_os_type,
+            path=api_con.file,
+            ver_type=_os_type_s,
+            status = api_con.status,
+            changes = _ver_changes,
         )
         v.save()
-        compile_f.remove_file()
+        api_con.remove_file()
 
-        return render(request, 'account/add_version_success.html')
+        return render(
+            request,
+            'account/add_version_success.html',
+            {'app_id':app.id, 'ver_type':v.ver_type},
+        )
 
 
 @login_required
-def modify_ver(request):
+def modify_ver(request): #not used now
     _ver_id = request.GET.get('id')
     ver = Version.objects.get(id=_ver_id)
     return render(request, 'account/version_modify.html', {'ver':ver})
 
 
 @login_required
-def change_ver(request):
+def change_ver(request): #not used now
     _ver_id = request.POST.get('ver_id')
     _ver_name = request.POST.get('ver_name')
-    _log_file = request.FILES.get('log')
+
 
     ver = Version.objects.get(id=_ver_id)
 
-    if _log_file:
-        ver.ver_log = _log_file
     if ver.name != _ver_name:
         ver.name = _ver_name
     ver.save()
@@ -162,9 +175,16 @@ def change_ver(request):
 @login_required
 def delete_ver(request):
     _ver_id = request.GET.get('ver_id')
+    _ver_type = request.GET.get('ver_type')
+    _app_id = request.GET.get('app_id')
     ver = Version.objects.get(id=_ver_id)
     ver.delete()
-    return render(request, 'account/version_delete_success.html')
+
+    print('ver_type = {} and app_id = {}'.format(_ver_type, _app_id))
+    return render(
+        request,
+        'account/version_delete_success.html',
+        {'ver_type':_ver_type, 'app_id':_app_id})
 
 
 @login_required

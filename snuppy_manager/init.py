@@ -44,7 +44,7 @@ def call_shell():
 
     abs_path = Path().absolute()
     auth_path = abs_path / 'account' / 'fixtures' / 'auth_data.json'
-    data_path = abs_path / 'account' / 'fixtures' / 'initial_data.json'
+    data_path = abs_path / 'account' / 'fixtures' / 'initial_data2.json'
 
     _py_call('manage.py loaddata {}'.format(auth_path))
     _py_call('manage.py loaddata {}'.format(data_path))

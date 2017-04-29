@@ -3,13 +3,11 @@
 {% block content %}
 <!--app and os_type -->
 <H3>Добавление новой версии для "{{app.name}} под {{ os_type }}" </H3>
-<form action="/account/version/compile_ver" method="post" enctype="multipart/form-data">
-    <!--enctype нужен, что бы получить файлы, или получим ничего-->
+<form action="/account/version/compile_ver" method="post">
     {% csrf_token %}
     <!--csrf_token должен быть в любой POST форме-->
     <br>
-    <p>Номер версии:</p> <input type="text" name="ver_name">
-    <p> Лог версии: </p> <input type="file" name="log">
+    <p>Номер версии:</p> <input type="text" name="ver_number">
 
     <input type="hidden" name="app_id" value="{{ app.id }}">
     <input type="hidden" name="os_type" value="{{ os_type }}">

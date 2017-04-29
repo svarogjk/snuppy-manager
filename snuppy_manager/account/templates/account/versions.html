@@ -10,16 +10,32 @@
         <th>Лог изменений</th>
         <th>Дата создания</th>
         <th>Ссылка на код</th>
+        <th>Статус</th>
    </tr>
 
 <br>
 {% for ver in versions %}
         <tr>
 
-            <td><a href="version/modify/?id={{ver.id}}"> {{ver.name}} </a> </td>
-            <td> <a href="/account/media/{{ver.ver_log}}"> Скачать </a> </td>
+            <td>{{ver.number}} </td>
+            <td>
+                {% if ver.changes == 'CHANGELOG.md not found in master branch' %}
+                    {{ver.changes}}
+                {% else %}
+                    <a href="{{ver.changes}}"> Просмотреть </a>
+                {% endif %}
+            </td>
             <td> {{ ver.created_at }} </td>
             <td> <a href="/account/media/{{ver.path}}">Скачать</a> </td>
+            <td> {{ver.status}} </td>
+            <td>
+                <form action="/account/version/delete">
+                    <input type="hidden" name="ver_id" value="{{ ver.id }}">
+                    <input type="hidden" name="ver_type" value="{{ ver.ver_type }}">
+                    <input type="hidden" name="app_id" value="{{ app.id }}">
+                    <input type="submit" value="Удалить" name="name" class="btn btn-success" />
+                </form>
+            </td>
         </tr>
 {% endfor %}
 </table>

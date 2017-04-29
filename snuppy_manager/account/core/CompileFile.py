@@ -4,6 +4,10 @@ from random import randint
 from os import remove
 from pathlib import Path
 
+'''
+AFTER ADD TORNADO THIS MODULE NOT USING!!! Mb need to delete?
+'''
+
 
 class CompileFile:
 
