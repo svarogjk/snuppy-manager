@@ -9,7 +9,7 @@ class ApplicationAdmin(admin.ModelAdmin):
     list_display = ['name', 'user', 'description', 'created_at', 'updated_at']
 
 class VersionAdmin(admin.ModelAdmin):
-    list_display = ['name', 'application', 'path', 'created_at', 'updated_at']
+    list_display = ['number', 'application', 'path', 'created_at', 'updated_at']
 
 
 admin.site.register(Profile, ProfileAdmin)

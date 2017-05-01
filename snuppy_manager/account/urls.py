@@ -38,7 +38,7 @@ urlpatterns = [
     #send data for compile new version
     url(r'version/compile_ver', views.compile_ver, name='compile_ver'),
     #modify or remove version
-    url(r'version/modify', views.modify_ver, name='modify_ver'),
+    url(r'version/modify', views.modify_ver, name='modify_ver'), #not used now...
     url(r'version/change', views.change_ver, name='change_ver'),
     url(r'version/delete', views.delete_ver, name='delete_ver'),
 

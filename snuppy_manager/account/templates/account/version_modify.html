@@ -1,16 +1,15 @@
+<!--СЕЙЧАС НЕ ИСПОЛЬЗУЕТСЯ!!!-->
 {% extends "base.html" %}
 {% block title %}Редактирование версии{% endblock %}
 {% block content %}
 
 <H3>Редактирование версии "{{ver.name}}" </H3>
 
-<form action="/account/version/change" method="post" enctype="multipart/form-data">
-    <!--enctype нужен, что бы получить файлы, или получим ничего-->
+<form action="/account/version/change" method="post">
     {% csrf_token %}
     <!--csrf_token должен быть в любой POST форме-->
     <br>
     <p>Номер версии:</p> <input type="text" name="ver_name" value="{{ver.name}}">
-    <p> Лог версии: </p> <input type="file" name="log">
 
     <input type="hidden" name="ver_id" value="{{ ver.id }}">
 

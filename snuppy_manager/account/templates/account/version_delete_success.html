@@ -4,5 +4,11 @@
 
 <H3>Версия успешно удалена!!</H3>
 
+<form action="/account/version/">
+    <input type="hidden" name="app_id" value="{{ app_id }}">
+    <input type="hidden" name="ver_type" value="{{ ver_type }}">
+    <input type="submit" value="Вернуться" name="name" class="btn btn-success" />
+</form>
+
 {% endblock %}
 
