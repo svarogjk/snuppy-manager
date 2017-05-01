@@ -5,7 +5,7 @@
 
 from django.http import HttpResponse
 from django.shortcuts import render
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .forms import LoginForm, UserRegistrationForm
 from django.views.decorators.csrf import csrf_protect
@@ -38,6 +38,11 @@ def user_login(request):
     else:
         form = LoginForm()
     return render(request, 'account/login.html', {'form': form})
+
+@login_required
+def user_logout(request):
+    logout(request)
+    return render(request, 'account/user_logout.html')
 
 
 @login_required
