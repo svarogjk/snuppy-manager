@@ -61,17 +61,17 @@ def dashboard(request):
 
     #group[0].profile.get().unique_id - получаемя uid профайла через группу
 
-    group = []
-    for gr in _group:
-        _group_name = gr.name
-        _rule = gr.rule_set.get().rule
-        group.append((_group_name, _rule))
-
     _app = Application.objects.filter(id__in=_group)
     # id__in == "a in (1,2,3)"(который queryset и результатов может быть несколько)
 
+    users_rule = Rule.objects.filter(profile__id =profile.id)
 
-    return render(request, 'account/all_app.html', {'group':_group})
+
+    return render(
+        request,
+        'account/all_app.html',
+        {'rules':users_rule}
+    )
 
 
 def register(request):
@@ -268,7 +268,16 @@ def delete_app(request):
 def change_app(request):
     _app_id = request.GET.get('app_id')
     _app = Application.objects.get(id=_app_id)
-    return render(request, 'account/app_change.html', {'app':_app})
+
+    user_id = request.user.id
+    profile = Profile.objects.get(id=user_id)
+    group = Group.objects.filter(profile__id=profile.id)
+
+    return render(
+        request,
+        'account/app_change.html',
+        {'app':_app,'group':group}
+    )
 
 
 @login_required
@@ -277,11 +286,15 @@ def change_app_check(request):
     _app_name = request.POST.get('app_name')
     _app_descr = request.POST.get('app_description')
     _app_source = request.POST.get('app_source')
+    _gr = request.POST.get('group_id')
+
+    group = Group.objects.get(id=_gr)
 
     app = Application.objects.get(id=_app_id)
     app.name = _app_name
     app.description = _app_descr
     app.source_code = _app_source
+    app.group = group
 
     app.save()
 

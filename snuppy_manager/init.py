@@ -43,8 +43,8 @@ def call_shell():
     _py_call('manage.py migrate')
 
     abs_path = Path().absolute()
-    auth_path = abs_path / 'account' / 'fixtures' / 'auth_data.json'
-    data_path = abs_path / 'account' / 'fixtures' / 'initial_data2.json'
+    auth_path = abs_path / 'account' / 'fixtures' / 'auth_data2.json'
+    data_path = abs_path / 'account' / 'fixtures' / 'initial_data3.json'
 
     _py_call('manage.py loaddata {}'.format(auth_path))
     _py_call('manage.py loaddata {}'.format(data_path))

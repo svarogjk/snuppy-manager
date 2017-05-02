@@ -7,7 +7,7 @@
                 <div class="add-app">
                     <h3 class="add-app-title">Редактирование приложения "{{app.name}}"</h3>
 
-                    <form role="form" action="application/change" method="post">
+                    <form role="form" action="application/change" method="post", id="change">
                          {% csrf_token %}
                         <div class="form-group">
                             <label for="app_name">Имя приложения</label>
@@ -25,6 +25,17 @@
                             <label for="app_source">Имя приложения</label>
                             <input required type="text" class="form-control" id="app_source" name="app_source" value="{{app.source_code}}">
                         </div>
+
+                        <select name="group_id" form="change">
+                            {% for gr in group %}
+                                {% if gr.name == gr.profile.get.unique_id%}
+                                    <option value="{{gr.id}}">None</option>
+                                {% else %}
+                                    <option value="{{gr.id}}">{{gr.name}}</option>
+                                {% endif%}
+                            {% endfor %}
+                        </select>
+
                         <div class="form-group">
                             <input type="hidden" name="app_id" value="{{ app.id }}">
                         </div>

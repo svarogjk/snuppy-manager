@@ -30,7 +30,7 @@
                     {% if request.user.is_authenticated %}
                     <div class="col-lg-2 col-lg-offset-5">
                         <p class="navbar-text">Вы вошли, как
-                            <a href="#" class="navbar-link">{{ request.user.first_name }}</a>
+                            <a href="#" class="navbar-link">{{ request.user.username }}</a>
                         </p>
                     </div>
                     <div class="col-lg-1">

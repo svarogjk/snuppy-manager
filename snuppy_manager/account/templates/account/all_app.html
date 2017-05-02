@@ -17,11 +17,12 @@
 
     </div>
 
-{% for gr in group %}
-    {% if gr.name == gr.profile.get.unique_id %}
+{% for rule in rules %}
+    {% if rule.group.name == rule.profile.unique_id %}
         <H3> Личные приложения </H3>
     {% else %}
-        <H3> Приложения в группе "{{ gr.name }}" с уровнем доступа "{{ gr.rule_set.get.get_rule_display }}" </H3>
+        <H3> Приложения в группе "{{ rule.group.name }}" с уровнем доступа "{{ rule.get_rule_display }}" </H3>
+
     {% endif %}
 
     <table class="table table-margin table-background">
@@ -33,7 +34,7 @@
             <th class="text-center">Платформы</th>
         </tr>
 
-    {% for app in gr.application_set.all %}
+    {% for app in rule.group.application_set.all %}
         <tr>
             <td>
                 <a href="application/?app_id={{ app.id }}">{{app.name}}</a>

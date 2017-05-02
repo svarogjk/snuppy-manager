@@ -6,6 +6,9 @@ from pathlib import Path
 import json
 
 class ApiConnect:
+    'Use for connect to tornado server'
+    
+    #server setting
     API_IP_PORT = ('127.0.0.1', ':7777')
     API_URL = '/compile/code/'
     PROTOCOL = 'http://'
