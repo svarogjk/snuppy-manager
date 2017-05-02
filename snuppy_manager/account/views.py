@@ -127,6 +127,7 @@ def show_version(request):
         _ver_small = request.GET.get('ver_type')
         _ver_type = Version.LOOKUP_CHOISE[_ver_small] # получаем полное имя ОС
 
+
         _versions = Version.objects.filter(application=_app, ver_type=_ver_small)
         return render(request, 'account/versions.html', {
                                                         'versions': _versions,
