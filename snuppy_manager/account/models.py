@@ -1,7 +1,7 @@
 # Create your models here.
 from django.db.models import CharField, DateTimeField, TextField, \
     ForeignKey, Model, CASCADE, FileField, OneToOneField, AutoField, \
-    DateField, URLField
+    DateField, URLField, ManyToManyField
 from django.conf import settings
 
 
@@ -17,9 +17,19 @@ class Profile(Model):
         return self.user.username
 
 
+class Group(Model):
+
+    name = CharField(max_length=32)
+
+    profile = ManyToManyField(Profile, through='Rule')
+
+    def __str__(self):
+        return self.name
+
+
 class Application(Model):
     name = CharField(max_length=100)
-    user = ForeignKey(Profile, on_delete=CASCADE)
+    group = ForeignKey(Group, on_delete=CASCADE)
     description = TextField()
     source_code = URLField()
     created_at = DateTimeField(auto_now_add=True)
@@ -62,4 +72,16 @@ class Version(Model):
     def __str__(self):
         return self.number
 
+
+class Rule(Model):
+
+    RULE_CHOICES = (
+        ('A', 'Admin'),
+        ('M', 'Manager'),
+        ('G', 'Guest'),
+    )
+
+    group = ForeignKey(Group) #on_delete??
+    profile = ForeignKey(Profile) #on_delete??
+    rule = CharField(max_length=1, choices=RULE_CHOICES)
 

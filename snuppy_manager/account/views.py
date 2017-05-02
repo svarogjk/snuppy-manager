@@ -12,11 +12,12 @@ from django.views.decorators.csrf import csrf_protect
 
 from django.contrib.auth.models import User
 
-from .models import Profile, Version, Application
+from .models import Profile, Version, Application, Group, Rule
 
 from .core.create_uid import create_uid
 from .core.get_changes import get_changes
 from .core.ApiConnect import ApiConnect
+
 
 
 @csrf_protect
@@ -49,10 +50,28 @@ def user_logout(request):
 def dashboard(request):
     user_id = request.user.id
     profile = Profile.objects.get(user=user_id)
-    _app = Application.objects.filter(user=profile)
-    return render(request,
-                  'account/all_app.html',
-                  {'applications':_app})
+
+    _group = Group.objects.filter(profile__id =profile.id)
+    # for get rule, group[0].rule_set.all(),
+    # or group[0].rule_set.get()
+    #g[0].profile.get().unique_id = profile id
+    # g[1].application_set.all() = все application для группы. При обратной связи используется _set
+    # или related_name="имя" в models, manytomany
+    # g[0].rule_set.get().get_rule_display() показать полное имя
+
+    #group[0].profile.get().unique_id - получаемя uid профайла через группу
+
+    group = []
+    for gr in _group:
+        _group_name = gr.name
+        _rule = gr.rule_set.get().rule
+        group.append((_group_name, _rule))
+
+    _app = Application.objects.filter(id__in=_group)
+    # id__in == "a in (1,2,3)"(который queryset и результатов может быть несколько)
+
+
+    return render(request, 'account/all_app.html', {'group':_group})
 
 
 def register(request):
@@ -72,14 +91,24 @@ def register(request):
 
             profile = Profile.objects.create(user=new_user)
             _date_joined = str(profile.date_joined)
-            profile.unique_id = create_uid(profile.id, profile.user.username, _date_joined)
+            uid = create_uid(profile.id, profile.user.username, _date_joined)
+            profile.unique_id = uid
 
             # Save the User object
             profile.save()
 
+            group = Group(name = uid)
+            group.save()
+
+            rule = Rule(group=group, profile=profile, rule='A')
+            rule.save()
+
+
             return render(request,
                           'registration/register_done.html',
                           {'new_user': new_user})
+        else:
+            print('wrong registration parametrs')
     else:
         user_form = UserRegistrationForm()
     return render(request,
@@ -194,7 +223,15 @@ def delete_ver(request):
 
 @login_required
 def add_app(request):
-    return render(request, 'account/app_add.html')
+    user_id = request.user.id
+    profile = Profile.objects.get(id=user_id)
+    group = Group.objects.filter(profile__id=profile.id)
+
+    return render(
+                   request,
+                  'account/app_add.html',
+                  {'profile':profile, 'group':group},
+    )
 
 
 @login_required
@@ -202,15 +239,15 @@ def add_app_check(request):
     _app_name = request.POST.get('app_name')
     _app_description = request.POST.get('app_description')
     _app_source = request.POST.get('app_source')
+    _group_id = request.POST.get('group_id')
 
-    user_id = request.user.id
-    profile = Profile.objects.get(user=user_id)
+    group = Group.objects.get(id=_group_id)
 
     app = Application(
         name = _app_name,
         description = _app_description,
         source_code = _app_source,
-        user = profile
+        group = group
     )
     app.save()
 

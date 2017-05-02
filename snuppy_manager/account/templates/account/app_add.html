@@ -6,7 +6,7 @@
                 <div class="add-app">
                     <h3 class="add-app-title">Создание нового приложения</h3>
 
-                    <form role="form" action="application/add_app_check" method="post">
+                    <form role="form" action="application/add_app_check" method="post", id="add-app">
                          {% csrf_token %}
                         <div class="form-group">
                             <label for="app_name">Имя приложения</label>
@@ -24,11 +24,25 @@
                             <label for="app_source">Имя приложения</label>
                             <input required type="text" class="form-control" id="app_source" name="app_source" placeholder="ссылка на приложение">
                         </div>
-                            <div class="add-app-btn-container">
-                                <input type="submit" value="Создать" name="name" class="btn btn-primary add-app-btn"/>
-                                <a href="#"><input type="button" value="Отмена" name="name" class="btn btn-primary back-btn"/></a>
-                            </div>
+
+                        <select name="group_id" form="add-app">
+                            {% for gr in group %}
+                                {% if gr.name == profile.unique_id%}
+                                    <option value="{{gr.id}}">None</option>
+                                {% else %}
+                                    <option value="{{gr.id}}">{{gr.name}}</option>
+                                {% endif%}
+                            {% endfor %}
+                        </select>
+
+                        <div class="add-app-btn-container">
+                            <input type="submit" value="Создать" name="name" class="btn btn-primary add-app-btn"/>
+                            <a href="#"><input type="button" value="Отмена" name="name" class="btn btn-primary back-btn"/></a>
+                        </div>
                     </form>
+
+
+
                 </div>
             </div>
       </div>
