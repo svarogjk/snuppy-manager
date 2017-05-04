@@ -24,4 +24,5 @@ class DB(object):
         self.session.add(transaction)
         self.session.commit()
 
+
 db = DB()

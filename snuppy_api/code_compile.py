@@ -1,8 +1,7 @@
-from tornado.web import MissingArgumentError
-from base_handler import BaseHandler
-
-from compile import get_app
 import json
+
+from base_handler import BaseHandler
+from compile import get_app
 
 class CodeCompileHandler(BaseHandler):
     def get(self):

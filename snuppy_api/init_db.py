@@ -2,6 +2,7 @@ from os.path import isfile
 
 from db import db
 from db_path import SQLITE_FILE_PATH
+
 import models
 
 

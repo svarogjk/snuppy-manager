@@ -5,9 +5,9 @@
 <div class="container add-app-margin">
             <div class="col-lg-6 col-lg-offset-3">
                 <div class="add-app">
-                    <h3 class="add-app-title">Редактирование приложения "{{app.name}}"</h3>
+                    <h3 class="add-app-title">Редактирование приложения <big class="text-muted app-name">{{app.name}}</big></h3>
 
-                    <form role="form" action="application/change" method="post", id="change">
+                    <form role="form" action="application/change" method="post" id="change">
                          {% csrf_token %}
                         <div class="form-group">
                             <label for="app_name">Имя приложения</label>
@@ -22,11 +22,13 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="app_source">Имя приложения</label>
+                            <label for="app_source">Ссылка на приложение</label>
                             <input required type="text" class="form-control" id="app_source" name="app_source" value="{{app.source_code}}">
                         </div>
 
-                        <select name="group_id" form="change">
+                        <div class="form-group">
+                            <label for="group_id">Принадлежность к группе</label>
+                            <select name="group_id" form="change" id="group_id" class="form-control">
                             {% for gr in group %}
                                 {% if gr.name == gr.profile.get.unique_id%}
                                     <option value="{{gr.id}}">None</option>
@@ -34,7 +36,9 @@
                                     <option value="{{gr.id}}">{{gr.name}}</option>
                                 {% endif%}
                             {% endfor %}
-                        </select>
+                            </select>
+                        </div>
+
 
                         <div class="form-group">
                             <input type="hidden" name="app_id" value="{{ app.id }}">

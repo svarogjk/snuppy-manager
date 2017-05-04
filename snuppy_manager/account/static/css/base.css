@@ -289,27 +289,25 @@ img.user-detail {
 
 */
 
-/* BASE + ACCOUNT  */
+/* HEADER PANEL + APPS LIST  */
 
 body {
     background: #d3d3d3;
-}
 
+}
 .content-margin {
     margin-top: 100px;
+    background: whitesmoke;
+    box-shadow: 0 0 3px #d3d3d3;
 }
 
-.table-margin {
+.apps-list-table {
     margin-top: 10px;
+
 }
 
 .btn-shadow {
     box-shadow: 0 0 6px black;
-}
-
-.table-background {
-    background: whitesmoke;
-    box-shadow: 0 0 3px #d3d3d3;
 }
 
 .row {
@@ -320,7 +318,7 @@ body {
     margin-left: 20px;
 }
 
-/* END OF BASE + ACCOUNT  */
+/* END OF HEADER PANEL + APPS LIST  */
 
 /* ADD APP */
 
@@ -347,7 +345,7 @@ body {
 }
 
 .add-app-margin {
-    margin-top: 200px;
+    margin-top: 190px;
 }
 
 .back-btn {
@@ -367,6 +365,21 @@ body {
     padding-right: 75px;
     border-top: 1px solid #d3d3d3;
     margin-top: 30px;
+}
+
+.app-name {
+    color: #337ab7;
+}
+
+.add-version-btn {
+    margin-top: 10px;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.back-version-btn {
+    padding-left: 50px;
+    padding-right: 50px;
 }
 /* END OF ADD APP */
 
