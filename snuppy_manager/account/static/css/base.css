@@ -293,21 +293,23 @@ img.user-detail {
 
 body {
     background: #d3d3d3;
-
 }
+
 .content-margin {
     margin-top: 100px;
-    background: whitesmoke;
-    box-shadow: 0 0 3px #d3d3d3;
 }
 
-.apps-list-table {
+.table-margin {
     margin-top: 10px;
-
 }
 
 .btn-shadow {
     box-shadow: 0 0 6px black;
+}
+
+.table-background {
+    background: whitesmoke;
+    box-shadow: 0 0 3px #d3d3d3;
 }
 
 .row {
