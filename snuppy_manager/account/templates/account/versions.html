@@ -3,24 +3,22 @@
 {% block content %}
 
 <div class="container">
-
-    <div class="row">
+    <div class="row titles-margin">
         <div class="col-lg-7">
-            <h3 >Версии приложения "{{app.name}}" под {{os_type}}:</h3>
-            <br>
+            <p class="titles">Версии приложения <big>"{{app.name}}"</big> под <big>{{os_type}}</big></p>
         </div>
         <div class="col-lg-2 col-lg-offset-3">
             <form role="form" action="/account/version/add_new">
                 <input type="hidden" name="app_id" value="{{ app.id }}"/>
                 <input type="hidden" name="os_type" value="{{ os_type }}">
-                <input type="submit" value="Добавить версию" name="name" class="btn btn-primary btn-shadow add-version-btn"/>
+                <input type="submit" value="Добавить версию" name="name" class="btn btn-primary btn-shadow add-ver-btn"/>
             </form>
 
         </div>
     </div>
 
 
-    <table class="table table-margin table-background">
+    <table class="table table-background">
         <tr>
             <th class="text-center">Номер</th>
             <th class="text-center">Лог изменений</th>
@@ -49,7 +47,7 @@
                     <input type="hidden" name="ver_id" value="{{ ver.id }}">
                     <input type="hidden" name="ver_type" value="{{ ver.ver_type }}">
                     <input type="hidden" name="app_id" value="{{ app.id }}">
-                    <input type="submit" value="Удалить" name="name" class="btn btn-primary btn-xs btn-block" />
+                    <input type="submit" value="Удалить" name="name" class="btn btn-primary btn-xs btn-block"/>
                 </form>
             </td>
         </tr>
@@ -57,52 +55,6 @@
     </table>
 
 </div>
-
-<!--<h3> Версии приложения "{{app.name}}" под {{os_type}}:</h3>-->
-
-<!--<table border="1" cellpadding="5">-->
-    <!--<tr>-->
-        <!--<th>Номер</th>-->
-        <!--<th>Лог изменений</th>-->
-        <!--<th>Дата создания</th>-->
-        <!--<th>Ссылка на код</th>-->
-        <!--<th>Статус</th>-->
-   <!--</tr>-->
-
-<!--<br>-->
-<!--{% for ver in versions %}-->
-        <!--<tr>-->
-
-            <!--<td>{{ver.number}} </td>-->
-            <!--<td>-->
-                <!--{% if ver.changes == 'CHANGELOG.md not found in master branch' %}-->
-                    <!--{{ver.changes}}-->
-                <!--{% else %}-->
-                    <!--<a href="{{ver.changes}}"> Просмотреть </a>-->
-                <!--{% endif %}-->
-            <!--</td>-->
-            <!--<td> {{ ver.created_at }} </td>-->
-            <!--<td> <a href="/account/media/{{ver.path}}">Скачать</a> </td>-->
-            <!--<td> {{ver.status}} </td>-->
-            <!--<td>-->
-                <!--<form action="/account/version/delete">-->
-                    <!--<input type="hidden" name="ver_id" value="{{ ver.id }}">-->
-                    <!--<input type="hidden" name="ver_type" value="{{ ver.ver_type }}">-->
-                    <!--<input type="hidden" name="app_id" value="{{ app.id }}">-->
-                    <!--<input type="submit" value="Удалить" name="name" class="btn btn-success" />-->
-                <!--</form>-->
-            <!--</td>-->
-        <!--</tr>-->
-<!--{% endfor %}-->
-<!--</table>-->
-
-<!--<br><br>-->
-
-<!--<form action="/account/version/add_new">-->
-    <!--<input type="hidden" name="app_id" value="{{ app.id }}">-->
-    <!--<input type="hidden" name="os_type" value="{{ os_type }}">-->
-    <!--<input type="submit" value="Добавить версию" name="name" class="btn btn-success" />-->
-<!--</form>-->
 
 {% endblock %}
 

@@ -1,6 +1,5 @@
-/*@import url(http://fonts.googleapis.com/css?family=Muli);
-
-
+@import url('https://fonts.googleapis.com/css?family=Muli');
+/*
 body {
     margin:0;
     padding:0;
@@ -289,18 +288,28 @@ img.user-detail {
 
 */
 
-/* HEADER PANEL + APPS LIST  */
+/* COMMON STYLE */
 
 body {
     background: #d3d3d3;
+    font-family: 'Muli', sans-serif;
 }
 
 .content-margin {
-    margin-top: 100px;
+    margin-top: 7.5em /*120px*/;
 }
 
-.table-margin {
-    margin-top: 10px;
+.row {
+    margin-right: -5px;
+}
+
+.titles {
+    color: #676969;
+    font-size: 1.4em;
+}
+
+.titles-margin {
+    margin-bottom: 1.1em /*15px*/;
 }
 
 .btn-shadow {
@@ -309,56 +318,116 @@ body {
 
 .table-background {
     background: whitesmoke;
-    box-shadow: 0 0 3px #d3d3d3;
+    box-shadow: 0 0 4px #A4A6A5;
 }
 
-.row {
-    margin-right: -5px;
+.table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
+    vertical-align: middle;
 }
 
-.logout {
-    margin-left: 20px;
+.first-col {
+    padding-left: 1em;
 }
 
-/* END OF HEADER PANEL + APPS LIST  */
+/* adding blocks */
 
-/* ADD APP */
-
-.add-app {
+.add-list {
     background: white;
     padding: 20px;
-    box-shadow: 0 0 14px black;
+    box-shadow: 0 0 1em black;
 }
 
-.app-descr-area {
-    resize: vertical;
+.add-list-margin {
+    margin-top: 13.5em /*190px*/;
 }
+
+/* end of adding blocks */
+/* END OF COMMON STYLE */
+
+
+/* HEADER PANEL */   /* END OF HEADER PANEL */
+
+
+/* APPS LIST */
+
+.group-apps {
+    margin-top: 3em /*40px*/;
+}
+
+.platform-img {
+    height: 100%;
+}
+
+/* add app */
 
 .add-app-btn-container {
     width: 100%;
     text-align: center;
-    margin-top: 30px;
+    margin-top: 2.3em /*30px*/;
 }
 
 .add-app-btn {
-    padding-left: 40px;
-    padding-right: 40px;
-    margin-right: 30px;
+    padding-left: 3em /*40px*/;
+    padding-right: 2.3em /*30px*/;
+    margin-right: 2.3em /*30px*/;
 }
 
-.add-app-margin {
-    margin-top: 190px;
+.back-app-btn {
+    margin-left: 2.3em /*30px*/;
+    padding-left: 3em /*40px*/;
+    padding-right: 3em /*40px*/;
 }
 
-.back-btn {
-    margin-left: 30px;
-    padding-left: 40px;
-    padding-right: 40px;
+/* end of add app */
+
+/* app change */
+
+.add-app-description {
+    resize: vertical;
 }
 
-.add-app-title {
-    margin-bottom: 20px;
+/* end of app change */
+/* END OF  APPS LIST  */
+
+
+/* VERSIONS */
+
+.add-ver-btn {
+    padding-left:  2em /*28px*/;
+    padding-right: 2em /*28px*/;
 }
+
+/* add version */
+
+.ver-add-caption {
+    margin-bottom: 0.9em;
+    font-size:1.38em;
+}
+
+.ver-input {
+    margin-top: 0.7em;
+}
+
+.ver-btn-container {
+    width: 100%;
+    text-align: center;
+    margin-top: 2.3em /*30px*/;
+    margin-bottom: 1.55em /*20px*/;
+}
+
+.compile-ver-btn {
+    margin-right: 3em /*40px*/;
+    width: 11em /*150px*/;
+}
+
+.back-ver-btn {
+    margin-left: 3em /*40px*/;
+    width: 11em /*150px*/;
+}
+
+/* end of add version */
+/* END OF VERSIONS */
+
 
 .app-del-form {
     padding-top: 20px;
@@ -369,19 +438,7 @@ body {
     margin-top: 30px;
 }
 
-.app-name {
-    color: #337ab7;
-}
 
-.add-version-btn {
-    margin-top: 10px;
-    padding-left: 50px;
-    padding-right: 50px;
+.logout {
+    margin-left: 20px;
 }
-
-.back-version-btn {
-    padding-left: 50px;
-    padding-right: 50px;
-}
-/* END OF ADD APP */
-

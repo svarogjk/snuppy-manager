@@ -19,50 +19,50 @@
 
 {% for rule in rules %}
     {% if rule.group.name == rule.profile.unique_id %}
-        <H3> Личные приложения </H3>
+        <p class="titles titles-margin">Личные приложения</p>
     {% else %}
-        <H3> Приложения в группе "{{ rule.group.name }}" с уровнем доступа "{{ rule.get_rule_display }}" </H3>
+        <p class="titles titles-margin group-apps">Приложения группы: {{ rule.group.name }}
+            <br>
+            уровень доступа: {{ rule.get_rule_display }}
+        </p>
 
     {% endif %}
 
-    <table class="table table-margin table-background">
+
+    <table class="table table-background">
         <tr>
-            <th class="text-center">Название</th>
-            <th class="text-center">Описание</th>
-            <th class="text-center">Исходник</th>
-            <th class="text-center">Дата создания</th>
-            <th class="text-center">Платформы</th>
+            <th class="col-lg-1"> Название</th>
+            <th class="col-lg-4">Описание</th>
+            <th class="col-lg-2">Исходник</th>
+            <th class="col-lg-2">Дата создания</th>
+            <th class="col-lg-2">Платформы</th>
         </tr>
 
     {% for app in rule.group.application_set.all %}
         <tr>
-            <td>
-                <a href="application/?app_id={{ app.id }}">{{app.name}}</a>
+            <td class="col-lg-1">
+                <a class="first-col" href="application/?app_id={{ app.id }}">{{app.name}}</a>
             </td>
-            <td>{{app.description}} </td>
-            <td>{{app.source_code}}</td>
-            <td>{{app.created_at}}</td>
-            <td>
+            <td class="col-lg-4">{{app.description}} </td>
+            <td class="col-lg-2">{{app.source_code}}</td>
+            <td class="col-lg-2">{{app.created_at}}</td>
+            <td class="col-lg-2 text-center">
                 <a href="/account/version/?app_id={{ app.id }}&ver_type=A">
-                    <img src="/account/media/android-logo.png" alt="Android">
+                    <img class="platform-img img-thumbnail" src="/account/media/android-logo.png" alt="Android">
                 </a>
                 <a href="/account/version/?app_id={{ app.id }}&ver_type=I">
-                    <img src="/account/media/ios-logo.png" alt="IOS">
+                    <img class="platform-img img-thumbnail" src="/account/media/ios-logo.png" alt="IOS">
                 </a>
                 <a href="/account/version/?app_id={{ app.id }}&ver_type=W">
-                    <img src="/account/media/win-logo.png" alt="Win Mobile">
+                    <img class="platform-img img-thumbnail" src="/account/media/win-logo.png" alt="Win Mobile">
                 </a>
             </td>
         </tr>
     {% endfor %}
 
     </table>
+
 {% endfor %}
 
-<!--<br><br>-->
-
-<!--<form action="application/add">-->
-    <!--<input type="submit" value="Добавить версию" name="name" class="btn btn-success"/>-->
-<!--</form>-->
 </div>
 {% endblock %}

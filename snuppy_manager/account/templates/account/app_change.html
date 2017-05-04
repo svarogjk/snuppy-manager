@@ -2,10 +2,10 @@
 {% block title %}Редактирование приложения{% endblock %}
 {% block content %}
 
-<div class="container add-app-margin">
+<div class="container add-list-margin">
             <div class="col-lg-6 col-lg-offset-3">
-                <div class="add-app">
-                    <h3 class="add-app-title">Редактирование приложения <big class="text-muted app-name">{{app.name}}</big></h3>
+                <div class="add-list">
+                    <p class="titles titles-margin">Редактирование приложения <big>{{app.name}}</big></p>
 
                     <form role="form" action="application/change" method="post" id="change">
                          {% csrf_token %}
@@ -16,7 +16,7 @@
 
                         <div class="form-group">
                             <label for="app_description">Описание приложения</label>
-                            <textarea rows="5" class="form-control app-descr-area"
+                            <textarea rows="5" class="form-control add-app-description"
                                       id="app_description"
                                       name="app_description">{{app.description}}</textarea>
                         </div>
@@ -45,7 +45,7 @@
                         </div>
                             <div class="add-app-btn-container">
                                 <input type="submit" value="Изменить" name="name" class="btn btn-primary add-app-btn"/>
-                                <a href="#"><input type="button" value="Отмена" name="name" class="btn btn-primary back-btn"/></a>
+                                <a href="#"><input type="button" value="Отмена" name="name" class="btn btn-primary back-app-btn"/></a>
                             </div>
                     </form>
 
