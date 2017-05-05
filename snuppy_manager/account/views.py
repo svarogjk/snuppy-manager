@@ -299,3 +299,32 @@ def change_app_check(request):
     app.save()
 
     return render(request, 'account/app_change_success.html')
+
+
+@login_required
+def show_groups(request):
+    user_id = request.user.id
+    profile = Profile.objects.get(id=user_id)
+
+    groups = Group.objects.filter(profile__id=profile.id).filter(rule__rule='A')
+    no_local = groups.exclude(name=profile.unique_id)
+
+    return render(request, 'account/show_groups.html', {'groups':no_local})
+
+@login_required
+def group_add(request):
+    return render(request, 'account/group_add.html')
+
+@login_required
+def group_check_add(request):
+    group_name = request.POST.get('group_name')
+    user_id = request.user.id
+    profile = Profile.objects.get(id=user_id)
+
+
+    new_group = Group(name=group_name)
+    new_group.save()
+    rule = Rule(group=new_group, profile=profile, rule='A')
+    rule.save()
+
+    return render(request, 'account/group_add_success.html')
