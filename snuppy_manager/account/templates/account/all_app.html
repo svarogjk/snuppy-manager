@@ -40,7 +40,7 @@
     {% endif %}
 
 {% for rule in rules %}
-    {% if rule.group.name == rule.profile.unique_id %}
+    {% if rule.rule == 'U' %}
         <p class="titles titles-margin">Личные приложения</p>
     {% else %}
         <p class="titles titles-margin group-apps">Приложения группы: {{ rule.group.name }}

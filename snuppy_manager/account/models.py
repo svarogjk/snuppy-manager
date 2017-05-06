@@ -88,6 +88,7 @@ class Rule(Model):
         ('A', 'Admin'),
         ('M', 'Manager'),
         ('G', 'Guest'),
+        ('U', 'UserDefine'),
     )
 
     group = ForeignKey(Group) #on_delete??

@@ -17,7 +17,7 @@ from .models import Profile, Version, Application, Group, Rule, Invite
 from .core.create_uid import create_uid
 from .core.get_changes import get_changes
 from .core.ApiConnect import ApiConnect
-
+from django.db.models import Q
 
 
 @csrf_protect
@@ -102,7 +102,7 @@ def register(request):
             group = Group(name = uid)
             group.save()
 
-            rule = Rule(group=group, profile=profile, rule='A')
+            rule = Rule(group=group, profile=profile, rule='U')
             rule.save()
 
 
@@ -308,11 +308,9 @@ def show_groups(request):
     user_id = request.user.id
     profile = Profile.objects.get(id=user_id)
 
-    groups = Group.objects.filter(profile__id=profile.id).filter(rule__rule='A')
-    no_local = groups.exclude(name=profile.unique_id)
+    groups = Group.objects.filter(profile__id=profile.id).filter(~Q(rule__rule='U'))
 
-
-    return render(request, 'account/show_groups.html', {'groups':no_local})
+    return render(request, 'account/show_groups.html', {'groups':groups})
 
 
 @login_required
@@ -329,7 +327,7 @@ def group_check_add(request):
 
     new_group = Group(name=group_name)
     new_group.save()
-    rule = Rule(group=new_group, profile=profile, rule='A')
+    rule = Rule(group=new_group, profile=profile, rule='U')
     rule.save()
 
     return render(request, 'account/group_add_success.html')
@@ -398,4 +396,20 @@ def accept_invite(request):
     # новые пользователи добавляются с правами Guest
     rule.save()
 
+    return dashboard(request)
+
+
+@login_required
+def group_modify(request):
+    for key in request.POST:
+        print('key = {}, value = {}'.format(key, request.POST[key]))
+        if key.find('rule_new_') != -1 and request.POST[key] != 'None':
+            group_id = key.split('_')[-1]
+            new_privilege = request.POST[key].split('_')[1]
+            profile_id = request.POST[key].split('_')[0]
+            profile = Profile.objects.get(id=profile_id)
+            group = Group.objects.get(id=group_id)
+            rule = Rule.objects.get(profile=profile, group=group)
+            rule.rule = new_privilege
+            rule.save()
     return dashboard(request)
