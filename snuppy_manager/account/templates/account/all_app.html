@@ -24,13 +24,18 @@
     {% if invites %}
         <p class="titles titles-margin"> Новые приглашения!!!</p>
         {% for invite in invites %}
-            <p class="titles titles-margin"> Приглашение в группу "{{ invite.group.name }}" </p>
-            <form role="form" action="application/group">
-                <input type="submit" value="Принять" name="name" class="btn btn-primary btn-shadow"/>
-            </form>
-            <form role="form" action="application/group">
-                <input type="submit" value="Отклонить" name="name" class="btn btn-primary btn-shadow"/>
-            </form>
+            <div>
+                <p class="titles titles-margin" style="float: left;"> Приглашение в группу "{{ invite.group.name }}" </p>
+                <form role="form" action="application/group/accept_invite" style="float: left;">
+                    <input type="hidden" name="group_id" value="{{ invite.group.id }}">
+                    <input type="submit" value="Принять" name="name" class="btn btn-primary btn-shadow"/>
+                </form>
+                <form role="form" action="application/group/decline_invite" style="float: left;">
+                    <input type="hidden" name="group_id" value="{{ invite.group.id }}">
+                    <input type="submit" value="Отклонить" name="name" class="btn btn-primary btn-shadow"/>
+                </form>
+                <div style="clear: both;"> </div>
+            </div>
         {% endfor %}
     {% endif %}
 

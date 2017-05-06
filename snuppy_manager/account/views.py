@@ -368,3 +368,34 @@ def group_delete(request):
     # group.delete() удалит вообще все: группу, все приложения в этой группе,
     # все версии удаленных приложений (ну, кроме файлов, конечно, но это только пока...)
     return render(request, 'account/group_delete_success.html', {'group_name':group_name})
+
+
+@login_required
+def decline_invite(request):
+    group_id = request.GET.get('group_id')
+    group = Group.objects.get(id=group_id)
+    profile = Profile.objects.get(user=request.user.id)
+
+    invite = Invite.objects.get(group=group, profile=profile)
+    invite.delete()
+    #не делаем ни чего, просто удаляем приглашение.
+    # Возможно нужно добавить информирование приглащающего,
+    # что его приглашение отклонили?
+
+    return dashboard(request)
+
+
+@login_required
+def accept_invite(request):
+    group_id = request.GET.get('group_id')
+    group = Group.objects.get(id=group_id)
+    profile = Profile.objects.get(user=request.user.id)
+
+    invite = Invite.objects.get(group=group, profile=profile)
+    invite.delete()
+
+    rule = Rule(group=group, profile=profile, rule='G')
+    # новые пользователи добавляются с правами Guest
+    rule.save()
+
+    return dashboard(request)
