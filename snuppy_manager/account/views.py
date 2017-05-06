@@ -227,7 +227,7 @@ def delete_ver(request):
 @login_required
 def add_app(request):
     user_id = request.user.id
-    profile = Profile.objects.get(id=user_id)
+    profile = Profile.objects.get(user=user_id)
     group = Group.objects.filter(profile__id=profile.id)
 
     return render(
@@ -306,9 +306,9 @@ def change_app_check(request):
 @login_required
 def show_groups(request):
     user_id = request.user.id
-    profile = Profile.objects.get(id=user_id)
+    profile = Profile.objects.get(user=user_id)
 
-    groups = Group.objects.filter(profile__id=profile.id).filter(~Q(rule__rule='U'))
+    groups = Group.objects.filter(profile=profile, rule__rule='A')
 
     return render(request, 'account/show_groups.html', {'groups':groups})
 
@@ -404,6 +404,7 @@ def group_modify(request):
     for key in request.POST:
         print('key = {}, value = {}'.format(key, request.POST[key]))
         if key.find('rule_new_') != -1 and request.POST[key] != 'None':
+            print('key = {} and value = {}'.format(key, request.POST[key]))
             group_id = key.split('_')[-1]
             new_privilege = request.POST[key].split('_')[1]
             profile_id = request.POST[key].split('_')[0]
