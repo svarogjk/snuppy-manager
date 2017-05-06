@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Profile, Application, Version, Group
+from .models import Profile, Application, Version, Group, Invite
 # Register your models here.
 
 class ProfileAdmin(admin.ModelAdmin):
@@ -14,8 +14,12 @@ class VersionAdmin(admin.ModelAdmin):
 class GroupAdmin(admin.ModelAdmin):
     list_display = ['name']
 
+class InviteAdmin(admin.ModelAdmin):
+    list_display = ['group', 'profile']
+
 
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Application, ApplicationAdmin)
 admin.site.register(Version, VersionAdmin)
 admin.site.register(Group, GroupAdmin)
+admin.site.register(Invite, InviteAdmin)

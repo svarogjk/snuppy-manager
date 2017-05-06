@@ -16,6 +16,15 @@ class Profile(Model):
     def __str__(self):
         return self.user.username
 
+    @staticmethod
+    def check_profile(username):
+        try:
+            profile = Profile.objects.get(user__username=username)
+        except: # НУЖНО ДОБАВИТЬ DoesNotExist
+            profile = None
+        finally:
+            return profile
+
 
 class Group(Model):
 
@@ -85,3 +94,8 @@ class Rule(Model):
     profile = ForeignKey(Profile) #on_delete??
     rule = CharField(max_length=1, choices=RULE_CHOICES)
 
+
+class Invite(Model):
+
+    profile = ForeignKey(Profile, on_delete=CASCADE)
+    group = ForeignKey(Group, on_delete=CASCADE)

@@ -21,6 +21,19 @@
 
     </div>
 
+    {% if invites %}
+        <p class="titles titles-margin"> Новые приглашения!!!</p>
+        {% for invite in invites %}
+            <p class="titles titles-margin"> Приглашение в группу "{{ invite.group.name }}" </p>
+            <form role="form" action="application/group">
+                <input type="submit" value="Принять" name="name" class="btn btn-primary btn-shadow"/>
+            </form>
+            <form role="form" action="application/group">
+                <input type="submit" value="Отклонить" name="name" class="btn btn-primary btn-shadow"/>
+            </form>
+        {% endfor %}
+    {% endif %}
+
 {% for rule in rules %}
     {% if rule.group.name == rule.profile.unique_id %}
         <p class="titles titles-margin">Личные приложения</p>

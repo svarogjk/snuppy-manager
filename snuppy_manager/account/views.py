@@ -12,7 +12,7 @@ from django.views.decorators.csrf import csrf_protect
 
 from django.contrib.auth.models import User
 
-from .models import Profile, Version, Application, Group, Rule
+from .models import Profile, Version, Application, Group, Rule, Invite
 
 from .core.create_uid import create_uid
 from .core.get_changes import get_changes
@@ -51,6 +51,8 @@ def dashboard(request):
     user_id = request.user.id
     profile = Profile.objects.get(user=user_id)
 
+    invites = Invite.objects.filter(profile=profile)
+
     _group = Group.objects.filter(profile__id =profile.id)
     # for get rule, group[0].rule_set.all(),
     # or group[0].rule_set.get()
@@ -70,7 +72,7 @@ def dashboard(request):
     return render(
         request,
         'account/all_app.html',
-        {'rules':users_rule}
+        {'rules':users_rule, 'invites':invites}
     )
 
 
@@ -346,6 +348,13 @@ def group_edit(request):
 def group_add_user(request):
     # code block must contain login for add "invite" for user
     # also, mb it is need to add in return answer like "send user invite"
+    username = request.GET.get('new_user')
+    profile = Profile.check_profile(username)
+    if profile:
+        group_id = request.GET.get('group_id')
+        group = Group.objects.get(id=group_id)
+        invite = Invite(group=group, profile=profile)
+        invite.save()
     return group_edit(request)
 
 
@@ -355,5 +364,7 @@ def group_delete(request):
     group = Group.objects.get(id=group_id)
     group.delete()
     group_name = group.name
-    # is we need also remove all application and version or this is done automatically?
+    # ВАЖНО!!!
+    # group.delete() удалит вообще все: группу, все приложения в этой группе,
+    # все версии удаленных приложений (ну, кроме файлов, конечно, но это только пока...)
     return render(request, 'account/group_delete_success.html', {'group_name':group_name})
