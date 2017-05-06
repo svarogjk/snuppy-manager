@@ -309,11 +309,14 @@ def show_groups(request):
     groups = Group.objects.filter(profile__id=profile.id).filter(rule__rule='A')
     no_local = groups.exclude(name=profile.unique_id)
 
+
     return render(request, 'account/show_groups.html', {'groups':no_local})
+
 
 @login_required
 def group_add(request):
     return render(request, 'account/group_add.html')
+
 
 @login_required
 def group_check_add(request):
@@ -328,3 +331,29 @@ def group_check_add(request):
     rule.save()
 
     return render(request, 'account/group_add_success.html')
+
+@login_required
+def group_edit(request):
+
+    group_id = request.GET.get('group_id')
+    group = Group.objects.get(id=group_id)
+    rules = group.rule_set.all()
+
+    return render(request, 'account/group_edit.html', {'rules':rules, 'group':group})
+
+
+@login_required
+def group_add_user(request):
+    # code block must contain login for add "invite" for user
+    # also, mb it is need to add in return answer like "send user invite"
+    return group_edit(request)
+
+
+@login_required
+def group_delete(request):
+    group_id = request.GET.get('group_id')
+    group = Group.objects.get(id=group_id)
+    group.delete()
+    group_name = group.name
+    # is we need also remove all application and version or this is done automatically?
+    return render(request, 'account/group_delete_success.html', {'group_name':group_name})

@@ -55,7 +55,9 @@ urlpatterns = [
     url(r'application/group$', views.show_groups, name='show_group'),
     url(r'application/group/add_new', views.group_add, name='group_add'),
     url(r'application/group/check_add', views.group_check_add, name='group_add'),
-
+    url(r'application/group/edit', views.group_edit, name='group_edit'),
+    url(r'application/group/add_user', views.group_add_user, name='group_add_user'),
+    url(r'application/group/delete', views.group_delete, name='group_delete'),
 
     #restore password urls
     url(r'^password-reset/$',

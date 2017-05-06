@@ -1,0 +1,64 @@
+{% extends "account_base.html" %}
+{% block title %}Edit group{% endblock %}
+{% block content %}
+
+<div class="container">
+    <div class="row titles-margin">
+        <div class="col-lg-7">
+            <p class="titles">Группа {{ group.name }}</p>
+        </div>
+        <div class="col-lg-2 col-lg-offset-3">
+            <form role="form" action="delete">
+                <input type="hidden" name="group_id" value="{{ group.id }}">
+                <input type="submit" value="Удалить группу" name="name" class="btn btn-primary btn-shadow "/>
+            </form>
+
+        </div>
+    </div>
+
+    <table class="table table-background">
+        <tr>
+            <th class="text-center">Логин пользователя</th>
+            <th class="text-center">Уровень доступа</th>
+            <th class="text-center">Изменить</th>
+        </tr>
+        {% for rule in rules %}
+            {% if request.user.username != rule.profile.user.username%}
+                <tr>
+                    <td class="text-center"> {{ rule.profile.user.username }} </td>
+                    <td class="text-center"> {{ rule.get_rule_display }} </td>
+                    <td>
+                            <select name="rule_new" id="rule_new" class="form-control">
+                                {% for rule_type in rule.RULE_CHOICES%}
+                                    {% if rule_type.1 != rule.get_rule_display %}
+                                        <option value="{{ rule_type.0 }}"> {{ rule_type.1 }}</option>
+                                    {% endif %}
+                                {% endfor%}
+                            </select>
+                    </td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+
+    <div class="col-lg-2 col-lg-offset-3">
+        <form role="form" action="group/delete?group_id={{group.id}}">
+            <input type="submit" value="Применить изменения" name="name" class="btn btn-primary btn-shadow "/>
+        </form>
+
+    </div>
+
+    <div class="col-lg-2 col-lg-offset-3">
+        <form role="form" action="add_user">
+            <label for="new_user">Имя пользователя</label>
+            <input required type="text" class="form-control" id="new_user" name="new_user">
+            <input type="hidden" name="group_id" value="{{ group.id }}">
+            <input type="submit" value="Пригласить пользователя" name="name" class="btn btn-primary btn-shadow "/>
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
