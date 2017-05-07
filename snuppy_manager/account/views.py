@@ -49,32 +49,35 @@ def user_logout(request):
 
 @login_required
 def dashboard(request):
-    user_id = request.user.id
-    profile = Profile.objects.get(user=user_id)
+    if request.method == 'GET':
+        user_id = request.user.id
+        profile = Profile.objects.get(user=user_id)
 
-    invites = Invite.objects.filter(profile=profile)
+        invites = Invite.objects.filter(profile=profile)
 
-    _group = Group.objects.filter(profile__id =profile.id)
-    # for get rule, group[0].rule_set.all(),
-    # or group[0].rule_set.get()
-    #g[0].profile.get().unique_id = profile id
-    # g[1].application_set.all() = все application для группы. При обратной связи используется _set
-    # или related_name="имя" в models, manytomany
-    # g[0].rule_set.get().get_rule_display() показать полное имя
+        _group = Group.objects.filter(profile__id =profile.id)
+        # for get rule, group[0].rule_set.all(),
+        # or group[0].rule_set.get()
+        #g[0].profile.get().unique_id = profile id
+        # g[1].application_set.all() = все application для группы. При обратной связи используется _set
+        # или related_name="имя" в models, manytomany
+        # g[0].rule_set.get().get_rule_display() показать полное имя
 
-    #group[0].profile.get().unique_id - получаемя uid профайла через группу
+        #group[0].profile.get().unique_id - получаемя uid профайла через группу
 
-    _app = Application.objects.filter(id__in=_group)
-    # id__in == "a in (1,2,3)"(который queryset и результатов может быть несколько)
+        _app = Application.objects.filter(id__in=_group)
+        # id__in == "a in (1,2,3)"(который queryset и результатов может быть несколько)
 
-    users_rule = Rule.objects.filter(profile__id =profile.id)
+        users_rule = Rule.objects.filter(profile__id =profile.id)
 
 
-    return render(
-        request,
-        'account/all_app.html',
-        {'rules':users_rule, 'invites':invites}
-    )
+        return render(
+            request,
+            'account/all_app.html',
+            {'rules':users_rule, 'invites':invites}
+        )
+    else:
+        return HttpResponseBadRequest()
 
 
 def register(request):
@@ -199,213 +202,256 @@ def compile_ver(request):
 
 @login_required
 def modify_ver(request): #not used now
-    _ver_id = request.GET.get('id')
-    ver = Version.objects.get(id=_ver_id)
-    return render(request, 'account/version_modify.html', {'ver':ver})
+    if request.method == 'GET':
+        _ver_id = request.GET.get('id')
+        ver = Version.objects.get(id=_ver_id)
+        return render(request, 'account/version_modify.html', {'ver':ver})
+    else:
+        return HttpResponseBadRequest()
 
 
 @login_required
 def change_ver(request): #not used now
-    _ver_id = request.POST.get('ver_id')
-    _ver_name = request.POST.get('ver_name')
+    if request.method == 'POST':
+        _ver_id = request.POST.get('ver_id')
+        _ver_name = request.POST.get('ver_name')
 
 
-    ver = Version.objects.get(id=_ver_id)
+        ver = Version.objects.get(id=_ver_id)
 
-    if ver.name != _ver_name:
-        ver.name = _ver_name
-    ver.save()
+        if ver.name != _ver_name:
+            ver.name = _ver_name
+        ver.save()
 
-    return render(request, 'account/version_modify_success.html')
-
+        return render(request, 'account/version_modify_success.html')
+    else:
+        return HttpResponseBadRequest()
 
 @login_required
 def delete_ver(request):
-    _ver_id = request.GET.get('ver_id')
-    _ver_type = request.GET.get('ver_type')
-    _app_id = request.GET.get('app_id')
-    ver = Version.objects.get(id=_ver_id)
-    ver.delete()
+    if request.method == 'GET':
+        _ver_id = request.GET.get('ver_id')
+        _ver_type = request.GET.get('ver_type')
+        _app_id = request.GET.get('app_id')
+        ver = Version.objects.get(id=_ver_id)
+        ver.delete()
 
-    print('ver_type = {} and app_id = {}'.format(_ver_type, _app_id))
-    return render(
-        request,
-        'account/version_delete_success.html',
-        {'ver_type':_ver_type, 'app_id':_app_id})
+        return render(
+            request,
+            'account/version_delete_success.html',
+            {'ver_type':_ver_type, 'app_id':_app_id})
+    else:
+        return HttpResponseBadRequest()
 
 
 @login_required
 def add_app(request):
-    user_id = request.user.id
-    profile = Profile.objects.get(user=user_id)
-    group = Group.objects.filter(profile__id=profile.id)
+    if request.method == 'GET':
+        user_id = request.user.id
+        profile = Profile.objects.get(user=user_id)
+        group = Group.objects.filter(profile__id=profile.id)
 
-    return render(
-                   request,
-                  'account/app_add.html',
-                  {'profile':profile, 'group':group},
-    )
+        return render(
+                       request,
+                      'account/app_add.html',
+                      {'profile':profile, 'group':group},
+        )
+    else:
+        return HttpResponseBadRequest()
 
 
 @login_required
 def add_app_check(request):
-    _app_name = request.POST.get('app_name')
-    _app_description = request.POST.get('app_description')
-    _app_source = request.POST.get('app_source')
-    _group_id = request.POST.get('group_id')
+    if request.method == 'POST':
+        _app_name = request.POST.get('app_name')
+        _app_description = request.POST.get('app_description')
+        _app_source = request.POST.get('app_source')
+        _group_id = request.POST.get('group_id')
 
-    group = Group.objects.get(id=_group_id)
+        group = Group.objects.get(id=_group_id)
 
-    app = Application(
-        name = _app_name,
-        description = _app_description,
-        source_code = _app_source,
-        group = group
-    )
-    app.save()
+        app = Application(
+            name = _app_name,
+            description = _app_description,
+            source_code = _app_source,
+            group = group
+        )
+        app.save()
 
-    return render(request, 'account/app_add_success.html')
+        return render(request, 'account/app_add_success.html')
+    else:
+        return HttpResponseBadRequest()
 
 
 @login_required
 def delete_app(request):
-    _app_id = request.GET.get('app_id')
-    app = Application.objects.get(id=_app_id)
-    app.delete()
+    if request.method == 'GET':
+        _app_id = request.GET.get('app_id')
+        app = Application.objects.get(id=_app_id)
+        app.delete()
 
-    return render(request, 'account/app_delete_success.html')
+        return render(request, 'account/app_delete_success.html')
+    else:
+        return HttpResponseBadRequest()
 
 
 @login_required
 def change_app(request):
-    _app_id = request.GET.get('app_id')
-    _app = Application.objects.get(id=_app_id)
+    if request.method == 'GET':
+        _app_id = request.GET.get('app_id')
+        _app = Application.objects.get(id=_app_id)
 
-    user_id = request.user.id
-    profile = Profile.objects.get(id=user_id)
-    group = Group.objects.filter(profile__id=profile.id)
+        user_id = request.user.id
+        profile = Profile.objects.get(id=user_id)
+        group = Group.objects.filter(profile__id=profile.id)
 
-    return render(
-        request,
-        'account/app_change.html',
-        {'app':_app,'group':group}
-    )
+        return render(
+            request,
+            'account/app_change.html',
+            {'app':_app,'group':group}
+        )
+    else:
+        return HttpResponseBadRequest()
 
 
 @login_required
 def change_app_check(request):
-    _app_id = request.POST.get('app_id')
-    _app_name = request.POST.get('app_name')
-    _app_descr = request.POST.get('app_description')
-    _app_source = request.POST.get('app_source')
-    _gr = request.POST.get('group_id')
+    if request.method == 'POST':
+        _app_id = request.POST.get('app_id')
+        _app_name = request.POST.get('app_name')
+        _app_descr = request.POST.get('app_description')
+        _app_source = request.POST.get('app_source')
+        _gr = request.POST.get('group_id')
 
-    group = Group.objects.get(id=_gr)
+        group = Group.objects.get(id=_gr)
 
-    app = Application.objects.get(id=_app_id)
-    app.name = _app_name
-    app.description = _app_descr
-    app.source_code = _app_source
-    app.group = group
+        app = Application.objects.get(id=_app_id)
+        app.name = _app_name
+        app.description = _app_descr
+        app.source_code = _app_source
+        app.group = group
 
-    app.save()
+        app.save()
 
-    return render(request, 'account/app_change_success.html')
+        return render(request, 'account/app_change_success.html')
+    else:
+        return HttpResponseBadRequest()
 
 
 @login_required
 def show_groups(request):
-    user_id = request.user.id
-    profile = Profile.objects.get(user=user_id)
+    if request.method == 'GET':
+        user_id = request.user.id
+        profile = Profile.objects.get(user=user_id)
 
-    groups = Group.objects.filter(profile=profile, rule__rule='A')
+        groups = Group.objects.filter(profile=profile, rule__rule='A')
 
-    return render(request, 'account/show_groups.html', {'groups':groups})
-
+        return render(request, 'account/show_groups.html', {'groups':groups})
+    else:
+        return HttpResponseBadRequest()
 
 @login_required
 def group_add(request):
-    return render(request, 'account/group_add.html')
+    if request.method == 'GET':
+        return render(request, 'account/group_add.html')
+    else:
+        return HttpResponseBadRequest
 
 
 @login_required
 def group_check_add(request):
-    group_name = request.POST.get('group_name')
-    user_id = request.user.id
-    profile = Profile.objects.get(id=user_id)
+    if request.method == 'POST':
+        group_name = request.POST.get('group_name')
+        user_id = request.user.id
+        profile = Profile.objects.get(id=user_id)
 
 
-    new_group = Group(name=group_name)
-    new_group.save()
-    rule = Rule(group=new_group, profile=profile, rule='A')
-    rule.save()
+        new_group = Group(name=group_name)
+        new_group.save()
+        rule = Rule(group=new_group, profile=profile, rule='A')
+        rule.save()
 
-    return render(request, 'account/group_add_success.html')
+        return render(request, 'account/group_add_success.html')
+    else:
+        return HttpResponseBadRequest()
+
 
 @login_required
 def group_edit(request):
+    if request.method == 'GET':
+        group_id = request.GET.get('group_id')
+        group = Group.objects.get(id=group_id)
+        rules = group.rule_set.all()
 
-    group_id = request.GET.get('group_id')
-    group = Group.objects.get(id=group_id)
-    rules = group.rule_set.all()
-
-    return render(request, 'account/group_edit.html', {'rules':rules, 'group':group})
-
+        return render(request, 'account/group_edit.html', {'rules':rules, 'group':group})
+    else:
+        return HttpResponseBadRequest()
 
 @login_required
 def group_add_user(request):
-    # mb it is need to add in return answer like "send user invite"
-    username = request.GET.get('new_user')
-    profile = Profile.check_profile(username)
-    if profile:
-        group_id = request.GET.get('group_id')
-        group = Group.objects.get(id=group_id)
-        invite = Invite(group=group, profile=profile)
-        invite.save()
-    return group_edit(request)
+    if request.method == 'GET':
+        # mb it is need to add in return answer like "send user invite"
+        username = request.GET.get('new_user')
+        profile = Profile.check_profile(username)
+        if profile:
+            group_id = request.GET.get('group_id')
+            group = Group.objects.get(id=group_id)
+            invite = Invite(group=group, profile=profile)
+            invite.save()
+        return group_edit(request)
+    else:
+        return HttpResponseBadRequest()
 
 
 @login_required
 def group_delete(request):
-    group_id = request.GET.get('group_id')
-    group = Group.objects.get(id=group_id)
-    group.delete()
-    group_name = group.name
-    # ВАЖНО!!!
-    # group.delete() удалит вообще все: группу, все приложения в этой группе,
-    # все версии удаленных приложений (ну, кроме файлов, конечно, но это только пока...)
-    return render(request, 'account/group_delete_success.html', {'group_name':group_name})
+    if request.method == 'GET':
+        group_id = request.GET.get('group_id')
+        group = Group.objects.get(id=group_id)
+        group.delete()
+        group_name = group.name
+        # ВАЖНО!!!
+        # group.delete() удалит вообще все: группу, все приложения в этой группе,
+        # все версии удаленных приложений (ну, кроме файлов, конечно, но это только пока...)
+        return render(request, 'account/group_delete_success.html', {'group_name':group_name})
+    else:
+        return HttpResponseBadRequest()
 
 
 @login_required
 def decline_invite(request):
-    group_id = request.GET.get('group_id')
-    group = Group.objects.get(id=group_id)
-    profile = Profile.objects.get(user=request.user.id)
+    if request.method == 'GET':
+        group_id = request.GET.get('group_id')
+        group = Group.objects.get(id=group_id)
+        profile = Profile.objects.get(user=request.user.id)
 
-    invite = Invite.objects.get(group=group, profile=profile)
-    invite.delete()
-    #не делаем ни чего, просто удаляем приглашение.
-    # Возможно нужно добавить информирование приглащающего,
-    # что его приглашение отклонили?
+        invite = Invite.objects.get(group=group, profile=profile)
+        invite.delete()
+        #не делаем ни чего, просто удаляем приглашение.
+        # Возможно нужно добавить информирование приглащающего,
+        # что его приглашение отклонили?
 
-    return redirect('dashboard')
-
+        return redirect('dashboard')
+    else:
+        return HttpResponseBadRequest()
 
 @login_required
 def accept_invite(request):
-    group_id = request.GET.get('group_id')
-    group = Group.objects.get(id=group_id)
-    profile = Profile.objects.get(user=request.user.id)
+    if request.method == 'GET':
+        group_id = request.GET.get('group_id')
+        group = Group.objects.get(id=group_id)
+        profile = Profile.objects.get(user=request.user.id)
 
-    invite = Invite.objects.get(group=group, profile=profile)
-    invite.delete()
+        invite = Invite.objects.get(group=group, profile=profile)
+        invite.delete()
 
-    rule = Rule(group=group, profile=profile, rule='G')
-    # новые пользователи добавляются с правами Guest
-    rule.save()
+        rule = Rule(group=group, profile=profile, rule='G')
+        # новые пользователи добавляются с правами Guest
+        rule.save()
 
-    return redirect('dashboard')
+        return redirect('dashboard')
+    else:
+        return HttpResponseBadRequest()
 
 
 @login_required
