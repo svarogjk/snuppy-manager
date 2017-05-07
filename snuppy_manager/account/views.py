@@ -18,6 +18,7 @@ from .core.create_uid import create_uid
 from .core.get_changes import get_changes
 from .core.ApiConnect import ApiConnect
 from django.db.models import Q
+from django.shortcuts import redirect
 
 
 @csrf_protect
@@ -379,7 +380,7 @@ def decline_invite(request):
     # Возможно нужно добавить информирование приглащающего,
     # что его приглашение отклонили?
 
-    return dashboard(request)
+    return redirect('dashboard')
 
 
 @login_required
@@ -395,7 +396,7 @@ def accept_invite(request):
     # новые пользователи добавляются с правами Guest
     rule.save()
 
-    return dashboard(request)
+    return redirect('dashboard')
 
 
 @login_required
@@ -415,5 +416,4 @@ def group_modify(request):
             else:
                 rule.rule = new_privilege
                 rule.save()
-                
-    return dashboard(request)
+    return redirect('dashboard')
