@@ -63,7 +63,11 @@
     {% for app in rule.group.application_set.all %}
         <tr>
             <td class="col-lg-1">
-                <a class="first-col" href="application/?app_id={{ app.id }}">{{app.name}}</a>
+                {% if rule.rule == 'G'%}
+                    {{ app.name }}
+                {% else %}
+                    <a class="first-col" href="application/?app_id={{ app.id }}">{{app.name}}</a>
+                {% endif %}
             </td>
             <td class="col-lg-4">{{app.description}} </td>
             <td class="col-lg-2">{{app.source_code}}</td>
