@@ -401,15 +401,19 @@ def accept_invite(request):
 @login_required
 def group_modify(request):
     for key in request.POST:
-        print('key = {}, value = {}'.format(key, request.POST[key]))
         if key.find('rule_new_') != -1 and request.POST[key] != 'None':
             group_id = request.POST[key].split('_')[0]
+            profile_id = key.split('_')[-1]
             new_privilege = request.POST[key].split('_')[1]
 
-            profile_id = key.split('_')[-1]
             profile = Profile.objects.get(id=profile_id)
             group = Group.objects.get(id=group_id)
             rule = Rule.objects.get(profile=profile, group=group)
-            rule.rule = new_privilege
-            rule.save()
+
+            if new_privilege == 'rem':
+                rule.delete()
+            else:
+                rule.rule = new_privilege
+                rule.save()
+                
     return dashboard(request)
