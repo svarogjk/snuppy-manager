@@ -2,14 +2,21 @@ from subprocess import call, run
 from pathlib import Path
 import os, django, sys
 
+DB_FILES = ['db.sqlite3']
 
 def check_db_files():
     path = Path()
     for fl in path.iterdir():
-        if str(fl) == 'db.sqlite3':
-            return True
-    return False
+        if str(fl) in DB_FILES:
+            return DB_FILES
+    return None
 
+def del_db_files():
+    del_files(DB_FILES)
+
+def del_files(files):
+    for p in files:
+        os.remove(p)
 
 def check_migrations_files():
     path = Path() / 'account' / 'migrations'
@@ -53,17 +60,28 @@ def _py_call(com):
     call('"' + sys.executable + '"' + ' ' + com, shell=True)
     # call(sys.executable + ' ' + com, shell=True) old call
 
+def input_with_answer(text):
+    ret = input(text)
+    return ret.strip().lower() in ('y', 'yes')
+
 if __name__ == '__main__':
 
-    if check_db_files():
-        print('First, you must remove old database\nScript terminate')
-        sys.exit()
+    db_files = check_db_files()
+    if db_files:
+        if input_with_answer(f'I need delete db files: {db_files}. \n\tMay I delete it? (y/n): '):
+            del_db_files()
+        else:
+            sys.exit()
 
     mg_files = check_migrations_files()
     if mg_files:
-        for i in mg_files: print(i)
-        print('Please, remove migrations files, listed above')
-        sys.exit()
+        print('You have migration files:')
+        for p in mg_files:
+            print('\t' + p)
+        if input_with_answer('May I delete them? (y/n): '):
+            del_files(mg_files)
+        else:
+            sys.exit()
 
     call_shell()
 
