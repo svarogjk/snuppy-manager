@@ -387,18 +387,20 @@ def group_edit(request):
     else:
         return HttpResponseBadRequest()
 
+
 @login_required
 def group_add_user(request):
     if request.method == 'GET':
         # mb it is need to add in return answer like "send user invite"
         username = request.GET.get('new_user')
         profile = Profile.check_profile(username)
+        group_id = request.GET.get('group_id')
         if profile:
-            group_id = request.GET.get('group_id')
             group = Group.objects.get(id=group_id)
             invite = Invite(group=group, profile=profile)
             invite.save()
-        return group_edit(request)
+        return redirect('/account/application/group/edit?group_id={}'.format(group_id))
+
     else:
         return HttpResponseBadRequest()
 
@@ -457,9 +459,9 @@ def accept_invite(request):
 @login_required
 def group_modify(request):
     if request.method == 'POST':
+        group_id = request.POST['group_id']
         for key in request.POST:
             if key.find('rule_new_') != -1 and request.POST[key] != 'None':
-                group_id = request.POST[key].split('_')[0]
                 profile_id = key.split('_')[-1]
                 new_privilege = request.POST[key].split('_')[1]
 
@@ -472,6 +474,6 @@ def group_modify(request):
                 else:
                     rule.rule = new_privilege
                     rule.save()
-        return redirect('dashboard')
+        return redirect('/account/application/group/edit?group_id={}'.format(group_id))
     else:
         return HttpResponseBadRequest()
