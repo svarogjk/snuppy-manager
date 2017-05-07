@@ -328,7 +328,7 @@ def group_check_add(request):
 
     new_group = Group(name=group_name)
     new_group.save()
-    rule = Rule(group=new_group, profile=profile, rule='U')
+    rule = Rule(group=new_group, profile=profile, rule='A')
     rule.save()
 
     return render(request, 'account/group_add_success.html')
