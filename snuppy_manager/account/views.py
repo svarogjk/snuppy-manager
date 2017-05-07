@@ -124,6 +124,7 @@ def show_version(request):
     if request.method == 'GET':
         # например
         # account/version/?app_id=1&ver_type=W
+        profile = Profile.objects.get(user=request.user)
         _app_id = request.GET.get('app_id')
         _app = Application.objects.get(id=_app_id)
 
@@ -132,10 +133,14 @@ def show_version(request):
 
 
         _versions = Version.objects.filter(application=_app, ver_type=_ver_small)
+
+        privilege = _app.group.rule_set.get(profile=profile).rule
+
         return render(request, 'account/versions.html', {
                                                         'versions': _versions,
                                                         'app': _app,
                                                         'os_type': _ver_type,
+                                                        'privilege':privilege,
                                                         })
     else:
         dashboard(request) # если не get, отправляем в личный кабинет

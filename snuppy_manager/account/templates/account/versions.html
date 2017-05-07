@@ -21,35 +21,47 @@
     <table class="table table-background">
         <tr>
             <th class="text-center">Номер</th>
-            <th class="text-center">Лог изменений</th>
+            {% if privilege != 'G' %}
+                <th class="text-center">Лог изменений</th>
+            {% endif %}
             <th class="text-center">Дата создания</th>
-            <th class="text-center">Ссылка на код</th>
+            {% if privilege != 'G' %}
+                <th class="text-center">Ссылка на код</th>
+            {% endif %}
             <th class="text-center">Статус</th>
-            <th class="text-center">Удаление</th>
+            {% if privilege != 'G' %}
+                <th class="text-center">Удаление</th>
+            {% endif %}
         </tr>
         {% for ver in versions %}
         <tr>
             <td class="text-center">{{ver.number}}</td>
-            <td class="text-center">
-                {% if ver.changes == 'CHANGELOG.md not found in master branch' %}
-                    {{ver.changes}}
-                {% else %}
-                    <a href="{{ver.changes}}">Просмотреть</a>
-                {% endif %}
-            </td>
+            {% if privilege != 'G' %}
+                <td class="text-center">
+                    {% if ver.changes == 'CHANGELOG.md not found in master branch' %}
+                        {{ver.changes}}
+                    {% else %}
+                        <a href="{{ver.changes}}">Просмотреть</a>
+                    {% endif %}
+                </td>
+            {% endif %}
             <td class="text-center"> {{ ver.created_at }} </td>
-            <td class="text-center">
-                <a href="/account/media/{{ver.path}}">Скачать</a>
-            </td>
+            {% if privilege != 'G' %}
+                <td class="text-center">
+                    <a href="/account/media/{{ver.path}}">Скачать</a>
+                </td>
+            {% endif %}
             <td class="text-center"> {{ver.status}} </td>
-            <td>
-                <form role="form" action="/account/version/delete">
-                    <input type="hidden" name="ver_id" value="{{ ver.id }}">
-                    <input type="hidden" name="ver_type" value="{{ ver.ver_type }}">
-                    <input type="hidden" name="app_id" value="{{ app.id }}">
-                    <input type="submit" value="Удалить" name="name" class="btn btn-primary btn-xs btn-block"/>
-                </form>
-            </td>
+            {% if privilege != 'G' %}
+                <td>
+                    <form role="form" action="/account/version/delete">
+                        <input type="hidden" name="ver_id" value="{{ ver.id }}">
+                        <input type="hidden" name="ver_type" value="{{ ver.ver_type }}">
+                        <input type="hidden" name="app_id" value="{{ app.id }}">
+                        <input type="submit" value="Удалить" name="name" class="btn btn-primary btn-xs btn-block"/>
+                    </form>
+                </td>
+            {% endif %}
         </tr>
         {% endfor %}
     </table>
