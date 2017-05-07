@@ -3,7 +3,7 @@
 
 # Create your views here.
 
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseBadRequest
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -143,7 +143,7 @@ def show_version(request):
                                                         'privilege':privilege,
                                                         })
     else:
-        dashboard(request) # если не get, отправляем в личный кабинет
+        return HttpResponseBadRequest()
 
 @login_required
 def add_version(request):
@@ -152,6 +152,8 @@ def add_version(request):
         _app = Application.objects.get(id=_app_id)
         _os_type = request.GET.get('os_type')
         return render(request, 'account/add_version.html', {'app': _app, 'os_type':_os_type})
+    else:
+        return HttpResponseBadRequest()
 
 
 @login_required
@@ -191,6 +193,8 @@ def compile_ver(request):
             'account/add_version_success.html',
             {'app_id':app.id, 'ver_type':v.ver_type},
         )
+    else:
+        return HttpResponseBadRequest()
 
 
 @login_required
@@ -406,19 +410,22 @@ def accept_invite(request):
 
 @login_required
 def group_modify(request):
-    for key in request.POST:
-        if key.find('rule_new_') != -1 and request.POST[key] != 'None':
-            group_id = request.POST[key].split('_')[0]
-            profile_id = key.split('_')[-1]
-            new_privilege = request.POST[key].split('_')[1]
+    if request.method == 'POST':
+        for key in request.POST:
+            if key.find('rule_new_') != -1 and request.POST[key] != 'None':
+                group_id = request.POST[key].split('_')[0]
+                profile_id = key.split('_')[-1]
+                new_privilege = request.POST[key].split('_')[1]
 
-            profile = Profile.objects.get(id=profile_id)
-            group = Group.objects.get(id=group_id)
-            rule = Rule.objects.get(profile=profile, group=group)
+                profile = Profile.objects.get(id=profile_id)
+                group = Group.objects.get(id=group_id)
+                rule = Rule.objects.get(profile=profile, group=group)
 
-            if new_privilege == 'rem':
-                rule.delete()
-            else:
-                rule.rule = new_privilege
-                rule.save()
-    return redirect('dashboard')
+                if new_privilege == 'rem':
+                    rule.delete()
+                else:
+                    rule.rule = new_privilege
+                    rule.save()
+        return redirect('dashboard')
+    else:
+        return HttpResponseBadRequest()
