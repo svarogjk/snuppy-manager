@@ -365,7 +365,6 @@ def group_check_add(request):
         user_id = request.user.id
         profile = Profile.objects.get(id=user_id)
 
-
         new_group = Group(name=group_name)
         new_group.save()
         rule = Rule(group=new_group, profile=profile, rule='A')
@@ -469,7 +468,7 @@ def group_modify(request):
                 group = Group.objects.get(id=group_id)
                 rule = Rule.objects.get(profile=profile, group=group)
 
-                if new_privilege == 'rem':
+                if new_privilege == 'remove':
                     rule.delete()
                 else:
                     rule.rule = new_privilege
