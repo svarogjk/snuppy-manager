@@ -139,7 +139,7 @@ def show_version(request):
 
         privilege = _app.group.rule_set.get(profile=profile).rule
 
-        return render(request, 'account/versions.html', {
+        return render(request, 'account/version/show.html', {
                                                         'versions': _versions,
                                                         'app': _app,
                                                         'os_type': _ver_type,
@@ -154,7 +154,7 @@ def add_version(request):
         _app_id = request.GET.get('app_id')
         _app = Application.objects.get(id=_app_id)
         _os_type = request.GET.get('os_type')
-        return render(request, 'account/add_version.html', {'app': _app, 'os_type':_os_type})
+        return render(request, 'account/version/add.html', {'app': _app, 'os_type':_os_type})
     else:
         return HttpResponseBadRequest()
 
@@ -193,7 +193,7 @@ def compile_ver(request):
 
         return render(
             request,
-            'account/add_version_success.html',
+            'account/version/add_success.html',
             {'app_id':app.id, 'ver_type':v.ver_type},
         )
     else:
@@ -205,7 +205,7 @@ def modify_ver(request): #not used now
     if request.method == 'GET':
         _ver_id = request.GET.get('id')
         ver = Version.objects.get(id=_ver_id)
-        return render(request, 'account/version_modify.html', {'ver':ver})
+        return render(request, 'account/version/edit.html', {'ver':ver})
     else:
         return HttpResponseBadRequest()
 
@@ -223,7 +223,7 @@ def change_ver(request): #not used now
             ver.name = _ver_name
         ver.save()
 
-        return render(request, 'account/version_modify_success.html')
+        return render(request, 'account/version/edit_success.html')
     else:
         return HttpResponseBadRequest()
 
@@ -238,7 +238,7 @@ def delete_ver(request):
 
         return render(
             request,
-            'account/version_delete_success.html',
+            'account/version/delete_success.html',
             {'ver_type':_ver_type, 'app_id':_app_id})
     else:
         return HttpResponseBadRequest()
