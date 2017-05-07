@@ -346,14 +346,14 @@ def show_groups(request):
 
         groups = Group.objects.filter(profile=profile, rule__rule='A')
 
-        return render(request, 'account/show_groups.html', {'groups':groups})
+        return render(request, 'account/group/show_all.html', {'groups':groups})
     else:
         return HttpResponseBadRequest()
 
 @login_required
 def group_add(request):
     if request.method == 'GET':
-        return render(request, 'account/group_add.html')
+        return render(request, 'account/group/add.html')
     else:
         return HttpResponseBadRequest
 
@@ -370,7 +370,7 @@ def group_check_add(request):
         rule = Rule(group=new_group, profile=profile, rule='A')
         rule.save()
 
-        return render(request, 'account/group_add_success.html')
+        return render(request, 'account/group/add_success.html')
     else:
         return HttpResponseBadRequest()
 
@@ -382,7 +382,7 @@ def group_edit(request):
         group = Group.objects.get(id=group_id)
         rules = group.rule_set.all()
 
-        return render(request, 'account/group_edit.html', {'rules':rules, 'group':group})
+        return render(request, 'account/group/edit.html', {'rules':rules, 'group':group})
     else:
         return HttpResponseBadRequest()
 
@@ -414,7 +414,7 @@ def group_delete(request):
         # ВАЖНО!!!
         # group.delete() удалит вообще все: группу, все приложения в этой группе,
         # все версии удаленных приложений (ну, кроме файлов, конечно, но это только пока...)
-        return render(request, 'account/group_delete_success.html', {'group_name':group_name})
+        return render(request, 'account/group/delete_success.html', {'group_name':group_name})
     else:
         return HttpResponseBadRequest()
 
