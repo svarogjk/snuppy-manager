@@ -30,11 +30,11 @@
                     <td class="text-center"> {{ rule.profile.user.username }} </td>
                     <td class="text-center"> {{ rule.get_rule_display }} </td>
                     <td>
-                        <select name="rule_new_{{rule.group.id}}" id="rule_new" class="form-control">
+                        <select name="rule_new_{{rule.profile.id}}" id="rule_new" class="form-control">
                             <option value="None"> None </option>
                             {% for rule_type in rule.RULE_CHOICES%}
-                                {% if rule_type.1 != rule.get_rule_display %}
-                                    <option value=" {{rule.profile.id}}_{{ rule_type.0 }}"> {{ rule_type.1 }}</option>
+                                {% if rule_type.1 != rule.get_rule_display and rule_type.0 != 'U' %}
+                                    <option value=" {{rule.group.id}}_{{ rule_type.0 }}"> {{ rule_type.1 }}</option>
                                 {% endif %}
                             {% endfor%}
                         </select>

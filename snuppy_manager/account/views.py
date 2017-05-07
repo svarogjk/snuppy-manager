@@ -403,10 +403,10 @@ def group_modify(request):
     for key in request.POST:
         print('key = {}, value = {}'.format(key, request.POST[key]))
         if key.find('rule_new_') != -1 and request.POST[key] != 'None':
-            print('key = {} and value = {}'.format(key, request.POST[key]))
-            group_id = key.split('_')[-1]
+            group_id = request.POST[key].split('_')[0]
             new_privilege = request.POST[key].split('_')[1]
-            profile_id = request.POST[key].split('_')[0]
+
+            profile_id = key.split('_')[-1]
             profile = Profile.objects.get(id=profile_id)
             group = Group.objects.get(id=group_id)
             rule = Rule.objects.get(profile=profile, group=group)
