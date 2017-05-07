@@ -344,8 +344,7 @@ def group_edit(request):
 
 @login_required
 def group_add_user(request):
-    # code block must contain login for add "invite" for user
-    # also, mb it is need to add in return answer like "send user invite"
+    # mb it is need to add in return answer like "send user invite"
     username = request.GET.get('new_user')
     profile = Profile.check_profile(username)
     if profile:
