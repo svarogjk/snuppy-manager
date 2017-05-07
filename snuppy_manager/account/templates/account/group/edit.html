@@ -25,18 +25,16 @@
             <th class="text-center">Изменить</th>
         </tr>
         {% for rule in rules %}
-            {% if request.user.username != rule.profile.user.username%}
+            {% if request.user.username != rule.username %}
                 <tr>
-                    <td class="text-center"> {{ rule.profile.user.username }} </td>
+                    <td class="text-center"> {{ rule.username }} </td>
                     <td class="text-center"> {{ rule.get_rule_display }} </td>
                     <td>
                         <select name="rule_new_{{rule.profile.id}}" id="rule_new" class="form-control">
                             <option value="None"> None </option>
-                            {% for rule_type in rule.RULE_CHOICES%}
-                                {% if rule_type.1 != rule.get_rule_display and rule_type.0 != 'U' %}
-                                    <option value=" value_{{ rule_type.0 }}"> {{ rule_type.1 }}</option>
-                                {% endif %}
-                            {% endfor%}
+                            {% for rule_type in rule.other_choices %}
+                            <option value=" value_{{ rule_type.0 }}"> {{ rule_type.1 }}</option>
+                            {% endfor %}
                             <option value="_remove"> Remove </option>
                         </select>
                     </td>

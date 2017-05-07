@@ -95,6 +95,14 @@ class Rule(Model):
     profile = ForeignKey(Profile) #on_delete??
     rule = CharField(max_length=1, choices=RULE_CHOICES)
 
+    @property
+    def username(self):
+        return self.profile.user.username
+
+    @property
+    def other_choices(self):
+        return [ rule_type for rule_type in self.RULE_CHOICES if rule_type[1] != self.get_rule_display and rule_type[0] != 'U' ]
+
 
 class Invite(Model):
 
