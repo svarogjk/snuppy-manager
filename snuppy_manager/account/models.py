@@ -35,6 +35,12 @@ class Group(Model):
     def __str__(self):
         return self.name
 
+    @staticmethod
+    def get_user_groups(user_id):
+        profile = Profile.objects.get(id=user_id)
+        groups = Group.objects.filter(profile__id=profile.id)
+        return groups
+
 
 class Application(Model):
     name = CharField(max_length=100)

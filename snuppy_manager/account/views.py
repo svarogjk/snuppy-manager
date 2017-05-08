@@ -55,21 +55,18 @@ def dashboard(request):
 
         invites = Invite.objects.filter(profile=profile)
 
-        _group = Group.objects.filter(profile__id =profile.id)
+        # _group = Group.objects.filter(profile__id =profile.id)
         # for get rule, group[0].rule_set.all(),
         # or group[0].rule_set.get()
         #g[0].profile.get().unique_id = profile id
         # g[1].application_set.all() = все application для группы. При обратной связи используется _set
         # или related_name="имя" в models, manytomany
         # g[0].rule_set.get().get_rule_display() показать полное имя
-
         #group[0].profile.get().unique_id - получаемя uid профайла через группу
-
-        _app = Application.objects.filter(id__in=_group)
+        # _app = Application.objects.filter(id__in=_group)
         # id__in == "a in (1,2,3)"(который queryset и результатов может быть несколько)
 
         users_rule = Rule.objects.filter(profile__id =profile.id)
-
 
         return render(
             request,
@@ -134,7 +131,6 @@ def show_version(request):
         _ver_small = request.GET.get('ver_type')
         _ver_type = Version.LOOKUP_CHOISE[_ver_small] # получаем полное имя ОС
 
-
         _versions = Version.objects.filter(application=_app, ver_type=_ver_small)
 
         privilege = _app.group.rule_set.get(profile=profile).rule
@@ -147,6 +143,7 @@ def show_version(request):
                                                         })
     else:
         return HttpResponseBadRequest()
+
 
 @login_required
 def add_version(request):
@@ -216,7 +213,6 @@ def change_ver(request): #not used now
         _ver_id = request.POST.get('ver_id')
         _ver_name = request.POST.get('ver_name')
 
-
         ver = Version.objects.get(id=_ver_id)
 
         if ver.name != _ver_name:
@@ -226,6 +222,7 @@ def change_ver(request): #not used now
         return render(request, 'account/version/edit_success.html')
     else:
         return HttpResponseBadRequest()
+
 
 @login_required
 def delete_ver(request):
@@ -301,14 +298,12 @@ def change_app(request):
         _app_id = request.GET.get('app_id')
         _app = Application.objects.get(id=_app_id)
 
-        user_id = request.user.id
-        profile = Profile.objects.get(id=user_id)
-        group = Group.objects.filter(profile__id=profile.id)
+        groups = Group.get_user_groups(request.user.id)
 
         return render(
             request,
             'account/app_change.html',
-            {'app':_app,'group':group}
+            {'app':_app,'group':groups}
         )
     else:
         return HttpResponseBadRequest()
