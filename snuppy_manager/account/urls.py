@@ -13,9 +13,10 @@ from django.contrib.auth.views import (login, logout,
 
 urlpatterns = [
 
-
+    #dashboard
     url(r'^$', views.dashboard, name='dashboard'),
 
+    #register
     url(r'^register/$', views.register, name='register'),
 
     # login / logout urls
@@ -30,26 +31,6 @@ urlpatterns = [
     url(r'^password-change/done/$',
         password_change_done,
         name='password_change_done'),
-
-    #show versions for selected app
-    url(r'version/$', views.show_version, name='show_version'),
-    #add version
-    url(r'version/add_new$', views.add_version, name='add_version'),
-    #send data for compile new version
-    url(r'version/compile_ver', views.compile_ver, name='compile_ver'),
-    #modify or remove version
-    url(r'version/modify', views.modify_ver, name='modify_ver'), #not used now...
-    url(r'version/change', views.change_ver, name='change_ver'),
-    url(r'version/delete', views.delete_ver, name='delete_ver'),
-
-    #add application
-    url(r'application/add$', views.add_app, name='add_app'),
-    url(r'application/add_app_check$', views.add_app_check, name='add_app_check'),
-    #delete app
-    url(r'application/delete', views.delete_app, name='delete_app'),
-    #modify app
-    url(r'application/$', views.change_app, name='change_app'),
-    url(r'application/change', views.change_app_check, name='change_app_check'),
 
     #group
     url(r'application/group$', views.show_groups, name='show_group'),
@@ -87,7 +68,7 @@ if settings.DEBUG:
     import debug_toolbar
     urlpatterns += [
         url(r'^__debug__/', include(debug_toolbar.urls)),
-]
+    ]
 
 
 

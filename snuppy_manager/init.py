@@ -4,6 +4,7 @@ import os, django, sys
 
 DB_FILES = ['db.sqlite3']
 
+
 def check_db_files():
     path = Path()
     for fl in path.iterdir():
@@ -11,12 +12,15 @@ def check_db_files():
             return DB_FILES
     return None
 
+
 def del_db_files():
     del_files(DB_FILES)
+
 
 def del_files(files):
     for p in files:
         os.remove(p)
+
 
 def check_migrations_files():
     path = Path() / 'account' / 'migrations'
@@ -45,9 +49,10 @@ def create_superuser():
 
     print('superuser create succefully')
 
+
 def call_shell():
     _py_call('manage.py makemigrations')
-    _py_call('manage.py migrate')
+    _py_call('manage.py migrate --run-syncdb')
 
     abs_path = Path().absolute()
     auth_path = abs_path / 'account' / 'fixtures' / 'auth_data3.json'

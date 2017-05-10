@@ -21,4 +21,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^account/', include('account.urls')),
     url(r'^$', RedirectView.as_view(url='account/')),
+    url(r'^application/', include('application.urls')),
+    url(r'^$', RedirectView.as_view(url='application/')),
 ]
