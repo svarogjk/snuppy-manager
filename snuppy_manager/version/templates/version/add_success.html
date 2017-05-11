@@ -1,8 +1,8 @@
-{% extends "account_base.html" %}
-{% block title %}Версия удалена!{% endblock %}
+{% extends "account/templates/account_base.html" %}
+{% block title %}Версия добавленна{% endblock %}
 {% block content %}
 
-<H3>Версия успешно удалена!!</H3>
+<H3>Версия успешно добавленна!!</H3>
 
 <form action="/account/version/">
     <input type="hidden" name="app_id" value="{{ app_id }}">

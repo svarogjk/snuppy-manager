@@ -26,11 +26,11 @@
         {% for invite in invites %}
             <div>
                 <p class="titles titles-margin" style="float: left;"> Приглашение в группу "{{ invite.group.name }}" </p>
-                <form role="form" action="application/group/accept_invite" style="float: left;">
+                <form role="form" action="group/accept_invite" style="float: left;">
                     <input type="hidden" name="group_id" value="{{ invite.group.id }}">
                     <input type="submit" value="Принять" name="name" class="btn btn-primary btn-shadow"/>
                 </form>
-                <form role="form" action="application/group/decline_invite" style="float: left;">
+                <form role="form" action="group/decline_invite" style="float: left;">
                     <input type="hidden" name="group_id" value="{{ invite.group.id }}">
                     <input type="submit" value="Отклонить" name="name" class="btn btn-primary btn-shadow"/>
                 </form>
@@ -76,10 +76,10 @@
                 <a href="/account/version/?app_id={{ app.id }}&ver_type=A">
                     <img class="platform-img img-thumbnail" src="/account/media/android-logo.png" alt="Android">
                 </a>
-                <a href="/account/version/?app_id={{ app.id }}&ver_type=I">
+                <a href="version/?app_id={{ app.id }}&ver_type=I">
                     <img class="platform-img img-thumbnail" src="/account/media/ios-logo.png" alt="IOS">
                 </a>
-                <a href="/account/version/?app_id={{ app.id }}&ver_type=W">
+                <a href="version/?app_id={{ app.id }}&ver_type=W">
                     <img class="platform-img img-thumbnail" src="/account/media/win-logo.png" alt="Win Mobile">
                 </a>
             </td>
