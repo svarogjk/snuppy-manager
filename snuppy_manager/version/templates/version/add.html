@@ -1,4 +1,4 @@
-{% extends "account/templates/account_base.html" %}
+{% extends "account_base.html" %}
 {% block title %}Добавление версии{% endblock %}
 {% block content %}
 
@@ -20,7 +20,7 @@
                         <div class="ver-btn-container">
                             <input type="hidden" name="app_id" value="{{ app.id }}">
                             <input type="hidden" name="os_type" value="{{ os_type }}">
-                            <input type="submit" value="Скомпилить" name="name" class="btn btn-primary compile-ver-btn"/>
+                            <input type="submit" value="Скомпилить" class="btn btn-primary compile-ver-btn"/>
                             <a href="#">
                                 <input type="button" value="Отмена" name="name" class="btn btn-primary back-ver-btn"/>
                             </a>

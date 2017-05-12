@@ -1,4 +1,4 @@
-{% extends "account/templates/account_base.html" %}
+{% extends "account_base.html" %}
 {% block title %}Редактирование приложения{% endblock %}
 {% block content %}
 
@@ -7,7 +7,7 @@
                 <div class="add-list">
                     <p class="titles titles-margin">Редактирование приложения <big>{{app.name}}</big></p>
 
-                    <form role="form" action="application/change" method="post" id="change">
+                    <form role="form" action="change" method="post" id="change">
                          {% csrf_token %}
                         <div class="form-group">
                             <label for="app_name">Имя приложения</label>
@@ -44,7 +44,7 @@
                             <input type="hidden" name="app_id" value="{{ app.id }}">
                         </div>
                             <div class="add-app-btn-container">
-                                <input type="submit" value="Изменить" name="name" class="btn btn-primary add-app-btn"/>
+                                <input type="submit" value="Изменить" class="btn btn-primary add-app-btn"/>
                                 <a href="#"><input type="button" value="Отмена" name="name" class="btn btn-primary back-app-btn"/></a>
                             </div>
                     </form>
@@ -55,7 +55,7 @@
                             <input type="hidden" name="app_id" value="{{ app.id }}">
                         </div>
                          <div class="form-group">
-                             <input type="submit" value="Удалить приложение" name="name" class="btn btn-md btn-block btn-primary add-app-btn" />
+                             <input type="submit" value="Удалить приложение" class="btn btn-md btn-block btn-primary add-app-btn" />
                          </div>
                     </form>
                 </div>

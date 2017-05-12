@@ -1,4 +1,4 @@
-{% extends "account/templates/account_base.html" %}
+{% extends "account_base.html" %}
 {% block title %}Dashboard{% endblock %}
 {% block content %}
 
@@ -11,7 +11,7 @@
             <form role="form" action="/account/version/add_new">
                 <input type="hidden" name="app_id" value="{{ app.id }}"/>
                 <input type="hidden" name="os_type" value="{{ os_type }}">
-                <input type="submit" value="Добавить версию" name="name" class="btn btn-primary btn-shadow add-ver-btn"/>
+                <input type="submit" value="Добавить версию" class="btn btn-primary btn-shadow add-ver-btn"/>
             </form>
 
         </div>
@@ -58,7 +58,7 @@
                         <input type="hidden" name="ver_id" value="{{ ver.id }}">
                         <input type="hidden" name="ver_type" value="{{ ver.ver_type }}">
                         <input type="hidden" name="app_id" value="{{ app.id }}">
-                        <input type="submit" value="Удалить" name="name" class="btn btn-primary btn-xs btn-block"/>
+                        <input type="submit" value="Удалить" class="btn btn-primary btn-xs btn-block"/>
                     </form>
                 </td>
             {% endif %}

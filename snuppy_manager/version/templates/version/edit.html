@@ -1,5 +1,5 @@
 <!--СЕЙЧАС НЕ ИСПОЛЬЗУЕТСЯ!!!-->
-{% extends "account/templates/account_base.html" %}
+{% extends "account_base.html" %}
 {% block title %}Редактирование версии{% endblock %}
 {% block content %}
 
@@ -13,13 +13,13 @@
 
     <input type="hidden" name="ver_id" value="{{ ver.id }}">
 
-    <input type="submit" value="Изменить" name="name" class="btn btn-success" />
+    <input type="submit" value="Изменить" class="btn btn-success" />
 
 </form>
 
 <form action="/account/version/delete">
     <input type="hidden" name="ver_id" value="{{ ver.id }}">
-    <input type="submit" value="Удалить" name="name" class="btn btn-success" />
+    <input type="submit" value="Удалить" class="btn btn-success" />
 </form>
 
 {% endblock %}

@@ -18,18 +18,12 @@ from django.contrib import admin
 from django.views.generic import RedirectView
 
 urlpatterns = [
-
     url(r'^admin/', admin.site.urls),
 
-    url(r'^account/', include('account.urls')),
-    url(r'^$', RedirectView.as_view(url='account/')),
-
-    url(r'^application/', include('application.urls')),
     url(r'^$', RedirectView.as_view(url='application/')),
 
+    url(r'^account/', include('account.urls')),
+    url(r'^application/', include('application.urls')),
     url(r'^group/', include('group.urls')),
-    url(r'^$', RedirectView.as_view(url='group/')),
-
     url(r'^version/', include('version.urls')),
-    url(r'^$', RedirectView.as_view(url='version/')),
 ]

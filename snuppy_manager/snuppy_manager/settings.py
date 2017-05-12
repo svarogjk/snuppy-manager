@@ -129,7 +129,7 @@ MEDIA_URL = '/media/'
 
 from django.core.urlresolvers import reverse_lazy
 
-LOGIN_REDIRECT_URL = reverse_lazy('dashboard')
+LOGIN_REDIRECT_URL = reverse_lazy('show_app')
 LOGIN_URL = reverse_lazy('login')
 LOGOUT_URL = reverse_lazy('logout')
 

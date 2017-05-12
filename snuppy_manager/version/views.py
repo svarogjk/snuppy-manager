@@ -89,19 +89,16 @@ def compile_ver(request):
         return HttpResponseBadRequest()
 
 
+
+
 @login_required
-def modify_ver(request): #not used now
+def edit(request):
     if request.method == 'GET':
         _ver_id = request.GET.get('id')
         ver = Version.objects.get(id=_ver_id)
-        return render(request, 'version/edit.html', {'ver':ver})
-    else:
-        return HttpResponseBadRequest()
+        return render(request, 'version/edit.html', {'ver': ver})
 
-
-@login_required
-def change_ver(request): #not used now
-    if request.method == 'POST':
+    elif request.method == 'POST': #not used now...
         _ver_id = request.POST.get('ver_id')
         _ver_name = request.POST.get('ver_name')
 

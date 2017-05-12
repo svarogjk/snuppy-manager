@@ -23,13 +23,17 @@ def del_files(files):
 
 
 def check_migrations_files():
-    path = Path() / 'account' / 'migrations'
+    path = Path() #/ 'account' / 'migrations'
     problems_files = []
     for fl in path.iterdir():
-        if fl.is_dir() or str(fl) == 'account\migrations\__init__.py':
-            continue
-        if str(fl).find('py') != -1:
-            problems_files.append(str(fl))
+        if fl.is_dir():
+            mi = fl / 'migrations'
+            if mi.exists():
+                for p in mi.iterdir():
+                    if p.is_dir() or str(p).endswith('__init__.py'):
+                        continue
+                    if str(p).endswith('.py'):
+                        problems_files.append(str(p))
     return problems_files
 
 

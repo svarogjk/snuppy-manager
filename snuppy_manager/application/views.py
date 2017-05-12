@@ -1,15 +1,31 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseBadRequest
 from django.shortcuts import render
+from django.views.decorators.http import require_http_methods
 
 from account.models import Profile
-from group.models import Group
+from group.models import Group, Invite, Rule
 from .models import Application
 
 
-#APPS
+@login_required
+@require_http_methods(["GET"])
+def show(request):
+    if request.method == 'GET':
+        user_id = request.user.id
+
+        profile = Profile.objects.get(user=user_id)
+        invites = Invite.objects.filter(profile=profile)
+        users_rule = Rule.objects.filter(profile__id =profile.id)
+
+        return render(
+            request,
+            'application/all_app.html',
+            {'rules':users_rule, 'invites':invites}
+        )
+
 
 @login_required
+@require_http_methods(["GET", "POST"])
 def add_app(request):
     if request.method == 'GET':
         user_id = request.user.id
@@ -17,17 +33,11 @@ def add_app(request):
         group = Group.objects.filter(profile__id=profile.id)
 
         return render(
-                       request,
-                      'application/app_add.html',
-                      {'profile':profile, 'group':group},
+            request,
+            'application/app_add.html',
+            {'profile': profile, 'group': group},
         )
-    else:
-        return HttpResponseBadRequest()
-
-
-@login_required
-def add_app_check(request):
-    if request.method == 'POST':
+    elif request.method == 'POST':
         _app_name = request.POST.get('app_name')
         _app_description = request.POST.get('app_description')
         _app_source = request.POST.get('app_source')
@@ -43,24 +53,22 @@ def add_app_check(request):
         )
         app.save()
 
-        return render(request, 'application/app_add_success.html')
-    else:
-        return HttpResponseBadRequest()
+        return render(request, 'application/app_success.html', {'status':'добавлено'})
 
 
 @login_required
+@require_http_methods(["GET"])
 def delete_app(request):
     if request.method == 'GET':
         _app_id = request.GET.get('app_id')
         app = Application.objects.get(id=_app_id)
         app.delete()
 
-        return render(request, 'application/app_delete_success.html')
-    else:
-        return HttpResponseBadRequest()
+        return render(request, 'application/app_success.html', {'status':'удалено'})
 
 
 @login_required
+@require_http_methods(["GET", "POST"])
 def change_app(request):
     if request.method == 'GET':
         _app_id = request.GET.get('app_id')
@@ -73,13 +81,7 @@ def change_app(request):
             'application/app_change.html',
             {'app':_app,'group':groups}
         )
-    else:
-        return HttpResponseBadRequest()
-
-
-@login_required
-def change_app_check(request):
-    if request.method == 'POST':
+    elif request.method == 'POST':
         _app_id = request.POST.get('app_id')
         _app_name = request.POST.get('app_name')
         _app_descr = request.POST.get('app_description')
@@ -96,6 +98,5 @@ def change_app_check(request):
 
         app.save()
 
-        return render(request, 'application/app_change_success.html')
-    else:
-        return HttpResponseBadRequest()
+        return render(request, 'application/app_success.html', {'status':'изменено'})
+

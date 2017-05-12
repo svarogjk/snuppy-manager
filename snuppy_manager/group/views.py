@@ -28,13 +28,7 @@ def show_groups(request):
 def group_add(request):
     if request.method == 'GET':
         return render(request, 'group/add.html')
-    else:
-        return HttpResponseBadRequest
-
-
-@login_required
-def group_check_add(request):
-    if request.method == 'POST':
+    elif request.method == 'POST':
         group_name = request.POST.get('group_name')
         user_id = request.user.id
         profile = Profile.objects.get(id=user_id)
@@ -57,82 +51,7 @@ def group_edit(request):
         rules = group.rule_set.all()
 
         return render(request, 'group/edit.html', {'rules':rules, 'group':group})
-    else:
-        return HttpResponseBadRequest()
-
-
-@login_required
-def group_add_user(request):
-    if request.method == 'GET':
-        # mb it is need to add in return answer like "send user invite"
-        username = request.GET.get('new_user')
-        profile = Profile.check_profile(username)
-        group_id = request.GET.get('group_id')
-        if profile:
-            group = Group.objects.get(id=group_id)
-            invite = Invite(group=group, profile=profile)
-            invite.save()
-        return redirect('group/edit?group_id={}'.format(group_id))
-
-    else:
-        return HttpResponseBadRequest()
-
-
-@login_required
-def group_delete(request):
-    if request.method == 'GET':
-        group_id = request.GET.get('group_id')
-        group = Group.objects.get(id=group_id)
-        group.delete()
-        group_name = group.name
-        # ВАЖНО!!!
-        # group.delete() удалит вообще все: группу, все приложения в этой группе,
-        # все версии удаленных приложений (ну, кроме файлов, конечно, но это только пока...)
-        return render(request, 'group/delete_success.html', {'group_name':group_name})
-    else:
-        return HttpResponseBadRequest()
-
-
-@login_required
-def decline_invite(request):
-    if request.method == 'GET':
-        group_id = request.GET.get('group_id')
-        group = Group.objects.get(id=group_id)
-        profile = Profile.objects.get(user=request.user.id)
-
-        invite = Invite.objects.get(group=group, profile=profile)
-        invite.delete()
-        #не делаем ни чего, просто удаляем приглашение.
-        # Возможно нужно добавить информирование приглащающего,
-        # что его приглашение отклонили?
-
-        return redirect('account/templates/all_app')
-    else:
-        return HttpResponseBadRequest()
-
-
-@login_required
-def accept_invite(request):
-    if request.method == 'GET':
-        group_id = request.GET.get('group_id')
-        group = Group.objects.get(id=group_id)
-        profile = Profile.objects.get(user=request.user.id)
-
-        invite = Invite.objects.get(group=group, profile=profile)
-        invite.delete()
-
-        rule = Rule(group=group, profile=profile, rule='G')
-        # новые пользователи добавляются с правами Guest
-        rule.save()
-
-        return redirect('account/templates/all_app')
-    else:
-        return HttpResponseBadRequest()
-
-
-@login_required
-def group_modify(request):
-    if request.method == 'POST':
+    elif request.method == 'POST':
         group_id = request.POST['group_id']
         for key in request.POST:
             if key.find('rule_new_') != -1 and request.POST[key] != 'None':
@@ -148,6 +67,79 @@ def group_modify(request):
                 else:
                     rule.rule = new_privilege
                     rule.save()
-        return redirect('group/edit?group_id={}'.format(group_id))
+        return redirect('/group/edit?group_id={}'.format(group_id))
     else:
         return HttpResponseBadRequest()
+
+
+@login_required
+def group_add_user(request):
+    if request.method == 'GET':
+        # mb it is need to add in return answer like "send user invite"
+        username = request.GET.get('new_user')
+        profile = Profile.check_profile(username)
+        group_id = request.GET.get('group_id')
+        if profile:
+            group = Group.objects.get(id=group_id)
+            invite = Invite(group=group, profile=profile)
+            invite.save()
+        return redirect('/group/edit?group_id={}'.format(group_id))
+
+    else:
+        return HttpResponseBadRequest()
+
+
+@login_required
+def group_delete(request):
+    if request.method == 'POST':
+        group_id = request.POST.get('group_id')
+        group = Group.objects.get(id=group_id)
+        group.delete()
+        group_name = group.name
+        # ВАЖНО!!!
+        # group.delete() удалит вообще все: группу, все приложения в этой группе,
+        # все версии удаленных приложений (ну, кроме файлов, конечно, но это только пока...)
+        return render(request, 'group/delete_success.html', {'group_name':group_name})
+    else:
+        return HttpResponseBadRequest()
+
+
+@login_required
+def decline_invite(request):
+    if request.method == 'POST':
+        group_id = request.POST.get('group_id')
+        group = Group.objects.get(id=group_id)
+        profile = Profile.objects.get(user=request.user.id)
+
+        invite = Invite.objects.get(group=group, profile=profile)
+        invite.delete()
+        #не делаем ни чего, просто удаляем приглашение.
+        # Возможно нужно добавить информирование приглащающего,
+        # что его приглашение отклонили?
+
+        return redirect('/application/')
+    else:
+        return HttpResponseBadRequest()
+
+
+@login_required
+def accept_invite(request):
+    if request.method == 'POST':
+
+        group_id = request.POST.get('group_id')
+        group = Group.objects.get(id=group_id)
+        profile = Profile.objects.get(user=request.user.id)
+
+        invite = Invite.objects.get(group=group, profile=profile)
+        invite.delete()
+
+        rule = Rule(group=group, profile=profile, rule='G')
+        # новые пользователи добавляются с правами Guest
+        rule.save()
+
+        return redirect('/application/')
+    else:
+        return HttpResponseBadRequest()
+
+
+

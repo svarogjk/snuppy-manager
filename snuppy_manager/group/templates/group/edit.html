@@ -1,4 +1,4 @@
-{% extends "account/templates/account_base.html" %}
+{% extends "account_base.html" %}
 {% block title %}Edit group{% endblock %}
 {% block content %}
 
@@ -10,13 +10,13 @@
         <div class="col-lg-2 col-lg-offset-3">
             <form role="form" action="delete">
                 <input type="hidden" name="group_id" value="{{ group.id }}">
-                <input type="submit" value="Удалить группу" name="name" class="btn btn-primary btn-shadow "/>
+                <input type="submit" value="Удалить группу" class="btn btn-primary btn-shadow "/>
             </form>
 
         </div>
     </div>
 
-    <form role="form" action="application/group/modify" method="post">
+    <form role="form" action="{% url 'group_edit' %}" method="post">
         {% csrf_token %}
     <table class="table table-background">
         <tr>
@@ -44,16 +44,16 @@
     </table>
     <input type="hidden" name="group_id" value="{{ group.id }}">
     <div class="col-lg-2 col-lg-offset-3">
-        <input type="submit" value="Применить изменения" name="name" class="btn btn-primary btn-shadow "/>
+        <input type="submit" value="Применить изменения" class="btn btn-primary btn-shadow "/>
     </div>
     </form>
 
     <div class="col-lg-2 col-lg-offset-3">
-        <form role="form" action="add_user">
+        <form role="form" action="invite/user">
             <label for="new_user">Имя пользователя</label>
             <input required type="text" class="form-control" id="new_user" name="new_user">
             <input type="hidden" name="group_id" value="{{ group.id }}">
-            <input type="submit" value="Пригласить пользователя" name="name" class="btn btn-primary btn-shadow "/>
+            <input type="submit" value="Пригласить пользователя" class="btn btn-primary btn-shadow "/>
         </form>
 
     </div>

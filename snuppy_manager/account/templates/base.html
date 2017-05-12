@@ -16,7 +16,7 @@
     <div id="header">
         <span class="logo">Snuppy</span>
         {% if request.user.is_authenticated %}
-            <a href="{% url 'dashboard' %}">Мой рабочий кабинет</a>
+            <a href="{% url 'show_app' %}">Мой рабочий кабинет</a>
         {% endif %}
 
         <span class="user">

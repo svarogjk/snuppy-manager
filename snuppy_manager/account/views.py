@@ -43,37 +43,6 @@ def user_logout(request):
     return render(request, 'account/user_logout.html')
 
 
-#user's personal room
-@login_required
-def dashboard(request):
-    if request.method == 'GET':
-        user_id = request.user.id
-        profile = Profile.objects.get(user=user_id)
-
-        invites = Invite.objects.filter(profile=profile)
-
-        # _group = Group.objects.filter(profile__id =profile.id)
-        # for get rule, group[0].rule_set.all(),
-        # or group[0].rule_set.get()
-        #g[0].profile.get().unique_id = profile id
-        # g[1].application_set.all() = все application для группы. При обратной связи используется _set
-        # или related_name="имя" в models, manytomany
-        # g[0].rule_set.get().get_rule_display() показать полное имя
-        #group[0].profile.get().unique_id - получаемя uid профайла через группу
-        # _app = Application.objects.filter(id__in=_group)
-        # id__in == "a in (1,2,3)"(который queryset и результатов может быть несколько)
-
-        users_rule = Rule.objects.filter(profile__id =profile.id)
-
-        return render(
-            request,
-            'account/all_app.html',
-            {'rules':users_rule, 'invites':invites}
-        )
-    else:
-        return HttpResponseBadRequest()
-
-
 #register
 def register(request):
     if request.method == 'POST':

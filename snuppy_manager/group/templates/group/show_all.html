@@ -1,4 +1,4 @@
-{% extends "account/templates/account_base.html" %}
+{% extends "account_base.html" %}
 {% block title %}Groups{% endblock %}
 {% block content %}
 
@@ -8,8 +8,8 @@
             <p class="titles">Группы в которых вы являетесь администратором: </p>
         </div>
         <div class="col-lg-2 col-lg-offset-3">
-            <form role="form" action="group/add_new">
-                <input type="submit" value="Создать группу" name="name" class="btn btn-primary btn-shadow "/>
+            <form role="form" action="add">
+                <input type="submit" value="Создать группу" class="btn btn-primary btn-shadow "/>
             </form>
 
         </div>
@@ -23,7 +23,7 @@
         </tr>
         {% for group in groups %}
         <tr>
-            <td class="text-center"> <a href = 'group/edit?group_id={{group.id}}'>{{ group.name}} </a> </td>
+            <td class="text-center"> <a href = 'edit?group_id={{group.id}}'>{{ group.name}} </a> </td>
             <td class="text-center">{{ group.profile.count }}</td>
             <td class="text-center"> {{ group.application_set.count }}</td>
 

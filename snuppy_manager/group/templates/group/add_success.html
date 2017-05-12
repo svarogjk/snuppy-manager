@@ -1,11 +1,11 @@
-{% extends "account/templates/account_base.html" %}
+{% extends "account_base.html" %}
 {% block title %}Создание группы{% endblock %}
 {% block content %}
 
 <H3>Группа успешно создана!!</H3>
 
-<form action="application/group">
-    <input type="submit" value="Вернуться" name="name" class="btn btn-success" />
+<form action="{% url 'show_group' %}">
+    <input type="submit" value="Вернуться" class="btn btn-success" />
 </form>
 
 {% endblock %}
