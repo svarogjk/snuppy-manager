@@ -44,6 +44,7 @@ def user_logout(request):
 
 
 #register
+@csrf_protect
 def register(request):
     if request.method == 'POST':
         user_form = UserRegistrationForm(request.POST)

@@ -1,10 +1,11 @@
 from django.conf.urls import url
 from . import views
+from .views import ShowApp, AddApp, DeleteApp, ChangeApp
 
 
 urlpatterns = [
-    url(r'^$', views.show, name='show_app'),
-    url(r'^add$', views.add_app, name='add_app'),
-    url(r'^change$', views.change_app, name='change_app'),
-    url(r'^delete', views.delete_app, name='delete_app'),
+    url(r'^$', ShowApp.as_view(), name='show_app'),
+    url(r'^add$', AddApp.as_view(), name='add_app'),
+    url(r'^delete', DeleteApp.as_view(), name='delete_app'),
+    url(r'^change$', ChangeApp.as_view(), name='change_app'),
 ]
