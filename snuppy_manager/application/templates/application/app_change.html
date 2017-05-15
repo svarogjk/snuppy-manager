@@ -49,7 +49,7 @@
                             </div>
                     </form>
 
-                    <form class="app-del-form" role="form" action="application/delete">
+                    <form class="app-del-form" role="form" action="delete">
                          {% csrf_token %}
                         <div class="form-group">
                             <input type="hidden" name="app_id" value="{{ app.id }}">
@@ -67,7 +67,7 @@
 <!--
 <H3>Редактирование приложения "{{app.name}}" </H3>
 
-<form action="application/change" method="post">
+<form action="change" method="post">
     {% csrf_token %}
     &lt;!&ndash;csrf_token должен быть в любой POST форме&ndash;&gt;
     <br>
@@ -82,7 +82,7 @@
 
 <!--</form>-->
 
-<!--<form action="application/delete">-->
+<!--<form action="delete">-->
     <!--<input type="hidden" name="app_id" value="{{ app.id }}">-->
     <!--<input type="submit" value="Удалить" name="name" class="btn btn-success" />-->
 <!--</form>-->
