@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.views.decorators.http import require_GET, require_POST
 from django.views.decorators.csrf import csrf_protect, ensure_csrf_cookie
+from django.template.loader import render_to_string
 
 from django.views.generic.list import View
 from django.utils.decorators import method_decorator
@@ -16,19 +17,39 @@ from account.core.decorators import ajax_required
 class ShowApp(View):
 
     @method_decorator(login_required)
-    @method_decorator(require_GET)
     def get(self, request):
         user_id = request.user.id
 
         profile = Profile.objects.get(user=user_id)
+        group = Group.objects.filter(profile__id=profile.id)
         invites = Invite.objects.filter(profile=profile)
         users_rule = Rule.objects.filter(profile__id=profile.id)
         return render(
             request,
             'application/all_app.html',
-            {'rules': users_rule, 'invites': invites}
+            {'rules': users_rule, 'invites': invites, 'profile':profile, 'group': group}
         )
 
+    @method_decorator(csrf_protect)
+    @method_decorator(login_required)
+    def post(self, request):
+        _group_id = request.POST.get('_group_id')
+        _app_name = request.POST.get('_app_name')
+        _app_description = request.POST.get('_app_description')
+        _app_source = request.POST.get('_app_source')
+
+        group = Group.objects.get(id=_group_id)
+
+        app = Application(
+            name=_app_name,
+            description=_app_description,
+            source_code=_app_source,
+            group=group
+        )
+        app.save()
+
+        html = render_to_string('application/app_new.html', {'app': app})
+        return HttpResponse(html)
 
 class AddApp(View):
 

@@ -1,6 +1,7 @@
 {% extends "account_base.html" %}
 {% block title %}Dashboard{% endblock %}
 {% block content %}
+{% load staticfiles%}
 
 <div class="container">
 
@@ -9,9 +10,7 @@
             <!--Фильтр-->
         </div>
         <div class="col-lg-2 col-lg-offset-5">
-            <form role="form" action="/application/add">
-                <input type="submit" value="Добавить приложение" class="btn btn-primary btn-shadow"/>
-            </form>
+            <button type="button" class="btn btn-primary btn-shadow" id="add_app_btn">Добавить приложение</button>
 
             <form role="form" action="{% url 'show_group' %}">
                 <input type="submit" value="Управление группами" class="btn btn-primary btn-shadow"/>
@@ -52,7 +51,7 @@
     {% endif %}
 
 
-    <table class="table table-background">
+    <table class="table table-background group_tbl" group-id={{rule.group.id}}>
         <tr>
             <th class="col-lg-1"> Название</th>
             <th class="col-lg-4">Описание</th>
@@ -92,4 +91,59 @@
 {% endfor %}
 
 </div>
+
+<div id="add_app" class="modal fade" role="dialog">
+    <div class="container add-list-margin">
+        <div class="col-lg-6 col-lg-offset-3">
+            <div class="add-list">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <p class="titles titles-margin">Создание нового приложения</p>
+                <form role="form" action="#" id="add-app">
+                     {% csrf_token %}
+                    <div class="form-group">
+                        <label for="app_name">Имя приложения</label>
+                        <input required type="text" class="form-control" id="app_name" name="app_name" placeholder="введите имя приложения">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="app_description">Описание приложения</label>
+                        <textarea rows="5" class="form-control app-descr-area"
+                                  id="app_description"
+                                  name="app_description" placeholder="описание Вашего приложения"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="app_source">Ссылка на источники</label>
+                        <input required type="text" class="form-control" id="app_source" name="app_source" placeholder="ссылка на приложение">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="group_id">Принадлежность к группе</label>
+                        <select name="group_id" form="add-app" id="group_id" class="form-control">
+                        {% for gr in group %}
+                            {% if gr.name == gr.profile.get.unique_id%}
+                                <option value="{{gr.id}}">None</option>
+                            {% else %}
+                                <option value="{{gr.id}}">{{gr.name}}</option>
+                            {% endif%}
+                        {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="add-app-btn-container">
+                        <input type="submit" value="Создать" class="btn btn-primary add-app-btn" />
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/add_app.js' %}"></script>
+
 {% endblock %}

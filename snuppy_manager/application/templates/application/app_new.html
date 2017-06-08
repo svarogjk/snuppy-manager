@@ -1,0 +1,19 @@
+<tr>
+    <td class="col-lg-1">
+        <a class="first-col" href="{% url 'change_app' %}?app_id={{ app.id }}">{{app.name}}</a>
+    </td>
+    <td class="col-lg-4">{{app.description}} </td>
+    <td class="col-lg-2">{{app.source_code}}</td>
+    <td class="col-lg-2">{{app.created_at}}</td>
+    <td class="col-lg-2 text-center">
+        <a href="/account/version/?app_id={{ app.id }}&ver_type=A">
+            <img class="platform-img img-thumbnail" src="/account/media/android-logo.png" alt="Android">
+        </a>
+        <a href="version/?app_id={{ app.id }}&ver_type=I">
+            <img class="platform-img img-thumbnail" src="/account/media/ios-logo.png" alt="IOS">
+        </a>
+        <a href="version/?app_id={{ app.id }}&ver_type=W">
+            <img class="platform-img img-thumbnail" src="/account/media/win-logo.png" alt="Win Mobile">
+        </a>
+    </td>
+</tr>
