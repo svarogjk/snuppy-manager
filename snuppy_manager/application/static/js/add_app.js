@@ -73,5 +73,11 @@ $(document).ready(function() {
         });
     });
 
+    $('#give_up').click(function(event) {
+        event.preventDefault();
+
+        window.location = "/application";
+
+    });
 
 });
