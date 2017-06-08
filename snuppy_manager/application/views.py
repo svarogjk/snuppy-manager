@@ -73,20 +73,20 @@ class AddApp(View):
     @method_decorator(login_required)
     @method_decorator(require_POST)
     def post(self, request):
-        # _app_name = request.POST.get('app_name')
-        # _app_description = request.POST.get('app_description')
-        # _app_source = request.POST.get('app_source')
-        # _group_id = request.POST.get('group_id')
-        #
-        # group = Group.objects.get(id=_group_id)
-        #
-        # app = Application(
-        #     name=_app_name,
-        #     description=_app_description,
-        #     source_code=_app_source,
-        #     group=group
-        # )
-        # app.save()
+        _group_id = request.POST.get('_group_id')
+        _app_name = request.POST.get('_app_name')
+        _app_description = request.POST.get('_app_description')
+        _app_source = request.POST.get('_app_source')
+
+        group = Group.objects.get(id=_group_id)
+
+        app = Application(
+            name=_app_name,
+            description=_app_description,
+            source_code=_app_source,
+            group=group
+        )
+        app.save()
 
         return HttpResponse("ok")
 
