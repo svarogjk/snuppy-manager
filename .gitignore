@@ -80,6 +80,7 @@ celerybeat-schedule
 
 # virtualenv
 venv/
+venvdir/
 ENV/
 
 # Spyder project settings
@@ -93,3 +94,7 @@ db.sqlite3
 
 # PyCharm
 .idea
+
+#migrations
+0001_initial.py
+

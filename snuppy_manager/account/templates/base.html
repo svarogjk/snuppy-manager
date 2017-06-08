@@ -2,6 +2,7 @@
 {% load staticfiles %}
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
     <!--<link href="{% static "css/account_style.css" %}" rel="stylesheet">-->
     <link href="{% static 'css/index.css' %}" rel="stylesheet">
@@ -31,5 +32,14 @@
         {% block content %}
         {% endblock %}
     </div>
+
+    <!-- Load the CDN first -->
+        <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+
+        <!-- If CDN fails to load, serve up the local version -->
+        <script>window.jQuery || document.write('<script src=" {% static "js/jquery-3.2.1.min.js" %}"><\/script>');</script>
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+
 </body>
 </html>
