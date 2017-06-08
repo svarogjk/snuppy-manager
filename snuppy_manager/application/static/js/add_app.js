@@ -62,7 +62,8 @@ $(document).ready(function() {
             success: function(resp) {
                 if (resp === 'ok') {
                     console.log(resp);
-//                    window.location = 'app_success.html';
+                    alert("app is added!");
+                    window.location = "/application";
                 }
             },
             error: function(resp) {
