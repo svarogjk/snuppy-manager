@@ -30,7 +30,11 @@ class ShowApp(View):
             {'rules': users_rule, 'invites': invites, 'profile':profile, 'group': group}
         )
 
+
+    @method_decorator(require_POST)
     @method_decorator(csrf_protect)
+    @method_decorator(ensure_csrf_cookie)
+    @method_decorator(ajax_required)
     @method_decorator(login_required)
     def post(self, request):
         _group_id = request.POST.get('_group_id')
@@ -65,27 +69,6 @@ class AddApp(View):
             'application/app_add.html',
             {'profile': profile, 'group': group},
         )
-
-
-    # @method_decorator(login_required)
-    # @method_decorator(require_POST)
-    # def post(self, request):
-    #     _app_name = request.POST.get('app_name')
-    #     _app_description = request.POST.get('app_description')
-    #     _app_source = request.POST.get('app_source')
-    #     _group_id = request.POST.get('group_id')
-    #
-    #     group = Group.objects.get(id=_group_id)
-    #
-    #     app = Application(
-    #         name=_app_name,
-    #         description=_app_description,
-    #         source_code=_app_source,
-    #         group=group
-    #     )
-    #     app.save()
-    #
-    #     return render(request, 'application/app_success.html', {'status': 'добавлено'})
 
 
     @method_decorator(csrf_protect)

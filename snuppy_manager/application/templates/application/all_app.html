@@ -20,6 +20,7 @@
 
     </div>
 
+    <!--inviting to group-->
     {% if invites %}
         <p class="titles titles-margin"> Новые приглашения!!!</p>
         {% for invite in invites %}
@@ -50,7 +51,7 @@
 
     {% endif %}
 
-
+    <!--table of groups-->
     <table class="table table-background group_tbl" group-id={{rule.group.id}}>
         <tr>
             <th class="col-lg-1"> Название</th>
@@ -60,6 +61,7 @@
             <th class="col-lg-2">Платформы</th>
         </tr>
 
+    <!--filling in the table-->
     {% for app in rule.group.application_set.all %}
         <tr>
             <td class="col-lg-1">
@@ -92,6 +94,8 @@
 
 </div>
 
+
+<!--add app a modal hidden window, that appears at the page on pushing the button add-->
 <div id="add_app" class="modal fade" role="dialog">
     <div class="container add-list-margin">
         <div class="col-lg-6 col-lg-offset-3">
@@ -133,7 +137,7 @@
 
                     <div class="add-app-btn-container">
                         <input type="submit" value="Создать" class="btn btn-primary add-app-btn" />
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Отмена</button>
                     </div>
                 </form>
 
@@ -142,8 +146,6 @@
     </div>
 </div>
 
-<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
-<script src="{% static 'js/bootstrap.min.js' %}"></script>
 <script src="{% static 'js/add_app_new.js' %}"></script>
 
 {% endblock %}

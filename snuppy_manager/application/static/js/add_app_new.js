@@ -48,7 +48,6 @@
         $('#add_app').modal('show');
     });
 
-<<<<<<< HEAD
     $("#add-app").submit(function(event) {
         event.preventDefault();
         var send_data = collectData();
@@ -71,13 +70,6 @@
                   alert('Ошибка! Какая-нибудь...');
               }
         });
-=======
-    $('#give_up').click(function(event) {
-        event.preventDefault();
-
-        window.location = "/application";
->>>>>>> d52b585c2c5b6df0b2d3cf7c587555b004f3386b
-
     });
 
 }());
