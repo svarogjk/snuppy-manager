@@ -55,47 +55,6 @@ class ShowApp(View):
         html = render_to_string('application/app_new.html', {'app': app})
         return HttpResponse(html)
 
-class AddApp(View):
-
-    @method_decorator(login_required)
-    @method_decorator(require_GET)
-    def get(self, request):
-        user_id = request.user.id
-        profile = Profile.objects.get(user=user_id)
-        group = Group.objects.filter(profile__id=profile.id)
-
-        return render(
-            request,
-            'application/app_add.html',
-            {'profile': profile, 'group': group},
-        )
-
-
-    @method_decorator(csrf_protect)
-    @method_decorator(ensure_csrf_cookie)
-    @method_decorator(ajax_required)
-    @method_decorator(login_required)
-    @method_decorator(require_POST)
-    def post(self, request):
-        _group_id = request.POST.get('_group_id')
-        _app_name = request.POST.get('_app_name')
-        _app_description = request.POST.get('_app_description')
-        _app_source = request.POST.get('_app_source')
-
-        group = Group.objects.get(id=_group_id)
-
-        app = Application(
-            name=_app_name,
-            description=_app_description,
-            source_code=_app_source,
-            group=group
-        )
-        app.save()
-
-        return HttpResponse("ok")
-
-
-
 class DeleteApp(View):
 
     @method_decorator(login_required)

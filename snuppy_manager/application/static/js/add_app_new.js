@@ -66,10 +66,14 @@
                     $('#add_app').modal('hide');
                     appendNewData(data, send_data['_group_id']);
               },
+
+              },
               error:function(){
                   alert('Ошибка! Какая-нибудь...');
               }
         });
+
     });
 
+}());
 }());
