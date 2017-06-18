@@ -1,6 +1,7 @@
 {% extends "account_base.html" %}
 {% block title %}Groups{% endblock %}
 {% block content %}
+{% load staticfiles%}
 
 <div class="container">
     <div class="row titles-margin">
@@ -8,14 +9,14 @@
             <p class="titles">Группы в которых вы являетесь администратором: </p>
         </div>
         <div class="col-lg-2 col-lg-offset-3">
-            <form role="form" action="add">
+            <form role="form" action="#" id="createGroupBtn">
                 <input type="submit" value="Создать группу" class="btn btn-primary btn-shadow "/>
             </form>
 
         </div>
     </div>
 
-    <table class="table table-background">
+    <table class="table table-background" id="groupTable">
         <tr>
             <th class="text-center">Имя группы</th>
             <th class="text-center">Участников</th>
@@ -33,5 +34,30 @@
 
 </div>
 
+<div id="createGroupMdl" class="modal fade" role="dialog">
+    <div class="container add-list-margin">
+        <div class="col-lg-6 col-lg-offset-3">
+            <div class="add-list">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <p class="titles titles-margin">Создание новой группы</p>
+                <form role="form" action="#" id="createGroupSend">
+                     {% csrf_token %}
+                    <div class="form-group">
+                        <label for="group_name">Имя группы:</label>
+                        <input required type="text" class="form-control" id="group_name" name="group_name" >
+                    </div>
+                    <div class="add-app-btn-container">
+                        <input type="submit" value="Создать" class="btn btn-primary add-app-btn" />
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Отмена</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="{% static 'js/group_create.js' %}"></script>
 {% endblock %}
 

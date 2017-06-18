@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponseBadRequest, HttpResponse, JsonResponse
 from django.shortcuts import redirect
 from django.shortcuts import render
+from django.views.decorators.http import require_GET, require_POST, require_http_methods
+from django.core.exceptions import ObjectDoesNotExist
+from django.template.loader import render_to_string
 
 from account.models import Profile
 from .models import Group, Rule, Invite
@@ -12,38 +15,44 @@ from .models import Group, Rule, Invite
 #GROUPS
 
 @login_required
+@require_GET
 def show_groups(request):
-    if request.method == 'GET':
-        user_id = request.user.id
-        profile = Profile.objects.get(user=user_id)
+    user_id = request.user.id
+    profile = Profile.objects.get(user=user_id)
 
-        groups = Group.objects.filter(profile=profile, rule__rule='A')
+    groups = Group.objects.filter(profile=profile, rule__rule='A')
 
-        return render(request, 'group/show_all.html', {'groups':groups})
-    else:
-        return HttpResponseBadRequest()
+    return render(request, 'group/show_all.html', {'groups':groups})
 
 
 @login_required
+@require_POST
 def group_add(request):
-    if request.method == 'GET':
-        return render(request, 'group/add.html')
-    elif request.method == 'POST':
+    try:
         group_name = request.POST.get('group_name')
-        user_id = request.user.id
-        profile = Profile.objects.get(id=user_id)
+    except KeyError:
+        return HttpResponseBadRequest # нету параментра group_name, форму подделали
 
-        new_group = Group(name=group_name)
-        new_group.save()
-        rule = Rule(group=new_group, profile=profile, rule='A')
-        rule.save()
+    if Group.objects.filter(name=group_name).count() > 0: # группа с таким именем существуюет
+        return JsonResponse({
+            'error': 'Ошибка!',
+            'error_text': 'Группа с именем {} уже существует!'.format(group_name)
+        })
 
-        return render(request, 'group/add_success.html')
-    else:
-        return HttpResponseBadRequest()
+    user_id = request.user.id
+    profile = Profile.objects.get(id=user_id)
+
+    new_group = Group(name=group_name)
+    new_group.save()
+    rule = Rule(group=new_group, profile=profile, rule='A')
+    rule.save()
+
+    html = render_to_string('group/add_new.html', {'group': new_group})
+    return HttpResponse(html)
 
 
 @login_required
+@require_http_methods(["GET", "POST"])
 def group_edit(request):
     if request.method == 'GET':
         group_id = request.GET.get('group_id')
@@ -68,40 +77,62 @@ def group_edit(request):
                     rule.rule = new_privilege
                     rule.save()
         return redirect('/group/edit?group_id={}'.format(group_id))
-    else:
-        return HttpResponseBadRequest()
 
 
 @login_required
+@require_POST
 def group_add_user(request):
-    if request.method == 'GET':
-        # mb it is need to add in return answer like "send user invite"
-        username = request.GET.get('new_user')
-        profile = Profile.check_profile(username)
-        group_id = request.GET.get('group_id')
-        if profile:
-            group = Group.objects.get(id=group_id)
-            invite = Invite(group=group, profile=profile)
-            invite.save()
-        return redirect('/group/edit?group_id={}'.format(group_id))
+    admin_profile = request.user.profile
+    try:
+        new_user = request.POST.get('new_user')
+        group_id = int(request.POST.get('group_id'))
+    except (KeyError, ValueError):
+        return HttpResponseBadRequest() # если нет аргументов или group_id не число, значит форму подделали
 
-    else:
-        return HttpResponseBadRequest()
+    profile = Profile.check_profile(new_user)
+    if not profile: # Проверяем, что введенный пользователь существует
+        return JsonResponse({
+            'error': 'Ошибка!',
+            'error_text': 'Пользователя {} не существует'.format(new_user)
+        })
+    if not Group.is_user_admin_in_group(admin_profile, group_id): # Отправитель является админом группы
+        return HttpResponseBadRequest  # Если не админ, значит форму подделали
+    if Group.is_user_in_group(profile, group_id): # пользователь уже в группе
+        return JsonResponse({
+            'error': 'Ошибка!',
+            'error_text': 'Пользователь {} уже в группе!'.format(new_user)
+        })
+    if Invite.is_user_have_invite(profile, group_id): # уже есть приглашение в группу
+        return JsonResponse({
+            'error': 'Ошибка!',
+            'error_text': 'Пользователю {} уже отправленно приглашение!'.format(new_user)
+        })
+    group = Group.objects.get(id=group_id)
+    invite = Invite(group=group, profile=profile)
+    invite.save()
+    return HttpResponse('success')
 
 
 @login_required
+@require_POST
 def group_delete(request):
-    if request.method == 'POST':
-        group_id = request.POST.get('group_id')
+    try:
+        group_id = int(request.POST.get('group_id'))
+    except (KeyError, ValueError):
+        return HttpResponseBadRequest # если не число или нет параметра, значит форму подделали
+    try:
         group = Group.objects.get(id=group_id)
-        group.delete()
-        group_name = group.name
-        # ВАЖНО!!!
-        # group.delete() удалит вообще все: группу, все приложения в этой группе,
-        # все версии удаленных приложений (ну, кроме файлов, конечно, но это только пока...)
-        return render(request, 'group/delete_success.html', {'group_name':group_name})
-    else:
-        return HttpResponseBadRequest()
+    except ObjectDoesNotExist:
+        return HttpResponseBadRequest # группы не существует, форму подделали
+
+    if not Group.is_user_admin_in_group(request.user.profile, group_id):
+        return HttpResponseBadRequest # если не админ, значит форму подделали
+
+    group.delete()
+    # ВАЖНО!!!
+    # group.delete() удалит вообще все: группу, все приложения в этой группе,
+    # все версии удаленных приложений (кроме файлов!)
+    return HttpResponse('Success')
 
 
 @login_required

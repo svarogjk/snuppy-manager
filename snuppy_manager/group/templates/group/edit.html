@@ -1,6 +1,7 @@
 {% extends "account_base.html" %}
 {% block title %}Edit group{% endblock %}
 {% block content %}
+{% load staticfiles%}
 
 <div class="container">
     <div class="row titles-margin">
@@ -8,9 +9,11 @@
             <p class="titles">Группа {{ group.name }}</p>
         </div>
         <div class="col-lg-2 col-lg-offset-3">
-            <form role="form" action="delete">
-                <input type="hidden" name="group_id" value="{{ group.id }}">
+            <form role="form" action="{% url 'show_group' %}" id="deleteGroup">
                 <input type="submit" value="Удалить группу" class="btn btn-primary btn-shadow "/>
+            </form>
+            <form role="form" action="{% url 'show_group' %}">
+                <input type="submit" value="Назад к группам" class="btn btn-primary btn-shadow"/>
             </form>
 
         </div>
@@ -49,16 +52,15 @@
     </form>
 
     <div class="col-lg-2 col-lg-offset-3">
-        <form role="form" action="invite/user">
+        <form role="form" action="invite/user" id="inviteUser">
             <label for="new_user">Имя пользователя</label>
             <input required type="text" class="form-control" id="new_user" name="new_user">
-            <input type="hidden" name="group_id" value="{{ group.id }}">
             <input type="submit" value="Пригласить пользователя" class="btn btn-primary btn-shadow "/>
         </form>
 
     </div>
 
 </div>
-
+<script src="{% static 'js/group_edit.js' %}"></script>
 {% endblock %}
 

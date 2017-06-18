@@ -2,7 +2,7 @@
 from django.db.models import (CharField, Model, OneToOneField,
                               AutoField, DateField)
 from django.conf import settings
-
+from django.core.exceptions import ObjectDoesNotExist
 
 #Customized User
 class Profile(Model):
@@ -20,7 +20,7 @@ class Profile(Model):
     def check_profile(username):
         try:
             profile = Profile.objects.get(user__username=username)
-        except: # НУЖНО ДОБАВИТЬ DoesNotExist
+        except ObjectDoesNotExist: # НУЖНО ДОБАВИТЬ DoesNotExist
             profile = None
         finally:
             return profile

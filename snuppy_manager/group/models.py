@@ -20,6 +20,20 @@ class Group(Model):
         groups = Group.objects.filter(profile__id=profile.id)
         return groups
 
+    @staticmethod
+    def is_user_in_group(profile, group_id):
+        for group in profile.group_set.values():
+            if group['id'] == group_id:
+                return True
+        return False
+
+    @staticmethod
+    def is_user_admin_in_group(profile, group_id):
+        for rule in profile.rule_set.values():
+            if rule['group_id'] == group_id and rule['rule'] == 'A':
+                return True
+        return False
+
 
 class Rule(Model):
 
@@ -47,3 +61,10 @@ class Invite(Model):
 
     profile = ForeignKey(Profile, on_delete=CASCADE)
     group = ForeignKey(Group, on_delete=CASCADE)
+
+    @staticmethod
+    def is_user_have_invite(profile, group_id):
+        for invite in profile.invite_set.values():
+            if invite['group_id'] == group_id:
+                return True
+        return False
