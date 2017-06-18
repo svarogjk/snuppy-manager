@@ -442,3 +442,28 @@ body {
 .logout {
     margin-left: 20px;
 }
+
+
+
+button.link {
+  /* Первые два свойства нужны чтобы убрать отступы в IE */
+  overflow: visible;
+  width: auto;
+
+  /* Убираем отступы */
+  margin: 0;
+  padding: 0;
+
+  /* Убираем все элементы оформления кнопки */
+  background: none;
+  border: none;
+
+  /* Обычный для ссылок курсор */
+  cursor: pointer;
+}
+
+/* Ссылка обычно подчеркнута */
+button.link span {
+  color: #00f;
+  text-decoration: underline;
+}

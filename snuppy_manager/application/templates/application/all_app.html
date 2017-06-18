@@ -68,7 +68,10 @@
                 {% if rule.rule == 'G'%}
                     {{ app.name }}
                 {% else %}
-                    <a class="first-col" href="{% url 'change_app' %}?app_id={{ app.id }}">{{app.name}}</a>
+                    <!--creating a button - link, on pushing the button you call the
+                    modal form add_app just like on pushing add_app_btn-->
+                    <!--<a class="first-col" href="{% url 'change_app' %}?app_id={{ app.id }}">{{app.name}}</a>-->
+                    <button type="submit" class="link" id="link"><span>{{app.name}}</span></button>
                 {% endif %}
             </td>
             <td class="col-lg-4">{{app.description}} </td>
@@ -101,7 +104,7 @@
         <div class="col-lg-6 col-lg-offset-3">
             <div class="add-list">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <p class="titles titles-margin">Создание нового приложения</p>
+                <p class="titles titles-margin">Редактирование приложения</p>
                 <form role="form" action="#" id="add-app">
                      {% csrf_token %}
                     <div class="form-group">
@@ -136,7 +139,7 @@
                     </div>
 
                     <div class="add-app-btn-container">
-                        <input type="submit" value="Создать" class="btn btn-primary add-app-btn" />
+                        <input type="submit" value="Сохранить" class="btn btn-primary add-app-btn" />
                         <button type="button" class="btn btn-primary" data-dismiss="modal">Отмена</button>
                     </div>
                 </form>
@@ -146,6 +149,8 @@
     </div>
 </div>
 
+
 <script src="{% static 'js/add_app_new.js' %}"></script>
+<script src="{% static 'js/change_app.js' %}"></script>
 
 {% endblock %}

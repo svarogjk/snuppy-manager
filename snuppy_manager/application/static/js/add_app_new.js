@@ -1,4 +1,4 @@
-(function(){
+$(document).ready(function(){
     'use strict';
     function getCookie(name) {
             var cookieValue = null;
@@ -13,7 +13,7 @@
                 }
             }
             return cookieValue;
-        }
+    }
 
     function collectData(){
         var _app_name = $('#app_name').val();
@@ -66,10 +66,11 @@
                     $('#add_app').modal('hide');
                     appendNewData(data, send_data['_group_id']);
               },
-              error:function(){
+              error: function(){
                   alert('Ошибка! Какая-нибудь...');
-              }
+              },
         });
+
     });
 
-}());
+});
