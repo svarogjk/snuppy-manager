@@ -1,6 +1,7 @@
 {% extends "account_base.html" %}
 {% block title %}Редактирование приложения{% endblock %}
 {% block content %}
+{% load staticfiles%}
 
 <div class="container add-list-margin">
             <div class="col-lg-6 col-lg-offset-3">
@@ -9,6 +10,7 @@
 
                     <form role="form" action="change" method="post" id="change">
                          {% csrf_token %}
+
                         <div class="form-group">
                             <label for="app_name">Имя приложения</label>
                             <input required type="text" class="form-control" id="app_name" name="app_name" value="{{app.name}}">
@@ -44,8 +46,9 @@
                             <input type="hidden" name="app_id" value="{{ app.id }}">
                         </div>
                             <div class="add-app-btn-container">
-                                <input type="submit" value="Изменить" class="btn btn-primary add-app-btn"/>
-                                <a href="#"><input type="button" value="Отмена" name="name" class="btn btn-primary back-app-btn"/></a>
+                                 <button type="button" class="btn btn-primary btn-shadow" id="change_app_btn">Изменить</button>
+                                <!--<input type="submit" value="Изменить" class="btn btn-primary add-app-btn"/>-->
+                                <a href="#"><input type="button" value="Отмена" name="name" class="btn btn-primary back-app-btn" id="give_up"/></a>
                             </div>
                     </form>
 
@@ -61,6 +64,9 @@
                 </div>
             </div>
 </div>
+
+<script src="{% static 'js/change_app.js' %}"></script>
+
 
 
 

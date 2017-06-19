@@ -1,26 +1,82 @@
 $(document).ready(function(){
 
-    $("#link").click(function(event) {
+    'use strict';
+    function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+    }
+
+    function collectData(){
+        var _app_id = $('#app_id').val();
+        var _app_name = $('#app_name').val();
+        var _app_description = $('#app_description').val();
+        var _app_source = $('#app_source').val();
+        var _group_id = $('#group_id').val();
+
+        var add_app_data = {
+            _app_id: _app_id,
+            _app_name: _app_name,
+            _app_description: _app_description,
+            _app_source: _app_source,
+            _group_id: _group_id,
+        }
+
+        return add_app_data;
+    }
+
+//    function appendNewData(data, group_id){
+//        var tables = document.getElementsByClassName('group_tbl');
+//        for (var i=0; i < tables.length; i++){
+//            if (tables[i].getAttribute('group-id') == group_id){
+//                var app_group = tables[i];
+//            }
+//        }
+//        console.log(app_group);
+//        $(app_group).append(data);
+//
+//    }
+
+    $("#change_app_btn").click(function(event) {
         event.preventDefault();
-        $('#add_app').modal('show');
+        var send_data = collectData();
+
+                $.ajaxSetup({
+                    headers: { "X-CSRFToken": getCookie("csrftoken") }
+                });
+
+                $.ajax({
+                      url: "",
+                      type: "post",
+                      data: send_data,
+                      datatype: 'json',
+                      success: function(data){
+                            alert('Приложение изменено!');
+        //                    $('#add_app').modal('hide');
+        //                    appendNewData(data, send_data['_group_id']);
+                      },
+                      error: function(){
+                          alert('Ошибка! Какая-нибудь...');
+                      },
+                });
+
     });
 
 
-    /* Ищем все submit-кнопки с классом link и заменяем их на ссылки */
-    function windowLoad() {
-        var buttons = document.getElementsByTagName('button');
-        for (var i = 0; i < buttons.length ; i++) {
-            if (buttons[i].getAttribute('type') == 'submit' && buttons[i].className == 'link') {
-                var link = document.createElement('a');
-                link.appendChild(document.createTextNode(buttons[i].firstChild.firstChild.nodeValue));
-                link.setAttribute('href', '#');
-                addEvent(link, 'click', linkClick);
 
-                var parent = buttons[i].parentNode;
-                parent.removeChild(buttons[i]);
-                parent.appendChild(link);
-            }
-        }
-    }
+    $('#give_up').click(function(event) {
+        event.preventDefault();
+        window.location = "/application";
+
+    });
 
 });
