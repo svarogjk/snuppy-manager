@@ -89,11 +89,11 @@ class ChangeApp(View):
     @method_decorator(ajax_required)
     @method_decorator(login_required)
     def post(self, request):
-        _app_id = request.POST.get('app_id')
-        _app_name = request.POST.get('app_name')
-        _app_descr = request.POST.get('app_description')
-        _app_source = request.POST.get('app_source')
-        _gr = request.POST.get('group_id')
+        _app_id = request.POST.get('_app_id')
+        _app_name = request.POST.get('_app_name')
+        _app_descr = request.POST.get('_app_description')
+        _app_source = request.POST.get('_app_source')
+        _gr = request.POST.get('_group_id')
 
         group = Group.objects.get(id=_gr)
 
@@ -106,5 +106,5 @@ class ChangeApp(View):
         app.save()
 
         # return render(request, 'application/app_success.html', {'status': 'изменено'})
-        return redirect('application/all_app.html')
+        return HttpResponse('ok')
 

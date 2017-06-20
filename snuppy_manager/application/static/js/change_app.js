@@ -61,6 +61,7 @@ $(document).ready(function(){
                       datatype: 'json',
                       success: function(data){
                             alert('Приложение изменено!');
+                            window.location.replace('/application/')
         //                    $('#add_app').modal('hide');
         //                    appendNewData(data, send_data['_group_id']);
                       },
