@@ -70,8 +70,7 @@
                 {% else %}
                     <!--creating a button - link, on pushing the button you call the
                     modal form add_app just like on pushing add_app_btn-->
-                    <!--<a class="first-col" href="{% url 'change_app' %}?app_id={{ app.id }}">{{app.name}}</a>-->
-                    <button type="submit" class="link" id="link"><span>{{app.name}}</span></button>
+                    <a class="first-col" href="{% url 'change_app' %}?app_id={{ app.id }}">{{app.name}}</a>
                 {% endif %}
             </td>
             <td class="col-lg-4">{{app.description}} </td>
@@ -149,8 +148,6 @@
     </div>
 </div>
 
-
 <script src="{% static 'js/add_app_new.js' %}"></script>
-<script src="{% static 'js/change_app.js' %}"></script>
 
 {% endblock %}

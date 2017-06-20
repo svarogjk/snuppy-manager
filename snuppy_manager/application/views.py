@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.decorators.http import require_GET, require_POST
 from django.views.decorators.csrf import csrf_protect, ensure_csrf_cookie
 from django.template.loader import render_to_string
@@ -83,9 +83,11 @@ class ChangeApp(View):
             {'app': _app, 'group': groups}
         )
 
-
-    @method_decorator(login_required)
     @method_decorator(require_POST)
+    @method_decorator(csrf_protect)
+    @method_decorator(ensure_csrf_cookie)
+    @method_decorator(ajax_required)
+    @method_decorator(login_required)
     def post(self, request):
         _app_id = request.POST.get('app_id')
         _app_name = request.POST.get('app_name')
@@ -103,5 +105,6 @@ class ChangeApp(View):
 
         app.save()
 
-        return render(request, 'application/app_success.html', {'status': 'изменено'})
+        # return render(request, 'application/app_success.html', {'status': 'изменено'})
+        return redirect('application/all_app.html')
 
