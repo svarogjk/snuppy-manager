@@ -61,6 +61,36 @@ def group_edit(request):
 
         return render(request, 'group/edit.html', {'rules':rules, 'group':group})
     elif request.method == 'POST':
+        try:
+            group_id = int(request.POST['group_id'])
+        except (KeyError, ValueError):
+            return HttpResponseBadRequest() # Если нет group_id значит форму подделали
+        if not Group.is_user_admin_in_group(request.user.profile, group_id):
+            return HttpResponseBadRequest() # Если отправитель не админ значит форму подделали
+
+        for key in request.POST:
+            try:
+                _profile_id = int(key)
+                profile = Profile.objects.get(id=_profile_id)
+            except (ObjectDoesNotExist, ValueError):
+                continue #в POST будут не только user_id - все не нужные пропускаем
+            if not Group.is_user_in_group(profile, group_id):
+                return HttpResponseBadRequest() #Если хотя бы один не в группе или не верное Rule значит форму подделали
+            if not Rule.is_rule_exist(request.POST[key]): # Если указанного rule не существует, значит форму подделали
+                return HttpResponseBadRequest()
+            #.... all check done here
+            if request.POST[key] == 'remove':
+                pass #remove user
+            elif request.POST[key] == 'stay':
+                pass # do nothing
+            else:
+                pass #change to request.POST[key] value
+            print(request.POST[key])
+        print(Rule.other_choices)
+
+
+        return HttpResponse('qweqwe')
+
         group_id = request.POST['group_id']
         for key in request.POST:
             if key.find('rule_new_') != -1 and request.POST[key] != 'None':

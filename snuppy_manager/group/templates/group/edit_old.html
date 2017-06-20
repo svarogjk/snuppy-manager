@@ -28,17 +28,17 @@
             <th class="text-center">Изменить</th>
         </tr>
         {% for rule in rules %}
-            {% if request.user.profile.id != rule.profile_id %}
+            {% if request.user.username != rule.username %}
                 <tr>
                     <td class="text-center"> {{ rule.username }} </td>
                     <td class="text-center"> {{ rule.get_rule_display }} </td>
                     <td>
-                        <select name="{{rule.profile.id}}" id="rule_new" class="form-control">
-                            <option value="stay"> None </option>
+                        <select name="rule_new_{{rule.profile.id}}" id="rule_new" class="form-control">
+                            <option value="None"> None </option>
                             {% for rule_type in rule.other_choices %}
-                            <option value="{{ rule_type.0 }}"> {{ rule_type.1 }}</option>
+                            <option value=" value_{{ rule_type.0 }}"> {{ rule_type.1 }}</option>
                             {% endfor %}
-                            <option value="remove"> Remove </option>
+                            <option value="_remove"> Remove </option>
                         </select>
                     </td>
                 </tr>
@@ -62,6 +62,5 @@
 
 </div>
 <script src="{% static 'js/group_edit.js' %}"></script>
-jquery.js?rand=23423423
 {% endblock %}
 

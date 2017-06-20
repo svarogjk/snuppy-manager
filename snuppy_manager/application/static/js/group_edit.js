@@ -1,14 +1,15 @@
 (function(){
     'use strict';
+
     function GetURLParameter(sParam) {
-    var sPageURL = window.location.search.substring(1);
-    var sURLVariables = sPageURL.split('&');
-    for (var i = 0; i < sURLVariables.length; i++){
-        var sParameterName = sURLVariables[i].split('=');
-        if (sParameterName[0] == sParam){
-            return sParameterName[1];
+        var sPageURL = window.location.search.substring(1);
+        var sURLVariables = sPageURL.split('&');
+        for (var i = 0; i < sURLVariables.length; i++){
+            var sParameterName = sURLVariables[i].split('=');
+            if (sParameterName[0] == sParam){
+                return sParameterName[1];
+                }
             }
-        }
     }
 
     function getCookie(name) {
@@ -87,4 +88,38 @@
 
         return true
     });
+
+    $('#changeGroup').submit( function(event) {
+        event.preventDefault();
+        var send_data = {};
+        var tst_str = /([0-9]+|group)/;
+        for (var i = 0; i < this.elements.length; i++) {
+            send_data[this.elements[i].name] = this.elements[i].value;
+        }
+        console.log(send_data);
+
+        $.ajaxSetup({
+            headers: { "X-CSRFToken": getCookie("csrftoken") }
+        });
+
+        $.ajax({
+              url: "",
+              type: "post",
+              data: send_data,
+              datatype: 'json',
+              success: function(data){
+                    if (data.error) {
+                        alert(data.error_text);
+                    } else {
+                        alert('Изменения внесены');
+                    }
+              },
+              error:function(data){
+                  alert('Ошибка удаления группы!');
+              }
+        });
+
+    } );
+
+// select name = key for post data, value = value for this key
 }());

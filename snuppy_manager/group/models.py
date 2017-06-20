@@ -44,9 +44,17 @@ class Rule(Model):
         ('U', 'UserDefine'),
     )
 
+    CHECK_VALUE = ('A', 'M', 'G', 'stay', 'remove', )
+
     group = ForeignKey(Group) #on_delete??
     profile = ForeignKey(Profile) #on_delete??
     rule = CharField(max_length=1, choices=RULE_CHOICES)
+
+    @staticmethod
+    def is_rule_exist(input_rule):
+        if input_rule in Rule.CHECK_VALUE:
+            return True
+        return False
 
     @property
     def username(self):
