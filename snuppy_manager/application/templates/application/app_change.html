@@ -52,10 +52,11 @@
                             </div>
                     </form>
 
-                    <form class="app-del-form" role="form" action="delete">
+                    <!--<form class="app-del-form" role="form" action="delete">-->
+                    <form class="app-del-form" role="form">
                          {% csrf_token %}
                          <div class="form-group">
-                             <input type="submit" value="Удалить приложение" class="btn btn-md btn-block btn-primary add-app-btn" />
+                             <input type="submit" value="Удалить приложение" class="btn btn-md btn-block btn-primary add-app-btn" id="delete_app_btn" />
                          </div>
                     </form>
                 </div>
@@ -63,6 +64,7 @@
 </div>
 
 <script src="{% static 'js/change_app.js' %}"></script>
+<script src="{% static 'js/delete_app.js' %}"></script>
 
 
 

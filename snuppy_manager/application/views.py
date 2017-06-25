@@ -55,16 +55,36 @@ class ShowApp(View):
         html = render_to_string('application/app_new.html', {'app': app})
         return HttpResponse(html)
 
+# class DeleteApp(View):
+#
+#     @method_decorator(login_required)
+#     @method_decorator(require_GET)
+#     def get(self, request):
+#         _app_id = request.GET.get('app_id')
+#         app = Application.objects.get(id=_app_id)
+#         app.delete()
+#
+#         # return render(request, 'application/app_success.html', {'status': 'удалено'})
+#         return HttpResponse("ok")
+
+
 class DeleteApp(View):
 
+
+    @method_decorator(require_POST)
+    @method_decorator(csrf_protect)
+    @method_decorator(ensure_csrf_cookie)
+    @method_decorator(ajax_required)
     @method_decorator(login_required)
-    @method_decorator(require_GET)
-    def get(self, request):
-        _app_id = request.GET.get('app_id')
+    def post(self, request):
+        _app_id = request.POST.get('_app_id')
         app = Application.objects.get(id=_app_id)
         app.delete()
 
-        return render(request, 'application/app_success.html', {'status': 'удалено'})
+        # return render(request, 'application/app_success.html', {'status': 'удалено'})
+        return HttpResponse("ok")
+
+
 
 
 class ChangeApp(View):
