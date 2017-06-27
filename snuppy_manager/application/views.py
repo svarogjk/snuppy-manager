@@ -20,14 +20,20 @@ class ShowApp(View):
     def get(self, request):
         user_id = request.user.id
 
-        profile = Profile.objects.get(user=user_id)
-        group = Group.objects.filter(profile__id=profile.id)
-        invites = Invite.objects.filter(profile=profile)
-        users_rule = Rule.objects.filter(profile__id=profile.id)
+        # profile = Profile.objects.get(user=user_id)
+        # group = Group.objects.filter(profile__id=profile.id)
+        # invites = Invite.objects.filter(profile=profile)
+        # users_rule = Rule.objects.filter(profile__id=profile.id)
+
+        # FIXME: смотри, вот так здесь можно сократить кол-во запросов от 12 (4.51 мксек) до 11 (3.52 мксек)
+
+        group = Group.objects.filter(profile__user=user_id)
+        invites = Invite.objects.filter(profile__user=user_id)
+        users_rule = Rule.objects.filter(profile__user=user_id)
         return render(
             request,
             'application/all_app.html',
-            {'rules': users_rule, 'invites': invites, 'profile':profile, 'group': group}
+            {'rules': users_rule, 'invites': invites, 'group': group} #'profile':profile,
         )
 
 
