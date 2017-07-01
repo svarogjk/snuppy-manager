@@ -5,6 +5,7 @@ from django.http import HttpResponseBadRequest, HttpResponse, JsonResponse
 from django.shortcuts import redirect
 from django.shortcuts import render
 from django.views.decorators.http import require_GET, require_POST, require_http_methods
+from django.views.decorators.csrf import csrf_protect
 from django.core.exceptions import ObjectDoesNotExist
 from django.template.loader import render_to_string
 
@@ -25,6 +26,7 @@ def show_groups(request):
     return render(request, 'group/show_all.html', {'groups':groups})
 
 
+@csrf_protect
 @login_required
 @require_POST
 def group_add(request):
@@ -109,16 +111,19 @@ def group_edit(request):
         return redirect('/group/edit?group_id={}'.format(group_id))
 
 
+#adds the user as a response to invite
 @login_required
+@csrf_protect
 @require_POST
 def group_add_user(request):
     admin_profile = request.user.profile
     try:
-        new_user = request.POST.get('new_user')
-        group_id = int(request.POST.get('group_id'))
+        new_user = request.POST.get('_new_user')
+        group_id = int(request.POST.get('_group_id_val'))
     except (KeyError, ValueError):
         return HttpResponseBadRequest() # если нет аргументов или group_id не число, значит форму подделали
 
+    #verification procedures
     profile = Profile.check_profile(new_user)
     if not profile: # Проверяем, что введенный пользователь существует
         return JsonResponse({
@@ -137,6 +142,8 @@ def group_add_user(request):
             'error': 'Ошибка!',
             'error_text': 'Пользователю {} уже отправленно приглашение!'.format(new_user)
         })
+
+    #invitation itself
     group = Group.objects.get(id=group_id)
     invite = Invite(group=group, profile=profile)
     invite.save()
@@ -168,7 +175,7 @@ def group_delete(request):
 @login_required
 def decline_invite(request):
     if request.method == 'POST':
-        group_id = request.POST.get('group_id')
+        group_id = request.POST.get('_group_id')
         group = Group.objects.get(id=group_id)
         profile = Profile.objects.get(user=request.user.id)
 
@@ -187,7 +194,7 @@ def decline_invite(request):
 def accept_invite(request):
     if request.method == 'POST':
 
-        group_id = request.POST.get('group_id')
+        group_id = request.POST.get('_group_id')
         group = Group.objects.get(id=group_id)
         profile = Profile.objects.get(user=request.user.id)
 

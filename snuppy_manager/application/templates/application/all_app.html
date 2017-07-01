@@ -20,25 +20,65 @@
 
     </div>
 
-    <!--inviting to group-->
-    {% if invites %}
-        <p class="titles titles-margin"> Новые приглашения!!!</p>
-        {% for invite in invites %}
-            <div>
-                <p class="titles titles-margin" style="float: left;"> Приглашение в группу "{{ invite.group.name }}" </p>
-                <form role="form" action="{% url 'accept_invite' %}" method="POST" style="float: left;">{% csrf_token %}
-                    <p>{{ invite.group.id }}</p>
-                    <input type="hidden" name="group_id" value="{{ invite.group.id }}">
-                    <input type="submit" value="Принять" class="btn btn-primary btn-shadow"/>
-                </form>
-                <form role="form" action="{% url 'decline_invite' %}" method="POST" style="float: left;">
-                    <input type="hidden" name="group_id" value="{{ invite.group.id }}">
-                    <input type="submit" value="Отклонить" class="btn btn-primary btn-shadow"/>{% csrf_token %}
-                </form>
-                <div style="clear: both;"> </div>
+
+    <!--an invite modal hidden window, that appears at the page on smb inviting you-->
+    <div id="accept_invite" class="modal fade" role="dialog">
+        <div class="container add-list-margin">
+            <div class="col-lg-6 col-lg-offset-3">
+                <div class="add-list">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <p class="titles titles-margin">Приглашение в группу</p>
+                    <form role="form" action="#" id="accept-invite">
+                         {% csrf_token %}
+
+                        <div class="form-group">
+                            <input type="hidden" id="invites" name="app_id" value="{{ invites }}">
+                        </div>
+
+                        <div class="add-app-btn-container">
+                            <!--inviting to group-->
+                            {% if invites %}
+                                {% for invite in invites %}
+                                    <div>
+                                        {% csrf_token %}
+                                            <p>{{ invite.group.id }}</p>
+                                            <input type="hidden" name="group_id" value="{{ invite.group.id }}" id="group_id_val">
+                                            <input type="hidden" name="new_user" value="{{ invite.profile.id }}" id="new_user">
+                                            <input type="submit" value="Принять" class="btn btn-primary add-app-btn" id="accept_invite_btn" />
+                                            <!--<input type="submit" value="Отклонить" class="btn btn-primary btn-shadow"/>{% csrf_token %}-->
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal" id="decline_invite_btn">Отмена</button>
+                                        <div style="clear: both;"> </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </form>
+
+                </div>
             </div>
-        {% endfor %}
-    {% endif %}
+        </div>
+    </div>
+
+
+    <!--inviting to group-->
+    <!--{% if invites %}-->
+        <!--<p class="titles titles-margin"> Новые приглашения!!!</p>-->
+        <!--{% for invite in invites %}-->
+            <!--<div>-->
+                <!--<p class="titles titles-margin" style="float: left;"> Приглашение в группу "{{ invite.group.name }}" </p>-->
+                <!--<form role="form" action="{% url 'accept_invite' %}" method="POST" style="float: left;">{% csrf_token %}-->
+                    <!--<p>{{ invite.group.id }}</p>-->
+                    <!--<input type="hidden" name="group_id" value="{{ invite.group.id }}">-->
+                    <!--<input type="submit" value="Принять" class="btn btn-primary btn-shadow"/>-->
+                <!--</form>-->
+                <!--<form role="form" action="{% url 'decline_invite' %}" method="POST" style="float: left;">-->
+                    <!--<input type="hidden" name="group_id" value="{{ invite.group.id }}">-->
+                    <!--<input type="submit" value="Отклонить" class="btn btn-primary btn-shadow"/>{% csrf_token %}-->
+                <!--</form>-->
+                <!--<div style="clear: both;"> </div>-->
+            <!--</div>-->
+        <!--{% endfor %}-->
+    <!--{% endif %}-->
 
 {% for rule in rules %}
     {% if rule.rule == 'U' %}
@@ -149,5 +189,6 @@
 </div>
 
 <script src="{% static 'js/add_app_new.js' %}"></script>
+<script src="{% static 'js/accept_invite.js' %}"></script>
 
 {% endblock %}

@@ -27,6 +27,18 @@
             return cookieValue;
         }
 
+    function collectData(){
+        var _group_id_val = $('#group_id').val();
+        var _new_user = $('#new_user').val();
+
+        var add_app_data = {
+            _group_id_val: _group_id_val,
+            _new_user: _new_user,
+        }
+
+        return add_app_data;
+    }
+
     $("#inviteUser").submit(function(event) {
         event.preventDefault();
 
@@ -34,10 +46,8 @@
             headers: { "X-CSRFToken": getCookie("csrftoken") }
         });
 
-        var send_data = {
-            group_id : GetURLParameter('group_id'),
-            new_user : document.getElementById('new_user').value
-        }
+        var send_data = collectData();
+        console.log(send_data);
 
         $.ajax({
               url: "invite/user",
@@ -48,7 +58,7 @@
                     if (data.error) {
                         alert(data.error_text);
                     } else {
-                        alert('Приглашение отправленно пользователю!');
+                        alert('Приглашение отправлено пользователю!');
                     }
                     document.getElementById('new_user').value = '';
               },
