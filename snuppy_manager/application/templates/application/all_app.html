@@ -31,6 +31,12 @@
                     <form role="form" action="#" id="accept-invite">
                          {% csrf_token %}
 
+                        <script type="text/javascript">
+                            $(document).ready(function(){
+                                var invitations_arr = [];
+                            });
+                        </script>
+
                         <div class="form-group">
                             <input type="hidden" id="invites" name="app_id" value="{{ invites }}">
                         </div>
@@ -43,6 +49,12 @@
                                         {% csrf_token %}
                                             <p>{{ invite.group.id }}</p>
                                             <input type="hidden" name="group_id" value="{{ invite.group.id }}" id="group_id_val">
+                                            <!--push current invitation into invitations_arr-->
+                                            <script type="text/javascript">
+                                                $(document).ready(function(){
+                                                    invitations_arr.push($('#group_id_val').val());
+                                                });
+                                            </script>
                                             <input type="hidden" name="new_user" value="{{ invite.profile.id }}" id="new_user">
                                             <input type="submit" value="Принять" class="btn btn-primary add-app-btn" id="accept_invite_btn" />
                                             <!--<input type="submit" value="Отклонить" class="btn btn-primary btn-shadow"/>{% csrf_token %}-->

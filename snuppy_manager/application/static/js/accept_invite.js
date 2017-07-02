@@ -18,22 +18,24 @@ $(document).ready(function(){
 
 
     function checkInvite(){
-        var _group_id_val = $('#group_id_val').val();
-        if (_group_id_val){
+//        var _group_id_val = $('#group_id_val').val();
+//        if (_group_id_val){
+        if (invitations_arr){
             $('#accept_invite').modal('show');
         };
-        console.log(_group_id_val);
+        console.log(invitations_arr);
     };
     checkInvite();
 
 
     function collectData(){
         var _new_user = $('#new_user').val();
-        var _group_id_val = $('#group_id_val').val();
-
+//        var _group_id_val = $('#group_id_val').val();
+        // invitations_arr = ["7", "9", .., "last_group_id_val"];
         var add_app_data = {
             _new_user: _new_user,
-            _group_id_val: _group_id_val,
+//            _group_id_val: _group_id_val,
+            invitations_arr: invitations_arr,
 
         }
 

@@ -118,8 +118,11 @@ def group_edit(request):
 def group_add_user(request):
     admin_profile = request.user.profile
     try:
-        new_user = request.POST.get('_new_user')
-        group_id = int(request.POST.get('_group_id_val'))
+        invitations_arr = request.POST.get('invitations_arr')
+        for invitation in invitations_arr:
+            new_user = request.POST.get('_new_user')
+            group_id = int(invitation)
+            # group_id = int(request.POST.get('_group_id_val'))
     except (KeyError, ValueError):
         return HttpResponseBadRequest() # если нет аргументов или group_id не число, значит форму подделали
 
