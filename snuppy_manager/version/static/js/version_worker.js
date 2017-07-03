@@ -57,5 +57,48 @@
         send_data();
     });
 
+    $("#rm-form").submit(function(event) {
+        event.preventDefault();
+        var app_id = document.getElementById('app_id_rm').value;
+        var ver_id = []
+        $("input:checkbox[class=ver_id_rm]:checked").each(function(){
+            ver_id.push($(this).val());
+//            ver_id += $(this).val() + ',';
+        });
+        if (ver_id.length == ''){
+            alert('Ничего не выбранно!')
+        } else {
+            var is_sure = window.confirm('Уверены, что хотите удалить выбранные?');
+            if (is_sure){
+                var data = {
+                    app_id: app_id,
+                    ver_id: JSON.stringify(ver_id)
+                }
+                send_remove(data);
+            }
+        }
+
+    });
+
+    function send_remove(data){
+        $.ajaxSetup({
+                headers: { "X-CSRFToken": getCookie("csrftoken") }
+        });
+
+        $.ajax({
+            url: "delete",
+            type: "post",
+            data: data,
+            datatype: 'json',
+            success: function(data){
+                alert('Версия удалена!');
+                location.reload();
+            },
+            error: function(){
+              alert('Ошибка! Какая-нибудь...');
+            },
+        });
+    }
+
 
 }());

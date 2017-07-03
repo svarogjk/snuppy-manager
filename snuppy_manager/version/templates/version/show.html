@@ -54,18 +54,21 @@
             {% endif %}
             <td class="text-center"> {{ver.status}} </td>
             {% if privilege != 'G' %}
-                <td>
-                    <form role="form" action="/account/version/delete">
-                        <input type="hidden" name="ver_id" value="{{ ver.id }}">
-                        <input type="hidden" name="ver_type" value="{{ ver.ver_type }}">
-                        <input type="hidden" name="app_id" value="{{ app.id }}">
-                        <input type="submit" value="Удалить" class="btn btn-primary btn-xs btn-block"/>
-                    </form>
+                <td align="center">
+                    <input type="checkbox" class="ver_id_rm" value="{{ ver.id }}">
                 </td>
             {% endif %}
         </tr>
         {% endfor %}
     </table>
+
+    <div align="right">
+        <form role="form" action="#" id="rm-form">
+            <input type="hidden" id="app_id_rm" name="app_id" value="{{ app.id }}">
+            <input type="submit" value="Удалить выбранные" class="btn btn-primary btn-xs "/>
+        </form>
+    </div>
+
 
 </div>
 
@@ -95,6 +98,6 @@
     </div>
 </div>
 
-<script src="{% static 'js/show_ver.js' %}"></script>
+<script src="{% static 'js/version_worker.js' %}"></script>
 {% endblock %}
 

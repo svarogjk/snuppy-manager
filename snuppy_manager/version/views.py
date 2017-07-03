@@ -11,6 +11,8 @@ from .models import Version
 from .core.ApiConnect import ApiConnect
 from .core.get_changes import get_changes
 
+import json
+
 
 #VERSIONS
 class ShowVersion(View):
@@ -106,16 +108,14 @@ def edit(request):
 
 @login_required
 def delete_ver(request):
-    if request.method == 'GET':
-        _ver_id = request.GET.get('ver_id')
-        _ver_type = request.GET.get('ver_type')
-        _app_id = request.GET.get('app_id')
-        ver = Version.objects.get(id=_ver_id)
-        ver.delete()
+    if request.method == 'POST':
+        _ver_ids = json.loads(request.POST.get('ver_id'))
+        _app_id = request.POST.get('app_id')
 
-        return render(
-            request,
-            'version/delete_success.html',
-            {'ver_type':_ver_type, 'app_id':_app_id})
+        for version_id in _ver_ids:
+            ver = Version.objects.get(id=int(version_id))
+            ver.delete()
+
+        return HttpResponse('ok')
     else:
         return HttpResponseBadRequest()
