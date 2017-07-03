@@ -3,12 +3,10 @@ from . import views
 
 
 urlpatterns = [
-    url(r'version/$', views.show_version, name='show_version'),
-    url(r'version/add$', views.add_version, name='add_version'),
-    url(r'version/edit', views.edit, name='change_ver'),
-    url(r'version/delete', views.delete_ver, name='delete_ver'),
+    url(r'^$', views.ShowVersion.as_view(), name='show_version'),
+    url(r'add$', views.add_version, name='add_version'),
+    url(r'edit', views.edit, name='change_ver'),
+    url(r'delete', views.delete_ver, name='delete_ver'),
 
-    # send data for compile new version
-    url(r'version/compile_ver', views.compile_ver, name='compile_ver'),
 ]
 

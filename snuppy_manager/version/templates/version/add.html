@@ -10,7 +10,7 @@
                         <!--<br>-->
                         <big>"{{app.name}}"</big> под <big>{{os_type}}</big>
                     </p>
-                    <form role="form" action="/account/version/compile_ver" method="post" id="add-app">
+                    <form role="form" action="/version/compile_ver" method="post" id="add-app">
                          {% csrf_token %}
                         <div class="form-group">
                             <label for="ver_number">Номер версии:</label>
