@@ -117,11 +117,14 @@ def group_edit(request):
 @require_POST
 def group_add_user(request):
     admin_profile = request.user.profile
+    group_id_arr = []
     try:
         invitations_arr = request.POST.get('invitations_arr')
         for invitation in invitations_arr:
             new_user = request.POST.get('_new_user')
             group_id = int(invitation)
+            group_id_arr.append(group_id)
+
             # group_id = int(request.POST.get('_group_id_val'))
     except (KeyError, ValueError):
         return HttpResponseBadRequest() # если нет аргументов или group_id не число, значит форму подделали
@@ -147,9 +150,10 @@ def group_add_user(request):
         })
 
     #invitation itself
-    group = Group.objects.get(id=group_id)
-    invite = Invite(group=group, profile=profile)
-    invite.save()
+    for group_id in group_id_arr:
+        group = Group.objects.get(id=group_id)
+        invite = Invite(group=group, profile=profile)
+        invite.save()
     return HttpResponse('success')
 
 

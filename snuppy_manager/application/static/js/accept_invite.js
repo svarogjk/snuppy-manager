@@ -16,8 +16,16 @@ $(document).ready(function(){
             return cookieValue;
     }
 
+    // parse the possible invitations from localStorage
+//    console.log(localStorage["invitations"]);
+    if (localStorage["invitations"]){
+        var invitations_arr = localStorage["invitations"];
+//        var invitations_arr = JSON.parse(localStorage["invitations"]);
+    }else{var invitations_arr = [];}
 
-    function checkInvite(){
+
+
+    function checkInvite(invitations_arr){
 //        var _group_id_val = $('#group_id_val').val();
 //        if (_group_id_val){
         if (invitations_arr){
@@ -25,10 +33,10 @@ $(document).ready(function(){
         };
         console.log(invitations_arr);
     };
-    checkInvite();
+    checkInvite(invitations_arr);
 
 
-    function collectData(){
+    function collectData(invitations_arr){
         var _new_user = $('#new_user').val();
 //        var _group_id_val = $('#group_id_val').val();
         // invitations_arr = ["7", "9", .., "last_group_id_val"];
@@ -45,7 +53,7 @@ $(document).ready(function(){
 
     $("#accept_invite_btn").click(function(event) {
         event.preventDefault();
-        var send_data = collectData();
+        var send_data = collectData(invitations_arr);
         console.log(send_data)
 
             $.ajaxSetup({
