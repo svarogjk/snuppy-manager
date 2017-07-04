@@ -111,21 +111,15 @@ def group_edit(request):
         return redirect('/group/edit?group_id={}'.format(group_id))
 
 
-#adds the user as a response to invite
+# adds the user as a response to invite
 @login_required
 @csrf_protect
 @require_POST
 def group_add_user(request):
     admin_profile = request.user.profile
-    group_id_arr = []
     try:
-        invitations_arr = request.POST.get('invitations_arr')
-        for invitation in invitations_arr:
-            new_user = request.POST.get('_new_user')
-            group_id = int(invitation)
-            group_id_arr.append(group_id)
-
-            # group_id = int(request.POST.get('_group_id_val'))
+        new_user = request.POST.get('_new_user')
+        group_id = int(request.POST.get('_group_id_val'))
     except (KeyError, ValueError):
         return HttpResponseBadRequest() # если нет аргументов или group_id не число, значит форму подделали
 
@@ -150,10 +144,9 @@ def group_add_user(request):
         })
 
     #invitation itself
-    for group_id in group_id_arr:
-        group = Group.objects.get(id=group_id)
-        invite = Invite(group=group, profile=profile)
-        invite.save()
+    group = Group.objects.get(id=group_id)
+    invite = Invite(group=group, profile=profile)
+    invite.save()
     return HttpResponse('success')
 
 
@@ -196,21 +189,25 @@ def decline_invite(request):
     else:
         return HttpResponseBadRequest()
 
-
+# collaborates with accept_invite.js
 @login_required
 def accept_invite(request):
     if request.method == 'POST':
+        group_id_str = ''
+        invitations_str = request.POST.get('invitations_str')
+        group_id_arr = [int(letter) for letter in invitations_str.rstrip(',').split(',')]
 
-        group_id = request.POST.get('_group_id')
-        group = Group.objects.get(id=group_id)
-        profile = Profile.objects.get(user=request.user.id)
+        for group_id in group_id_arr:
+            # group_id = request.POST.get('_group_id')
+            group = Group.objects.get(id=group_id)
+            profile = Profile.objects.get(user=request.user.id)
 
-        invite = Invite.objects.get(group=group, profile=profile)
-        invite.delete()
+            invite = Invite.objects.get(group=group, profile=profile)
+            invite.delete()
 
-        rule = Rule(group=group, profile=profile, rule='G')
-        # новые пользователи добавляются с правами Guest
-        rule.save()
+            rule = Rule(group=group, profile=profile, rule='G')
+            # новые пользователи добавляются с правами Guest
+            rule.save()
 
         return redirect('/application/')
     else:
