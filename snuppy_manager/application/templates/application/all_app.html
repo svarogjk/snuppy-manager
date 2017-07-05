@@ -45,11 +45,12 @@
                                 {% for invite in invites %}
                                     <div>
                                         {% csrf_token %}
-                                            <p>{{ invite.group.id }}</p>
+                                            <p name="group_id">{{ invite.group.id }}</p>
                                             <input type="hidden" name="group_id" value="{{ invite.group.id }}" id="group_id_val">
                                             <!--push current invitation into invitations_arr-->
                                             <script type="text/javascript">
-                                                    invitations_str += $('#group_id_val').val() + ',';
+                                                    invitations_str += $("input[name='group_id']").val() + ',';
+                                                    $("input[name='group_id']").detach();
                                             </script>
                                             <input type="hidden" name="new_user" value="{{ invite.profile.id }}" id="new_user">
                                             <input type="submit" value="Принять" class="btn btn-primary add-app-btn" id="accept_invite_btn" />
