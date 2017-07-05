@@ -82,33 +82,14 @@ def group_edit(request):
                 return HttpResponseBadRequest()
             #.... all check done here
             if request.POST[key] == 'remove':
-                pass #remove user
+                profile.rule_set.get(group_id=group_id).delete()
             elif request.POST[key] == 'stay':
-                pass # do nothing
+                continue
             else:
-                pass #change to request.POST[key] value
-            print(request.POST[key])
-        print(Rule.other_choices)
-
-
-        return HttpResponse('qweqwe')
-
-        group_id = request.POST['group_id']
-        for key in request.POST:
-            if key.find('rule_new_') != -1 and request.POST[key] != 'None':
-                profile_id = key.split('_')[-1]
-                new_privilege = request.POST[key].split('_')[1]
-
-                profile = Profile.objects.get(id=profile_id)
-                group = Group.objects.get(id=group_id)
-                rule = Rule.objects.get(profile=profile, group=group)
-
-                if new_privilege == 'remove':
-                    rule.delete()
-                else:
-                    rule.rule = new_privilege
-                    rule.save()
-        return redirect('/group/edit?group_id={}'.format(group_id))
+                rule = profile.rule_set.get(group_id=group_id)
+                rule.rule = request.POST[key]
+                rule.save()
+        return HttpResponse('ok')
 
 
 # adds the user as a response to invite

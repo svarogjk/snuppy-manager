@@ -122,6 +122,7 @@
                         alert(data.error_text);
                     } else {
                         alert('Изменения внесены');
+                        location.reload();
                     }
               },
               error:function(data){
