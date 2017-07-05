@@ -2,6 +2,8 @@ from django.db.models import (CharField, DateTimeField,
     ForeignKey, Model, CASCADE, FileField)
 
 from application.models import Application
+from account.models import Profile
+from django.core.exceptions import ObjectDoesNotExist
 
 
 #The version of an application you develop
@@ -37,3 +39,21 @@ class Version(Model):
 
     def __str__(self):
         return self.number
+
+    @staticmethod
+    def delete_versions(versions, user_id):
+        profile = Profile.objects.get(user=user_id)
+
+        for version in versions:
+            try:
+                v = Version.objects.get(id=int(version))
+            except (ValueError, ObjectDoesNotExist):
+                return False
+            ver_rule = v.application.group.rule_set.values()
+            for rule in ver_rule:
+                if rule['profile_id'] == profile.id and (rule['rule'] == 'A' or rule['rule'] == 'U') :
+                    v.delete()
+                    break
+            else:
+                return False
+        return True

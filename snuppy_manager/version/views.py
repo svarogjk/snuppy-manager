@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseBadRequest, HttpResponse
 from django.views.generic.list import View
 from django.utils.decorators import method_decorator
+from django.views.decorators.http import require_POST
 
 from account.models import Profile
 from application.models import Application
@@ -76,46 +77,14 @@ class ShowVersion(View):
 
 
 @login_required
-def add_version(request):
-    if request.method == 'GET':
-        _app_id = request.GET.get('app_id')
-        _app = Application.objects.get(id=_app_id)
-        _os_type = request.GET.get('os_type')
-        return render(request, 'version/add.html', {'app': _app, 'os_type':_os_type})
-
-
-@login_required
-def edit(request):
-    if request.method == 'GET':
-        _ver_id = request.GET.get('id')
-        ver = Version.objects.get(id=_ver_id)
-        return render(request, 'version/edit.html', {'ver': ver})
-
-    elif request.method == 'POST': #not used now...
-        _ver_id = request.POST.get('ver_id')
-        _ver_name = request.POST.get('ver_name')
-
-        ver = Version.objects.get(id=_ver_id)
-
-        if ver.name != _ver_name:
-            ver.name = _ver_name
-        ver.save()
-
-        return render(request, 'version/edit_success.html')
-    else:
-        return HttpResponseBadRequest()
-
-
-@login_required
+@require_POST
 def delete_ver(request):
-    if request.method == 'POST':
+    try:
         _ver_ids = json.loads(request.POST.get('ver_id'))
-        _app_id = request.POST.get('app_id')
-
-        for version_id in _ver_ids:
-            ver = Version.objects.get(id=int(version_id))
-            ver.delete()
-
-        return HttpResponse('ok')
-    else:
+    except KeyError:
         return HttpResponseBadRequest()
+
+    if not Version.delete_versions(_ver_ids, request.user.id):
+        return HttpResponseBadRequest()
+
+    return HttpResponse('ok')
